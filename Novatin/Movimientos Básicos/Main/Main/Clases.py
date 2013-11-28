@@ -46,5 +46,5 @@ class Novatin(pygame.sprite.Sprite):
                 self.speedcero = 0
                 self.doublejump = True
 
-    def doublejump(self, y, jump):
+#    def doublejump(self, y, jump):
 

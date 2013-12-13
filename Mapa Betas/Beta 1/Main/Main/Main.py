@@ -8,6 +8,12 @@ y = 720
 size = (x,y)
 black = (0,0,0)
 clock = pygame.time.Clock()
+Novatin = Clases.Novatin((x/2),y)
+directionx = 0 #Variable Binaria que indica direccion en x
+jump = False
+speed = 0
+jspeed=0
+t = 0
 construir = 1
 #Es una variable binaria para saber si hay que construir una etapa o no
 plataformas = []
@@ -21,17 +27,35 @@ while 1:
     for event in pygame.event.get():
         if hasattr(event, 'key')==False:
             continue
-        if event.key==K_ESCAPE:
+        down = event.type == KEYDOWN
+        if event.key == K_RIGHT:
+            directionx = 0
+            speed = down*1
+        elif event.key == K_LEFT:
+            directionx = 1
+            speed = down*1
+        elif event.key==K_ESCAPE:
             pygame.quit()
             sys.exit(0)
+    key = pygame.key.get_pressed()
+    if key[K_UP] == True:
+        jump = True
+    elif key[K_UP] == False:
+        jump = False
+    #########################################################################
+    screen.fill(black) #si se pone dentro del if entonces se vuelve negra una vez
+    #########################################################################
     if construir == 1:
-        screen.fill(black)
-        plataformas.append(Clases.PlataformaAlta(0, 360))
-        plataformas.append(Clases.PlataformaAlta(1024, 360))
-        plataformas.append(Clases.PlataformaBaja(256, 540))
-        plataformas.append(Clases.PlataformaBaja(768, 540))
-        for i in range(len(plataformas)):
-            screen.blit(plataformas[i].image, (plataformas[i].rect.centerx, plataformas[i].rect.centery))
+        plataformas.append(Clases.PlataformaAlta(128, y-180))
+        plataformas.append(Clases.PlataformaAlta(x-128, y-180))
+        plataformas.append(Clases.PlataformaBaja(384, y-45))
+        plataformas.append(Clases.PlataformaBaja(x-384, y-45))
         construir = 0
+    Novatin.move(directionx,speed)
+    Novatin.jump(y,jump,plataformas)
+    #primero el if para que novatin se mueva por enfrente de las plataformas
+    for i in range(len(plataformas)):
+        screen.blit(plataformas[i].image, plataformas[i].rect)
+    screen.blit(Novatin.image, Novatin.rect)
     pygame.display.flip()
     

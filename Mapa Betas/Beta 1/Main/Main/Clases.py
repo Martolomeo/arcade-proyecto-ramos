@@ -11,6 +11,7 @@ class PlataformaBaja(pygame.sprite.Sprite):
         self.width = self.image.get_width()
         self.height = self.image.get_height()
 
+
 class PlataformaAlta(pygame.sprite.Sprite):
     def __init__(self,x,y):
         pygame.sprite.Sprite.__init__(self)
@@ -49,16 +50,26 @@ class Novatin(pygame.sprite.Sprite):
            self.rect.centerx -= down*15
            self.image = self.image2
 
-    def jump (self,y,jump):
+    '''nuevo jump v 0.25, esta vez reconociendo el entorno (solo plataformas,
+    esto es bajo el supuesto de que todos los niveles tendran plataformas)'''
+    def jump (self,y,jump,plataformas):
         if jump == False:
-            if self.rect.bottom >= y:
-                 self.rect.centery = y-(self.height/2)
-                 self.jumpspeed = 20
-                 self.speedcero = 0
-                 self.doublejump = True
-            else:
-                self.rect.centery -= self.speedcero
-                self.speedcero -= self.fall
+            for i in range(len(plataformas)):
+                if pygame.sprite.collide_rect(self, plataformas[i]) == True and self.rect.bottom >= plataformas[i].rect.top:
+                    self.rect.centery = plataformas[i].rect.top-(self.height/2)
+                    self.jumpspeed = 20
+                    self.speedcero = 0
+                    self.doublejump = True
+
+                elif self.rect.bottom >= y and pygame.sprite.collide_rect(self,plataformas[i])==False:
+                    self.rect.centery = y-(self.height/2)
+                    self.jumpspeed = 20
+                    self.speedcero = 0
+                    self.doublejump = True
+                
+                else:
+                    self.rect.centery -= self.speedcero
+                    self.speedcero -= self.fall
         elif jump == True:
             self.rect.centery -= self.jumpspeed
             self.jumpspeed -= self.fall

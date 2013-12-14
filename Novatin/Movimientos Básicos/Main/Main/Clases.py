@@ -34,9 +34,9 @@ class Novatin(pygame.sprite.Sprite):
                  self.jumpspeed = 20
                  self.speedcero = 0
                  self.doublejump = True
-            else:
-                self.rect.centery -= self.speedcero
-                self.speedcero -= self.fall
+
+            self.rect.centery -= self.speedcero
+            self.speedcero -= self.fall
         elif jump == True:
             self.rect.centery -= self.jumpspeed
             self.jumpspeed -= self.fall

@@ -47,8 +47,8 @@ class Novatin(pygame.sprite.Sprite):
             self.rect.centerx += down*15
             self.image = self.image1
         elif n==1:
-           self.rect.centerx -= down*15
-           self.image = self.image2
+            self.rect.centerx -= down*15
+            self.image = self.image2
 
     '''nuevo jump v 0.25, esta vez reconociendo el entorno (solo plataformas,
     esto es bajo el supuesto de que todos los niveles tendran plataformas)'''

@@ -44,15 +44,14 @@ class Novatin(pygame.sprite.Sprite):
         '''n es una variable binaria que indica si el personaje
         se mueve a la derecha o a la izquierda, 0 para la
         derecha, 1 para la izquierda'''
+        if n==0:
+            self.rect.centerx += down*15
+            self.image = self.image1
+        elif n==1:
+            self.rect.centerx -= down*15
+            self.image = self.image2
         for i in range(len(plataformas)):
-            if pygame.sprite.collide_rect(self,plataformas[i]) == False:
-                if n==0:
-                    self.rect.centerx += down*5
-                    self.image = self.image1
-                elif n==1:
-                   self.rect.centerx -= down*5
-                   self.image = self.image2
-            elif pygame.sprite.collide_rect(self,plataformas[i]) == True and self.rect.top>plataformas[i].rect.top:
+            if pygame.sprite.collide_rect(self,plataformas[i]) == True and self.rect.top>plataformas[i].rect.top:
                 if n==0 and self.rect.left<plataformas[i].rect.right:
                     self.iamge = self.image1
                     self.rect.centerx = plataformas[i].rect.left-(self.width/2)

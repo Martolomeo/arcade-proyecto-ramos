@@ -67,7 +67,7 @@ while 1:
         plataformas.append(Clases.PlataformaBaja(896, y-360))
         plataformas.append(Clases.PlataformaBaja(x, y-450))
         construir = 0
-    Novatin.move(directionx,speed,plataformas)
+    Novatin.move(directionx,speed,plataformas,x)
     Novatin.jump(y,jump,plataformas)
     #primero el if para que novatin se mueva por enfrente de las plataformas
     for i in range(len(plataformas)):

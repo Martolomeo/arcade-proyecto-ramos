@@ -53,8 +53,6 @@ while 1:
         plataformas.append(Clases.PlataformaBaja(384, y-45))
         plataformas.append(Clases.PlataformaBaja(x-384, y-45))
         construir = 0
-<<<<<<< HEAD
-=======
     if construir == 2:
         plataformas.append(Clases.PlataformaBaja(128, 90))
         plataformas.append(Clases.PlataformaBaja(384, 180))
@@ -69,7 +67,6 @@ while 1:
         plataformas.append(Clases.PlataformaBaja(896, y-360))
         plataformas.append(Clases.PlataformaBaja(x, y-450))
         construir = 0
->>>>>>> origin/Mapa-Beta-2
     Novatin.move(directionx,speed,plataformas)
     Novatin.jump(y,jump,plataformas)
     #primero el if para que novatin se mueva por enfrente de las plataformas

@@ -8,17 +8,19 @@ y = 720
 size = (x,y)
 black = (0,0,0)
 clock = pygame.time.Clock()
-Novatin = Clases.Novatin((x/2),y)
 directionx = 0 #Variable Binaria que indica direccion en x
 jump = False
 speed = 0
-jspeed=0
+jspeed = 0
 t = 0
-construir = 1
-#Es una variable binaria para saber si hay que construir una etapa o no
+construir = 2
+#Es una variable que indica la etapa a jugar0
 plataformas = []
 #Aca se almacenan los objetos plataformas
-
+if construir == 1:
+    Novatin = Clases.Novatin((x/2),y)
+if construir == 2:
+    Novatin = Clases.Novatin(0,0)
 #Seteamos la pantalla
 screen = pygame.display.set_mode(size, FULLSCREEN)
 
@@ -51,6 +53,23 @@ while 1:
         plataformas.append(Clases.PlataformaBaja(384, y-45))
         plataformas.append(Clases.PlataformaBaja(x-384, y-45))
         construir = 0
+<<<<<<< HEAD
+=======
+    if construir == 2:
+        plataformas.append(Clases.PlataformaBaja(128, 90))
+        plataformas.append(Clases.PlataformaBaja(384, 180))
+        plataformas.append(Clases.PlataformaAlta(768, 320))
+        plataformas.append(Clases.PlataformaAlta(896, 0))
+        plataformas.append(Clases.PlataformaBaja(512, 455))
+        plataformas.append(Clases.PlataformaAlta(128, 620))
+        plataformas.append(Clases.PlataformaBaja(896, y))
+        plataformas.append(Clases.PlataformaBaja(x, y-90))
+        plataformas.append(Clases.PlataformaBaja(896, y-180))
+        plataformas.append(Clases.PlataformaBaja(x, y-270))
+        plataformas.append(Clases.PlataformaBaja(896, y-360))
+        plataformas.append(Clases.PlataformaBaja(x, y-450))
+        construir = 0
+>>>>>>> origin/Mapa-Beta-2
     Novatin.move(directionx,speed,plataformas)
     Novatin.jump(y,jump,plataformas)
     #primero el if para que novatin se mueva por enfrente de las plataformas

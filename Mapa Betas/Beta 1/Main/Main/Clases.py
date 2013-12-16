@@ -44,6 +44,7 @@ class Novatin(pygame.sprite.Sprite):
         '''n es una variable binaria que indica si el personaje
         se mueve a la derecha o a la izquierda, 0 para la
         derecha, 1 para la izquierda'''
+<<<<<<< HEAD
         for i in range(len(plataformas)):
             if pygame.sprite.collide_rect(self,plataformas[i]) == False:
                 if n==0:
@@ -53,13 +54,26 @@ class Novatin(pygame.sprite.Sprite):
                    self.rect.centerx -= down*5
                    self.image = self.image2
             elif pygame.sprite.collide_rect(self,plataformas[i]) == True and self.rect.top>plataformas[i].rect.top:
+=======
+        if n==0:
+            self.rect.centerx += down*15
+            self.image = self.image1
+        elif n==1:
+            self.rect.centerx -= down*15
+            self.image = self.image2
+        for i in range(len(plataformas)):
+            if pygame.sprite.collide_rect(self,plataformas[i]) == True and self.rect.top>plataformas[i].rect.top:
+>>>>>>> origin/Mapa-Beta-2
                 if n==0 and self.rect.left<plataformas[i].rect.right:
                     self.iamge = self.image1
                     self.rect.centerx = plataformas[i].rect.left-(self.width/2)
                 elif n==1 and self.rect.right>plataformas[i].rect.left:
                     self.image = self.image2
                     self.rect.centerx = plataformas[i].rect.right+(self.width/2)
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/Mapa-Beta-2
     '''nuevo jump v 0.25, esta vez reconociendo el entorno (solo plataformas,
     esto es bajo el supuesto de que todos los niveles tendran plataformas)'''
     def jump (self,y,jump,plataformas):

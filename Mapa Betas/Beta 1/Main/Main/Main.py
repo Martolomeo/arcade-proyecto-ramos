@@ -14,7 +14,7 @@ speed = 0
 jspeed = 0
 t = 0
 construir = 2
-#Es una variable que indica la etapa a jugar0
+#Es una variable que indica la etapa a jugar
 plataformas = []
 #Aca se almacenan los objetos plataformas
 if construir == 1:

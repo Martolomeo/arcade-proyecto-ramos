@@ -73,7 +73,7 @@ class Novatin(pygame.sprite.Sprite):
             a=0
             for i in range(len(plataformas)):
                 if self.rect.bottom >= plataformas[i].rect.top and pygame.sprite.collide_rect(self, plataformas[i]) == True and self.rect.top<plataformas[i].rect.top and self.rect.centerx<=plataformas[i].rect.right and self.rect.centerx>=plataformas[i].rect.left:
-                    self.rect.centery = plataformas[i].rect.top-(self.height/2)
+                    self.rect.centery = plataformas[i].rect.top-(self.height/2)+1
                     self.jumpspeed = 20
                     self.speedcero = 0
                     self.stopm = True

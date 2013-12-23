@@ -54,8 +54,8 @@ while 1:
         plataformas.append(Clases.PlataformaBaja(x-384, y-45))
         construir = 0
     if construir == 2:
-        plataformas.append(Clases.PlataformaBaja(128, 90))
-        plataformas.append(Clases.PlataformaBaja(384, 180))
+        plataformas.append(Clases.PlataformaBaja(128, 95))
+        plataformas.append(Clases.PlataformaBaja(384, 145))
         plataformas.append(Clases.PlataformaAlta(768, 320))
         plataformas.append(Clases.PlataformaAlta(896, 0))
         plataformas.append(Clases.PlataformaBaja(512, 455))

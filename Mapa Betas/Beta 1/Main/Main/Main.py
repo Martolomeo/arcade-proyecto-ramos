@@ -6,7 +6,7 @@ pygame.init()
 x = 1280
 y = 720
 size = (x,y)
-black = (0,0,0)
+black = (135,206,235)
 clock = pygame.time.Clock()
 directionx = 0 #Variable Binaria que indica direccion en x
 jump = False
@@ -19,6 +19,8 @@ shoot=False
 #Es una variable que indica la etapa a jugar
 plataformas = []
 #Aca se almacenan los objetos plataformas
+espinas = []
+#Aqui se almacenan los objetos espinas :)
 if construir == 1:
     Novatin = Clases.Novatin((x/2),y)
 if construir == 2:
@@ -76,14 +78,22 @@ while 1:
         plataformas.append(Clases.PlataformaBaja(x, y-270))
         plataformas.append(Clases.PlataformaBaja(896, y-360))
         plataformas.append(Clases.PlataformaBaja(x, y-450))
+        espinas.append(Clases.Espina(600, y))
+        espinas.append(Clases.Espina(648,y))
+        espinas.append(Clases.Espina(552,y))
         construir = 0
-    Novatin.move(directionx,speed,plataformas,x)
-    Novatin.jump(y,jump,plataformas)
-    Novatin.shoot(shoot,directionx,plataformas,x)
+    if Novatin.alive==True:
+        Novatin.move(directionx,speed,plataformas,x)
+        Novatin.jump(y,jump,plataformas)
+        Novatin.shoot(shoot,directionx,plataformas,x)
+        Novatin.ambiente(espinas)
     #primero el if para que novatin se mueva por enfrente de las plataformas
-    for i in range(len(plataformas)):
-        screen.blit(plataformas[i].image, plataformas[i].rect)
-    screen.blit(Novatin.image, Novatin.rect)
+    for plataforma in plataformas:
+        screen.blit(plataforma.image, plataforma.rect)
+    for espina in espinas:
+        screen.blit(espina.image, espina.rect)
+    if Novatin.alive==True:
+        screen.blit(Novatin.image, Novatin.rect)
     for bullet in Novatin.bullets:
         if bullet.alive==True:
             screen.blit(bullet.image, bullet.rect)

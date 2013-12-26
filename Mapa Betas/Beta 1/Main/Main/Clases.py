@@ -41,6 +41,7 @@ class Novatin(pygame.sprite.Sprite):
         self.stopm = False
         self.bullets = []
         self.j = 0
+        self.alive = True
     
     def move (self,n,down,plataformas,x):
         '''n es una variable binaria que indica si el personaje
@@ -145,7 +146,18 @@ class Novatin(pygame.sprite.Sprite):
         if shoot == True:
             self.bullets.append(Bullet(self.rect.centerx, self.rect.centery, n))
         for bullet in self.bullets:
-            bullet.move(plataformas,x) 
+            bullet.move(plataformas,x)
+
+    def ambiente(self,espinas):
+        for espina in espinas:
+            if pygame.sprite.collide_rect(self,espina)==True:
+                self.kill()
+
+    def kill(self):
+        if self.alive==True:
+            self.alive=False
+            del self.image
+            pygame.sprite.Sprite.kill(self)
 
 class Bullet(pygame.sprite.Sprite):
     def __init__(self,x,y,n):
@@ -171,5 +183,15 @@ class Bullet(pygame.sprite.Sprite):
 
     def kill(self):
         self.alive=False
+        del self.image1
+        del self.image2
         del self.image
         pygame.sprite.Sprite.kill(self)
+
+class Espina(pygame.sprite.Sprite):
+    def __init__(self,x,y):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load("espina.png")
+        self.rect = self.image.get_rect()
+        self.rect.centerx = x
+        self.rect.centery = y

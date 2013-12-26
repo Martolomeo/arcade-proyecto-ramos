@@ -14,6 +14,8 @@ speed = 0
 jspeed = 0
 t = 0
 construir = 2
+s=0
+shoot=False
 #Es una variable que indica la etapa a jugar
 plataformas = []
 #Aca se almacenan los objetos plataformas
@@ -39,6 +41,13 @@ while 1:
         elif event.key==K_ESCAPE:
             pygame.quit()
             sys.exit(0)
+        if event.key == K_SPACE:
+            if s==0:
+                shoot=True
+                s=1
+            elif s==1:
+                shoot=False
+                s=0
     key = pygame.key.get_pressed()
     if key[K_UP] == True:
         jump = True
@@ -69,9 +78,12 @@ while 1:
         construir = 0
     Novatin.move(directionx,speed,plataformas,x)
     Novatin.jump(y,jump,plataformas)
+    Novatin.shoot(shoot,directionx)
     #primero el if para que novatin se mueva por enfrente de las plataformas
     for i in range(len(plataformas)):
         screen.blit(plataformas[i].image, plataformas[i].rect)
     screen.blit(Novatin.image, Novatin.rect)
+    for bullet in Novatin.bullets:
+        screen.blit(bullet.image, bullet.rect)
     pygame.display.flip()
     

@@ -28,6 +28,7 @@ screen = pygame.display.set_mode(size, FULLSCREEN)
 
 while 1:
     clock.tick(30)
+    shoot = False
     for event in pygame.event.get():
         if hasattr(event, 'key')==False:
             continue
@@ -78,12 +79,13 @@ while 1:
         construir = 0
     Novatin.move(directionx,speed,plataformas,x)
     Novatin.jump(y,jump,plataformas)
-    Novatin.shoot(shoot,directionx)
+    Novatin.shoot(shoot,directionx,plataformas,x)
     #primero el if para que novatin se mueva por enfrente de las plataformas
     for i in range(len(plataformas)):
         screen.blit(plataformas[i].image, plataformas[i].rect)
     screen.blit(Novatin.image, Novatin.rect)
     for bullet in Novatin.bullets:
-        screen.blit(bullet.image, bullet.rect)
+        if bullet.alive==True:
+            screen.blit(bullet.image, bullet.rect)
     pygame.display.flip()
     

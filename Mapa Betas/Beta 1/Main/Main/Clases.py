@@ -157,6 +157,8 @@ class Novatin(pygame.sprite.Sprite):
         if self.alive==True:
             self.alive=False
             del self.image
+            del self.image1
+            del self.image2
             pygame.sprite.Sprite.kill(self)
 
 class Bullet(pygame.sprite.Sprite):
@@ -183,8 +185,6 @@ class Bullet(pygame.sprite.Sprite):
 
     def kill(self):
         self.alive=False
-        del self.image1
-        del self.image2
         del self.image
         pygame.sprite.Sprite.kill(self)
 

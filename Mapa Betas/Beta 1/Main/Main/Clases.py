@@ -27,9 +27,21 @@ class PlataformaAlta(pygame.sprite.Sprite):
 class Novatin(pygame.sprite.Sprite):
     def __init__(self, x, y):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load("iwbtg.png")
-        self.image1 = pygame.image.load("iwbtg.png")
-        self.image2 = pygame.transform.flip(self.image1, True, False)
+        self.image = pygame.image.load("Imagenes/novatin_derecha.png")
+        self.quieto_d = pygame.image.load("Imagenes/novatin_derecha.png")
+        self.quieto_i = pygame.transform.flip(self.quieto_d, True, False)
+        self.mov1_d = pygame.image.load("Imagenes/novatin_mov_derecha1.png")
+        self.mov1_i = pygame.transform.flip(self.mov1_d, True, False)
+        self.mov2_d = pygame.image.load("Imagenes/novatin_mov_derecha2.png")
+        self.mov2_i = pygame.transform.flip(self.mov2_d, True, False)
+        self.mov3_d = pygame.image.load("Imagenes/novatin_mov_derecha3.png")
+        self.mov3_i = pygame.transform.flip(self.mov3_d, True, False)
+        self.salto_1_d = pygame.image.load("Imagenes/novatin_salto1.png")
+        self.salto_1_i = pygame.transform.flip(self.salto_1_d, True, False)
+        self.salto_2_d = pygame.image.load("Imagenes/novatin_salto2.png")
+        self.salto_2_i = pygame.transform.flip(self.salto_2_d, True, False)
+        self.salto_3_d = pygame.image.load("Imagenes/novatin_salto3.png")
+        self.salto_3_i = pygame.transform.flip(self.salto_3_d, True, False)
         self.rect = self.image.get_rect()
         self.height = self.image.get_height()
         self.width = self.image.get_width()
@@ -38,37 +50,74 @@ class Novatin(pygame.sprite.Sprite):
         self.jumpspeed = 15
         self.speedcero = 0
         self.fall = 2
+        self.animar_d = 0
+        self.animar_i = 0
         self.stopm = False
         self.bullets = []
         self.j = 0
         self.alive = True
+        self.pos_actual = (self.rect.centerx, self.rect.centery)
+        self.pos_anterior = (self.rect.centerx, self.rect.centery)
     
     def move (self,n,down,plataformas,x):
         '''n es una variable binaria que indica si el personaje
         se mueve a la derecha o a la izquierda, 0 para la
         derecha, 1 para la izquierda'''
+        self.pos_anterior = self.pos_actual
         if n==0:
             self.rect.centerx += down*15
-            self.image = self.image1
+            if self.animar_d <= 5:
+                self.image = self.mov1_d
+                self.animar_d += 1
+            elif self.animar_d <= 10:
+                self.image = self.mov2_d
+                self.animar_d += 1
+            elif self.animar_d <= 15:
+                self.image = self.mov3_d
+                self.animar_d += 1
+            elif self.animar_d > 15:
+                self.animar_d = 0
+            self.animar_i = 0
         elif n==1:
             self.rect.centerx -= down*15
-            self.image = self.image2
+            if self.animar_i <= 5:
+                self.image = self.mov1_i
+                self.animar_i += 1
+            elif self.animar_i <= 10:
+                self.image = self.mov2_i
+                self.animar_i += 1
+            elif self.animar_i <= 15:
+                self.image = self.mov3_i
+                self.animar_i += 1
+            elif self.animar_i > 15:
+                self.animar_i = 0
+            self.animar_d = 0
         for i in range(len(plataformas)):
             if pygame.sprite.collide_rect(self,plataformas[i]) == True and self.rect.top>plataformas[i].rect.top:
                 if n==0 and self.rect.left<plataformas[i].rect.right and self.rect.top<plataformas[i].rect.bottom and self.rect.bottom<=plataformas[i].rect.bottom:
-                    self.image = self.image1
+                    self.image = self.quieto_d
                     self.rect.centerx = plataformas[i].rect.left-(self.width/2)
                 elif n==1 and self.rect.right>plataformas[i].rect.left and self.rect.top<plataformas[i].rect.bottom and self.rect.bottom<=plataformas[i].rect.bottom:
-                    self.image = self.image2
+                    self.image = self.quieto_i
                     self.rect.centerx = plataformas[i].rect.right+(self.width/2)
         if self.rect.left <= 0:
             self.rect.centerx = self.width/2
+            self.image = self.quieto_i
         elif self.rect.right >= x:
             self.rect.centerx = x-(self.width/2)
+            self.image = self.quieto_d
+        self.pos_actual = (self.rect.centerx, self.rect.centery)
+        if self.pos_actual == self.pos_anterior:
+            self.animar_d = 0
+            self.animar_i = 0
+            if n == 0:
+                self.image = self.quieto_d
+            if n == 1:
+                self.image = self.quieto_i            
     '''nuevo jump v 0.25, esta vez reconociendo el entorno (solo plataformas,
     esto es bajo el supuesto de que todos los niveles tendran plataformas)'''
-    def jump (self,y,jump,plataformas):
-        a=0
+    def jump (self,n,y,jump,plataformas):
+        a = 0
         if self.rect.top <= 0:
             self.rect.centery = self.height/2
             self.jumpspeed = -10
@@ -105,6 +154,10 @@ class Novatin(pygame.sprite.Sprite):
                         self.stopm = False
                         a=0
             if self.stopm == False:
+                if n == 0:
+                    self.image = self.salto_3_d
+                else:
+                    self.image = self.salto_3_i
                 if self.speedcero >= -10:
                     self.rect.centery -= self.speedcero
                     self.speedcero -= self.fall
@@ -135,8 +188,26 @@ class Novatin(pygame.sprite.Sprite):
             if self.jumpspeed >= -10:
                 self.rect.centery -= self.jumpspeed
                 self.jumpspeed -= self.fall
+                if n == 0:
+                    if self.jumpspeed > 4:
+                        self.image = self.salto_1_d
+                    elif self.jumpspeed > -8:
+                        self.image = self.salto_2_d
+                    else:
+                        self.image = self.salto_3_d
+                else:
+                    if self.jumpspeed > 4:
+                        self.image = self.salto_1_i
+                    elif self.jumpspeed > -8:
+                        self.image = self.salto_2_i
+                    else:
+                        self.image = self.salto_3_i
             else:
                 self.rect.centery -= -10
+                if n == 0:
+                    self.image = self.salto_3_d
+                else:
+                    self.image = self.salto_3_i
             if self.rect.top <= 0:
                 self.rect.centery = self.height/2
                 self.jumpspeed = 2

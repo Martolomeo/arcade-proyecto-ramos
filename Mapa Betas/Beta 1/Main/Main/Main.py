@@ -16,6 +16,7 @@ t = 0
 construir = 2
 s=0
 shoot=False
+fondo = pygame.image.load("Imagenes/fondo.png")
 #Es una variable que indica la etapa a jugar
 plataformas = []
 #Aca se almacenan los objetos plataformas
@@ -24,7 +25,7 @@ espinas = []
 if construir == 1:
     Novatin = Clases.Novatin((x/2),y)
 if construir == 2:
-    Novatin = Clases.Novatin(0,0)
+    Novatin = Clases.Novatin(25,0)
 #Seteamos la pantalla
 screen = pygame.display.set_mode(size, FULLSCREEN)
 
@@ -84,9 +85,10 @@ while 1:
         construir = 0
     if Novatin.alive==True:
         Novatin.move(directionx,speed,plataformas,x)
-        Novatin.jump(y,jump,plataformas)
+        Novatin.jump(directionx,y,jump,plataformas)
         Novatin.shoot(shoot,directionx,plataformas,x)
         Novatin.ambiente(espinas)
+    screen.blit(fondo, (0,0))
     #primero el if para que novatin se mueva por enfrente de las plataformas
     for plataforma in plataformas:
         screen.blit(plataforma.image, plataforma.rect)

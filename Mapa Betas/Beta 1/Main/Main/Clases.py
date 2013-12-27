@@ -35,7 +35,7 @@ class Novatin(pygame.sprite.Sprite):
         self.width = self.image.get_width()
         self.rect.centerx = x
         self.rect.centery = y-(self.height/2)
-        self.jumpspeed = 20
+        self.jumpspeed = 15
         self.speedcero = 0
         self.fall = 2
         self.stopm = False
@@ -76,7 +76,7 @@ class Novatin(pygame.sprite.Sprite):
             for i in range(len(plataformas)):
                 if self.rect.bottom >= plataformas[i].rect.top and pygame.sprite.collide_rect(self, plataformas[i]) == True and self.rect.top<plataformas[i].rect.top and self.rect.centerx<=plataformas[i].rect.right and self.rect.centerx>=plataformas[i].rect.left:
                     self.rect.centery = plataformas[i].rect.top-(self.height/2)+1
-                    self.jumpspeed = 20
+                    self.jumpspeed = 15
                     self.speedcero = 0
                     self.j=0
                     a=0
@@ -84,7 +84,7 @@ class Novatin(pygame.sprite.Sprite):
 
                 elif self.rect.bottom >= y and pygame.sprite.collide_rect(self,plataformas[i])==False:
                     self.rect.centery = y-(self.height/2)
-                    self.jumpspeed = 20
+                    self.jumpspeed = 15
                     self.speedcero = 0
                     self.j=0
                     a=0
@@ -93,7 +93,7 @@ class Novatin(pygame.sprite.Sprite):
                 if pygame.sprite.collide_rect(self, plataformas[i])==False:
                     a += 1
                     if a== len(plataformas) and self.rect.bottom<y and self.j==0:
-                        self.jumpspeed=20
+                        self.jumpspeed=15
                         while jump==True:
                             if self.jumpspeed >= -10:
                                 self.rect.centery -= self.jumpspeed
@@ -116,7 +116,7 @@ class Novatin(pygame.sprite.Sprite):
                 
                 if pygame.sprite.collide_rect(self, plataformas[i]) == True and self.rect.bottom >= plataformas[i].rect.top and self.rect.top < plataformas[i].rect.top and self.rect.centerx<=plataformas[i].rect.right and self.rect.centerx>=plataformas[i].rect.left:
                     self.rect.centery = plataformas[i].rect.top-(self.height/2)
-                    self.jumpspeed = 20
+                    self.jumpspeed = 15
                     self.speedcero = 0
                     self.j=0
 
@@ -128,7 +128,7 @@ class Novatin(pygame.sprite.Sprite):
                     
                 elif self.rect.bottom > y and pygame.sprite.collide_rect(self,plataformas[i])==False:
                     self.rect.centery = y-(self.height/2)
-                    self.jumpspeed = 20
+                    self.jumpspeed = 15
                     self.speedcero = 0
                     self.j=0
 
@@ -189,9 +189,18 @@ class Bullet(pygame.sprite.Sprite):
         pygame.sprite.Sprite.kill(self)
 
 class Espina(pygame.sprite.Sprite):
-    def __init__(self,x,y):
+    def __init__(self,x,y,mobil):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.image.load("espina.png")
         self.rect = self.image.get_rect()
         self.rect.centerx = x
         self.rect.centery = y
+        self.mobil = mobil
+        self.move = False
+        self.speed = 30
+
+    def trampa(self,novatin):
+        if self.mobil ==True and novatin.rect.top<self.rect.top and novatin.rect.bottom<self.rect.top and (novatin.rect.centerx>self.rect.centerx-10 and novatin.rect.centerx<self.rect.centerx+10):
+            self.move = True
+        if self.mobil == True and self.move == True:
+            self.rect.centery -= self.speed

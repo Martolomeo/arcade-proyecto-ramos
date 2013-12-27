@@ -78,9 +78,9 @@ while 1:
         plataformas.append(Clases.PlataformaBaja(x, y-270))
         plataformas.append(Clases.PlataformaBaja(896, y-360))
         plataformas.append(Clases.PlataformaBaja(x, y-450))
-        espinas.append(Clases.Espina(600, y))
-        espinas.append(Clases.Espina(648,y))
-        espinas.append(Clases.Espina(552,y))
+        espinas.append(Clases.Espina(600, y-24, True))
+        espinas.append(Clases.Espina(648,y-24, False))
+        espinas.append(Clases.Espina(552,y-24, False))
         construir = 0
     if Novatin.alive==True:
         Novatin.move(directionx,speed,plataformas,x)
@@ -91,6 +91,7 @@ while 1:
     for plataforma in plataformas:
         screen.blit(plataforma.image, plataforma.rect)
     for espina in espinas:
+        espina.trampa(Novatin)
         screen.blit(espina.image, espina.rect)
     if Novatin.alive==True:
         screen.blit(Novatin.image, Novatin.rect)

@@ -24,6 +24,8 @@ espinas = []
 #Aqui se almacenan los objetos espinas :)
 arboles = []
 #creo que de ahora en adelante se entiende la idea
+manzanas = []
+camaespinas = []
 if construir == 1:
     Novatin = Clases.Novatin((x/2),y)
 if construir == 2:
@@ -85,6 +87,9 @@ while 1:
         espinas.append(Clases.Espina(648,y-24, False))
         espinas.append(Clases.Espina(552,y-24, False))
         arboles.append(Clases.Arbol(500,y-75))
+        manzanas.append(Clases.Manzana(480,y-120))
+        manzanas.append(Clases.Manzana(520, y-130))
+        camaespinas.append(Clases.Camaespina(950, y-360))
         construir = 0
     if Novatin.alive==True:
         Novatin.move(directionx,speed,plataformas,x)
@@ -97,9 +102,16 @@ while 1:
         screen.blit(plataforma.image, plataforma.rect)
     for arbol in arboles:
         screen.blit(arbol.image, arbol.rect)
+    for manzana in manzanas:
+        screen.blit(manzana.image, manzana.rect)
+    for camaespina in camaespinas:
+        screen.blit(camaespina.image, camaespina.rect)
+        """la cama de espinas debera ir originalmente por debajo de las plataformas
+           ,la razon por la que esta sobre ellas es para ver ubicacion"""
     for espina in espinas:
         espina.trampa(Novatin)
-        screen.blit(espina.image, espina.rect)        
+        if espina.alive == True:
+            screen.blit(espina.image, espina.rect)        
     if Novatin.alive==True:
         screen.blit(Novatin.image, Novatin.rect)
     for bullet in Novatin.bullets:

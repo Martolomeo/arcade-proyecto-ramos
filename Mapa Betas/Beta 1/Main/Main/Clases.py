@@ -4,7 +4,7 @@ from pygame.locals import*
 class PlataformaBaja(pygame.sprite.Sprite):
     def __init__(self,x,y):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load("Pbajo.png")
+        self.image = pygame.image.load("Imagenes/Pbajo.png")
         self.rect = self.image.get_rect()
         self.rect.centerx = x
         self.rect.centery = y
@@ -15,7 +15,7 @@ class PlataformaBaja(pygame.sprite.Sprite):
 class PlataformaAlta(pygame.sprite.Sprite):
     def __init__(self,x,y):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load("Palto.png")
+        self.image = pygame.image.load("Imagenes/Palto.png")
         self.rect = self.image.get_rect()
         self.rect.centerx = x
         self.rect.centery = y
@@ -231,7 +231,7 @@ class Novatin(pygame.sprite.Sprite):
 class Bullet(pygame.sprite.Sprite):
     def __init__(self,x,y,n):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load("bullet.png")
+        self.image = pygame.image.load("Imagenes/bullet.png")
         self.rect = self.image.get_rect()
         self.rect.centerx = x
         self.rect.centery = y
@@ -258,24 +258,49 @@ class Bullet(pygame.sprite.Sprite):
 class Espina(pygame.sprite.Sprite):
     def __init__(self,x,y,movil):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load("espina.png")
+        self.image = pygame.image.load("Imagenes/espina.png")
         self.rect = self.image.get_rect()
         self.rect.centerx = x
         self.rect.centery = y
         self.movil = movil
         self.move = False
-        self.speed = 30
+        self.speed = 40
+        self.alive = True
 
     def trampa(self,novatin):
-        if self.movil ==True and novatin.rect.top<self.rect.top and novatin.rect.bottom<self.rect.top and (novatin.rect.centerx>self.rect.centerx-10 and novatin.rect.centerx<self.rect.centerx+10):
-            self.move = True
-        if self.movil == True and self.move == True:
-            self.rect.centery -= self.speed
+        if self.alive == True:
+            if self.movil ==True and novatin.rect.top<self.rect.top and novatin.rect.bottom<self.rect.top and (novatin.rect.centerx>self.rect.centerx-10 and novatin.rect.centerx<self.rect.centerx+10):
+                self.move = True
+            if self.movil == True and self.move == True and self.alive == True:
+                self.rect.centery -= self.speed
+            if self.rect.centery < 0:
+                self.kill()
+
+    def kill(self):
+        self.alive = False
+        del self.image
+        pygame.sprite.Sprite.kill(self)
 
 class Arbol(pygame.sprite.Sprite):
     def __init__(self,x,y):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load("arbol.png")
+        self.image = pygame.image.load("Imagenes/arbol.png")
+        self.rect = self.image.get_rect()
+        self.rect.centerx = x
+        self.rect.centery = y
+        
+class Manzana(pygame.sprite.Sprite):
+    def __init__(self,x,y):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load("Imagenes/manzana.png")
+        self.rect = self.image.get_rect()
+        self.rect.centerx = x
+        self.rect.centery = y
+
+class Camaespina(pygame.sprite.Sprite):
+    def __init__(self,x,y):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load("Imagenes/camaespinas.png")
         self.rect = self.image.get_rect()
         self.rect.centerx = x
         self.rect.centery = y

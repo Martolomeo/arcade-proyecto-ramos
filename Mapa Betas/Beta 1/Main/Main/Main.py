@@ -1,4 +1,4 @@
-import pygame, sys, Clases
+import pygame, sys, Clases, random
 from pygame.locals import*
 pygame.init()
 
@@ -115,14 +115,14 @@ while 1:
             Novatin.rect.centerx = 25
             Novatin.rect.centery = 0
             cabeza.alive = False
-            cabeza.roce = 10
-            cabeza.jumpspeed = 16
+            cabeza.roce = random.randint(-15,15)
+            cabeza.jumpspeed = random.randint(10, 25)
             brazo_d.alive = False
-            brazo_d.roce = 10
-            brazo_d.jumpspeed = 16
+            brazo_d.roce = random.randint(-15,15)
+            brazo_d.jumpspeed = random.randint(10,25)
             brazo_i.alive = False
-            brazo_i.roce = 10
-            brazo_i.jumpspeed = 16
+            brazo_i.roce = random.randint(-15,15)
+            brazo_i.jumpspeed = random.randint(10,25)
             espinas.append(Clases.Espina(600,y-24, True))
     if cabeza.alive:
         cabeza.jump(y)

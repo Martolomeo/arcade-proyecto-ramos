@@ -1,4 +1,4 @@
-import pygame
+import pygame, random
 from pygame.locals import*
 
 class PlataformaBaja(pygame.sprite.Sprite):
@@ -248,10 +248,10 @@ class Extremidad(pygame.sprite.Sprite):
         self.rect.centerx = x
         self.rect.centery = y
         self.alive = False
-        self.jumpspeed = 16
+        self.jumpspeed = random.randint(10,25)
         self.fall = 2
         self.direccion = direccionx
-        self.roce = 10
+        self.roce = random.randint(-15,15)
         
     def jump(self,y):
         if self.rect.centery >= y - self.height/2:

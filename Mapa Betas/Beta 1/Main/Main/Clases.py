@@ -22,8 +22,6 @@ class PlataformaAlta(pygame.sprite.Sprite):
         self.width = self.image.get_width()
         self.height = self.image.get_height()
 
-#Asumo que querias hacer esto?
-
 class Novatin(pygame.sprite.Sprite):
     def __init__(self, x, y):
         pygame.sprite.Sprite.__init__(self)
@@ -228,8 +226,6 @@ class Novatin(pygame.sprite.Sprite):
         if self.alive==True:
             self.alive=False
             del self.image
-            del self.image1
-            del self.image2
             pygame.sprite.Sprite.kill(self)
 
 class Bullet(pygame.sprite.Sprite):

@@ -94,7 +94,7 @@ while 1:
         screen.blit(plataforma.image, plataforma.rect)
     for espina in espinas:
         espina.trampa(Novatin)
-        screen.blit(espina.image, espina.rect)
+        screen.blit(espina.image, espina.rect)        
     if Novatin.alive==True:
         screen.blit(Novatin.image, Novatin.rect)
     for bullet in Novatin.bullets:

@@ -22,6 +22,10 @@ plataformas = []
 #Aca se almacenan los objetos plataformas
 espinas = []
 #Aqui se almacenan los objetos espinas :)
+arboles = []
+#creo que de ahora en adelante se entiende la idea
+manzanas = []
+camaespinas = []
 if construir == 1:
     Novatin = Clases.Novatin((x/2),y)
 if construir == 2:
@@ -85,6 +89,10 @@ while 1:
         espinas.append(Clases.Espina(600, y-24, True))
         espinas.append(Clases.Espina(648,y-24, False))
         espinas.append(Clases.Espina(552,y-24, False))
+        arboles.append(Clases.Arbol(500,y-75))
+        manzanas.append(Clases.Manzana(480,y-120))
+        manzanas.append(Clases.Manzana(520, y-130))
+        camaespinas.append(Clases.Camaespina(950, y-360))
         construir = 0
     if Novatin.alive==True:
         Novatin.move(directionx,speed,plataformas,x)
@@ -107,11 +115,7 @@ while 1:
             brazo_i.alive = False
             brazo_i.roce = 10
             brazo_i.jumpspeed = 16
-            for j in espinas:
-                if j.mobil:
-                    j.rect.centerx = j.x_original
-                    j.rect.centery = j.y_original
-                    j.move = False
+            espinas.append(Clases.Espina(600,y-24, True))
     if cabeza.alive:
         cabeza.jump(y)
     if brazo_i.alive:
@@ -124,9 +128,18 @@ while 1:
     #primero el if para que novatin se mueva por enfrente de las plataformas
     for plataforma in plataformas:
         screen.blit(plataforma.image, plataforma.rect)
+    for arbol in arboles:
+        screen.blit(arbol.image, arbol.rect)
+    for manzana in manzanas:
+        screen.blit(manzana.image, manzana.rect)
+    for camaespina in camaespinas:
+        screen.blit(camaespina.image, camaespina.rect)
+        """la cama de espinas debera ir originalmente por debajo de las plataformas
+           ,la razon por la que esta sobre ellas es para ver ubicacion"""
     for espina in espinas:
         espina.trampa(Novatin)
-        screen.blit(espina.image, espina.rect)        
+        if espina.alive == True:
+            screen.blit(espina.image, espina.rect)        
     if Novatin.alive==True:
         screen.blit(Novatin.image, Novatin.rect)
     if cabeza.alive:

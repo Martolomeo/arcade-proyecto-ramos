@@ -26,6 +26,8 @@ arboles = []
 #creo que de ahora en adelante se entiende la idea
 manzanas = []
 camaespinas = []
+nubes = []
+save = None
 if construir == 1:
     Novatin = Clases.Novatin((x/2),y)
 if construir == 2:
@@ -93,6 +95,12 @@ while 1:
         manzanas.append(Clases.Manzana(480,y-120))
         manzanas.append(Clases.Manzana(520, y-130))
         camaespinas.append(Clases.Camaespina(950, y-360))
+        nubes.append(Clases.Nubechica(600,50))
+        nubes.append(Clases.NubeL(1050, 100))
+        nubes.append(Clases.NubeM(1098, 100))
+        nubes.append(Clases.NubeM(1146, 100))
+        nubes.append(Clases.NubeR(1194, 100))
+        save = Clases.Save(500,50)
         construir = 0
     if Novatin.alive==True:
         Novatin.move(directionx,speed,plataformas,x)
@@ -126,8 +134,11 @@ while 1:
         brazo_d.jump(y)
     screen.blit(fondo, (0,0))
     #primero el if para que novatin se mueva por enfrente de las plataformas
+    for nube in nubes:
+        screen.blit(nube.image, nube.rect)
     for plataforma in plataformas:
         screen.blit(plataforma.image, plataforma.rect)
+    screen.blit(save.image, save.rect)
     for arbol in arboles:
         screen.blit(arbol.image, arbol.rect)
     for manzana in manzanas:

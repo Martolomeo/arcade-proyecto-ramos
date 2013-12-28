@@ -28,6 +28,9 @@ if construir == 2:
     Novatin = Clases.Novatin(25,0)
 #Seteamos la pantalla
 screen = pygame.display.set_mode(size, FULLSCREEN)
+cabeza = Clases.Extremidad(0,0,"cabeza",0)
+brazo_i = Clases.Extremidad(0,0,"brazo_i",0)
+brazo_d = Clases.Extremidad(0,0,"brazo_d",0)
 
 while 1:
     clock.tick(30)
@@ -87,7 +90,36 @@ while 1:
         Novatin.move(directionx,speed,plataformas,x)
         Novatin.jump(directionx,y,jump,plataformas)
         Novatin.shoot(shoot,directionx,plataformas,x)
-        Novatin.ambiente(espinas)
+        Novatin.ambiente(espinas,directionx,cabeza,brazo_d,brazo_i)
+    else:
+        Novatin.revivir += 1
+        if Novatin.revivir == 90:
+            Novatin.revivir = 0
+            Novatin.alive = True
+            Novatin.rect.centerx = 25
+            Novatin.rect.centery = 0
+            cabeza.alive = False
+            cabeza.roce = 10
+            cabeza.jumpspeed = 16
+            brazo_d.alive = False
+            brazo_d.roce = 10
+            brazo_d.jumpspeed = 16
+            brazo_i.alive = False
+            brazo_i.roce = 10
+            brazo_i.jumpspeed = 16
+            for j in espinas:
+                if j.mobil:
+                    j.rect.centerx = j.x_original
+                    j.rect.centery = j.y_original
+                    j.move = False
+    if cabeza.alive:
+        cabeza.jump(y)
+    if brazo_i.alive:
+        brazo_i.jump(y)
+        brazo_i.mover(y,0)
+    if brazo_d.alive:
+        brazo_d.mover(y,1)
+        brazo_d.jump(y)
     screen.blit(fondo, (0,0))
     #primero el if para que novatin se mueva por enfrente de las plataformas
     for plataforma in plataformas:
@@ -97,6 +129,12 @@ while 1:
         screen.blit(espina.image, espina.rect)        
     if Novatin.alive==True:
         screen.blit(Novatin.image, Novatin.rect)
+    if cabeza.alive:
+        screen.blit(cabeza.image, cabeza.rect)
+    if brazo_d.alive:
+        screen.blit(brazo_d.image, brazo_d.rect)
+    if brazo_i.alive:
+        screen.blit(brazo_i.image, brazo_i.rect)
     for bullet in Novatin.bullets:
         if bullet.alive==True:
             screen.blit(bullet.image, bullet.rect)

@@ -54,6 +54,7 @@ class Novatin(pygame.sprite.Sprite):
         self.bullets = []
         self.j = 0
         self.alive = True
+        self.revivir = 0
         self.pos_actual = (self.rect.centerx, self.rect.centery)
         self.pos_anterior = (self.rect.centerx, self.rect.centery)
     
@@ -189,14 +190,14 @@ class Novatin(pygame.sprite.Sprite):
                 if n == 0:
                     if self.jumpspeed > 4:
                         self.image = self.salto_1_d
-                    elif self.jumpspeed > -8:
+                    elif self.jumpspeed > -9:
                         self.image = self.salto_2_d
                     else:
                         self.image = self.salto_3_d
                 else:
                     if self.jumpspeed > 4:
                         self.image = self.salto_1_i
-                    elif self.jumpspeed > -8:
+                    elif self.jumpspeed > -9:
                         self.image = self.salto_2_i
                     else:
                         self.image = self.salto_3_i
@@ -217,16 +218,61 @@ class Novatin(pygame.sprite.Sprite):
         for bullet in self.bullets:
             bullet.move(plataformas,x)
 
-    def ambiente(self,espinas):
+    def ambiente(self,espinas,n,cabeza,brazo_d,brazo_i):
         for espina in espinas:
             if pygame.sprite.collide_rect(self,espina)==True:
-                self.kill()
+                self.kill(n,cabeza,brazo_d,brazo_i)
 
-    def kill(self):
+    def kill(self,n,cabeza,brazo_d,brazo_i):
         if self.alive==True:
             self.alive=False
-            del self.image
-            pygame.sprite.Sprite.kill(self)
+        lista = [cabeza, brazo_d, brazo_i]
+        for extremidad in lista:
+            extremidad.alive = True
+            extremidad.rect.centerx = self.rect.centerx
+            extremidad.rect.centery = self.rect.centery
+            extremidad.direccion = n
+
+class Extremidad(pygame.sprite.Sprite):
+    def __init__(self,x,y,n,direccionx):
+        pygame.sprite.Sprite.__init__(self)
+        if n == "cabeza":
+            self.image = pygame.image.load("Imagenes/novatin_cabeza.png")
+        if n == "brazo_i":
+            self.image = pygame.image.load("Imagenes/novatin_brazo_i.png")
+        if n == "brazo_d":
+            self.image = pygame.image.load("Imagenes/novatin_brazo_d.png")
+        self.height = self.image.get_height()
+        self.cual = n
+        self.rect = self.image.get_rect()
+        self.rect.centerx = x
+        self.rect.centery = y
+        self.alive = False
+        self.jumpspeed = 16
+        self.fall = 2
+        self.direccion = direccionx
+        self.roce = 10
+        
+    def jump(self,y):
+        if self.rect.centery >= y - self.height/2:
+            self.rect.centery = y - self.height/2
+        else:
+            self.rect.centery -= self.jumpspeed
+            self.jumpspeed -= self.fall
+
+    def mover(self,y,lado):
+        if self.direccion == 0:
+            if lado == 1:
+                self.rect.centerx -= self.roce
+            else:
+                self.rect.centerx += self.roce
+        if self.direccion == 1:
+            if lado == 1:
+                self.rect.centerx += self.roce
+            else:
+                self.rect.centerx -= self.roce
+        if self.rect.centery >= y - self.height/2 and self.roce > 0:
+            self.roce -= 1
 
 class Bullet(pygame.sprite.Sprite):
     def __init__(self,x,y,n):
@@ -263,6 +309,9 @@ class Espina(pygame.sprite.Sprite):
         self.rect.centerx = x
         self.rect.centery = y
         self.mobil = mobil
+        if self.mobil:
+            self.x_original = x
+            self.y_original = y
         self.move = False
         self.speed = 30
 

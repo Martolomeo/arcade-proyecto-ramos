@@ -271,8 +271,11 @@ class Extremidad(pygame.sprite.Sprite):
                 self.rect.centerx += self.roce
             else:
                 self.rect.centerx -= self.roce
-        if self.rect.centery >= y - self.height/2 and self.roce > 0:
-            self.roce -= 1
+        if self.rect.centery >= y - self.height/2:
+            if self.roce > 0:
+                self.roce -= 1
+            elif self.roce < 0:
+                self.roce += 1
 
 class Bullet(pygame.sprite.Sprite):
     def __init__(self,x,y,n):

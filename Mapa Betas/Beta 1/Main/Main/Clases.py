@@ -142,11 +142,11 @@ class Novatin(pygame.sprite.Sprite):
                     if a== len(plataformas) and self.rect.bottom<y and self.j==0:
                         self.jumpspeed=15
                         while jump==True:
-                            if self.jumpspeed >= -10:
+                            if self.jumpspeed >= -20:
                                 self.rect.centery -= self.jumpspeed
                                 self.jumpspeed -= self.fall
                             else:
-                                self.rect.centery -= -10
+                                self.rect.centery -= -20
                         self.j=1
                     if a == len(plataformas):
                         self.stopm = False
@@ -156,11 +156,11 @@ class Novatin(pygame.sprite.Sprite):
                     self.image = self.salto_3_d
                 else:
                     self.image = self.salto_3_i
-                if self.speedcero >= -10:
+                if self.speedcero >= -20:
                     self.rect.centery -= self.speedcero
                     self.speedcero -= self.fall
                 else:
-                    self.rect.centery -= -10
+                    self.rect.centery -= -20
         elif jump == True:
             a=0
             for i in range(len(plataformas)):
@@ -183,7 +183,7 @@ class Novatin(pygame.sprite.Sprite):
                     self.speedcero = 0
                     self.j=0
 
-            if self.jumpspeed >= -10:
+            if self.jumpspeed >= -20:
                 self.rect.centery -= self.jumpspeed
                 self.jumpspeed -= self.fall
                 if n == 0:
@@ -201,7 +201,7 @@ class Novatin(pygame.sprite.Sprite):
                     else:
                         self.image = self.salto_3_i
             else:
-                self.rect.centery -= -10
+                self.rect.centery -= -20
                 if n == 0:
                     self.image = self.salto_3_d
                 else:
@@ -256,18 +256,26 @@ class Bullet(pygame.sprite.Sprite):
         pygame.sprite.Sprite.kill(self)
 
 class Espina(pygame.sprite.Sprite):
-    def __init__(self,x,y,mobil):
+    def __init__(self,x,y,movil):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.image.load("espina.png")
         self.rect = self.image.get_rect()
         self.rect.centerx = x
         self.rect.centery = y
-        self.mobil = mobil
+        self.movil = movil
         self.move = False
         self.speed = 30
 
     def trampa(self,novatin):
-        if self.mobil ==True and novatin.rect.top<self.rect.top and novatin.rect.bottom<self.rect.top and (novatin.rect.centerx>self.rect.centerx-10 and novatin.rect.centerx<self.rect.centerx+10):
+        if self.movil ==True and novatin.rect.top<self.rect.top and novatin.rect.bottom<self.rect.top and (novatin.rect.centerx>self.rect.centerx-10 and novatin.rect.centerx<self.rect.centerx+10):
             self.move = True
-        if self.mobil == True and self.move == True:
+        if self.movil == True and self.move == True:
             self.rect.centery -= self.speed
+
+class Arbol(pygame.sprite.Sprite):
+    def __init__(self,x,y):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load("arbol.png")
+        self.rect = self.image.get_rect()
+        self.rect.centerx = x
+        self.rect.centery = y

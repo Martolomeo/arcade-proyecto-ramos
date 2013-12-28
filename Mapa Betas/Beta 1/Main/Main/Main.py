@@ -22,6 +22,8 @@ plataformas = []
 #Aca se almacenan los objetos plataformas
 espinas = []
 #Aqui se almacenan los objetos espinas :)
+arboles = []
+#creo que de ahora en adelante se entiende la idea
 if construir == 1:
     Novatin = Clases.Novatin((x/2),y)
 if construir == 2:
@@ -82,6 +84,7 @@ while 1:
         espinas.append(Clases.Espina(600, y-24, True))
         espinas.append(Clases.Espina(648,y-24, False))
         espinas.append(Clases.Espina(552,y-24, False))
+        arboles.append(Clases.Arbol(500,y-75))
         construir = 0
     if Novatin.alive==True:
         Novatin.move(directionx,speed,plataformas,x)
@@ -92,6 +95,8 @@ while 1:
     #primero el if para que novatin se mueva por enfrente de las plataformas
     for plataforma in plataformas:
         screen.blit(plataforma.image, plataforma.rect)
+    for arbol in arboles:
+        screen.blit(arbol.image, arbol.rect)
     for espina in espinas:
         espina.trampa(Novatin)
         screen.blit(espina.image, espina.rect)        

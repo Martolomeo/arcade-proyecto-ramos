@@ -106,7 +106,7 @@ while 1:
         Novatin.move(directionx,speed,plataformas,x)
         Novatin.jump(directionx,y,jump,plataformas)
         Novatin.shoot(shoot,directionx,plataformas,x)
-        Novatin.ambiente(espinas,directionx,cabeza,brazo_d,brazo_i, manzanas)
+        Novatin.ambiente(espinas,directionx,cabeza,brazo_d,brazo_i, manzanas,camaespinas)
     else:
         Novatin.revivir += 1
         if Novatin.revivir == 90:
@@ -147,6 +147,7 @@ while 1:
         if manzana.alive == True:
             screen.blit(manzana.image, manzana.rect)
     for camaespina in camaespinas:
+        camaespina.trampa(Novatin,plataformas)
         screen.blit(camaespina.image, camaespina.rect)
         """la cama de espinas debera ir originalmente por debajo de las plataformas
            ,la razon por la que esta sobre ellas es para ver ubicacion"""

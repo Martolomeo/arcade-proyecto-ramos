@@ -218,7 +218,7 @@ class Novatin(pygame.sprite.Sprite):
         for bullet in self.bullets:
             bullet.move(plataformas,x)
 
-    def ambiente(self,espinas,n,cabeza,brazo_d,brazo_i, manzanas):
+    def ambiente(self,espinas,n,cabeza,brazo_d,brazo_i, manzanas, camaespinas):
         if self.alive == True:
             for espina in espinas:
                 if pygame.sprite.collide_rect(self,espina)==True:
@@ -226,6 +226,10 @@ class Novatin(pygame.sprite.Sprite):
         if self.alive == True:
             for manzana in manzanas:
                 if pygame.sprite.collide_rect(self,manzana)==True:
+                    self.kill(n,cabeza,brazo_d,brazo_i)
+        if self.alive == True:
+            for camaespina in camaespinas:
+                if pygame.sprite.collide_rect(self,camaespina)==True:
                     self.kill(n,cabeza,brazo_d,brazo_i)
 
     def kill(self,n,cabeza,brazo_d,brazo_i):
@@ -381,6 +385,27 @@ class Camaespina(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.centerx = x
         self.rect.centery = y
+        self.yi = y
+        self.move = False
+        self.moveup = False
+        self.speed = 20
+
+    def trampa(self,novatin,plataformas):
+        if self.move == False and self.moveup == False and self.rect.centery == self.yi and self.rect.left<novatin.rect.centerx and self.rect.right>novatin.rect.centerx:
+            self.move == True
+        if self.move == True:
+            self.rect.centery+=self.speed
+        for plataforma in plataformas:
+            if self.rect.bottom>plataforma.rect.top and self.rect.bottom < plataforma.rect.top-1 and pygame.sprite.collide_rect(self,plataforma)==True:
+                self.move = False
+                self.moveup = True
+                self.speed = 5
+        if self.moveup == True and self.move == False:
+            self.rect.centery -= self.speed
+        if self.rect.centery < self.yi-2 and self.moveup == True:
+            self.rect.centery = self.yi
+            self.moveup == False
+            self.speed = 20
 
 class Nubechica(pygame.sprite.Sprite):
     def __init__(self,x,y):

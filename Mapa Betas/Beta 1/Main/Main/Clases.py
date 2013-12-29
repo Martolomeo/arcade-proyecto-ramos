@@ -218,10 +218,15 @@ class Novatin(pygame.sprite.Sprite):
         for bullet in self.bullets:
             bullet.move(plataformas,x)
 
-    def ambiente(self,espinas,n,cabeza,brazo_d,brazo_i):
-        for espina in espinas:
-            if pygame.sprite.collide_rect(self,espina)==True:
-                self.kill(n,cabeza,brazo_d,brazo_i)
+    def ambiente(self,espinas,n,cabeza,brazo_d,brazo_i, manzanas):
+        if self.alive == True:
+            for espina in espinas:
+                if pygame.sprite.collide_rect(self,espina)==True:
+                    self.kill(n,cabeza,brazo_d,brazo_i)
+        if self.alive == True:
+            for manzana in manzanas:
+                if pygame.sprite.collide_rect(self,manzana)==True:
+                    self.kill(n,cabeza,brazo_d,brazo_i)
 
     def kill(self,n,cabeza,brazo_d,brazo_i):
         if self.alive==True:
@@ -339,12 +344,35 @@ class Arbol(pygame.sprite.Sprite):
         self.rect.centery = y
         
 class Manzana(pygame.sprite.Sprite):
-    def __init__(self,x,y):
+    def __init__(self,x,y,moveru,moverd):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.image.load("Imagenes/manzana.png")
         self.rect = self.image.get_rect()
         self.rect.centerx = x
         self.rect.centery = y
+        self.moveru = moveru
+        self.moverd = moverd
+        self.move = False
+        self.speed = 20
+        self.alive = True
+
+    def trampa(self,novatin,y):
+        if self.alive == True:
+            if self.moveru == True and (novatin.rect.centerx>self.rect.centerx-10 and novatin.rect.centerx<self.rect.centerx+10) and self.rect.top>novatin.rect.bottom:
+                self.move = True
+            elif self.moverd == True and (novatin.rect.centerx>self.rect.centerx-10 and novatin.rect.centerx<self.rect.centerx+10) and self.rect.bottom<novatin.rect.top:
+                self.move = True
+            if self.move == True and self.moveru == True:
+                self.rect.centery -= self.speed
+            elif self.move == True and self.moverd == True:
+                self.rect.centery += self.speed
+            if self.rect.centery < 0 or self.rect.centery > y:
+                self.kill()
+
+    def kill(self):
+        self.alive = False
+        del self.image
+        pygame.sprite.Sprite.kill(self)
 
 class Camaespina(pygame.sprite.Sprite):
     def __init__(self,x,y):

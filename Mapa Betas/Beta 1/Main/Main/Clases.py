@@ -57,6 +57,7 @@ class Novatin(pygame.sprite.Sprite):
         self.revivir = 0
         self.pos_actual = (self.rect.centerx, self.rect.centery)
         self.pos_anterior = (self.rect.centerx, self.rect.centery)
+        self.play = True
     
     def move (self,n,down,plataformas,x):
         '''n es una variable binaria que indica si el personaje
@@ -391,12 +392,12 @@ class Camaespina(pygame.sprite.Sprite):
         self.speed = 20
 
     def trampa(self,novatin,plataformas):
-        if self.move == False and self.moveup == False and self.rect.centery == self.yi and self.rect.left<novatin.rect.centerx and self.rect.right>novatin.rect.centerx:
-            self.move == True
-        if self.move == True:
-            self.rect.centery+=self.speed
+        if self.move == False and self.moveup == False and self.rect.bottom < novatin.rect.top and self.rect.left<novatin.rect.centerx and self.rect.right>novatin.rect.centerx:
+            self.move = True
+        elif self.move == True:
+            self.rect.centery += self.speed
         for plataforma in plataformas:
-            if self.rect.bottom>plataforma.rect.top and self.rect.bottom < plataforma.rect.top-1 and pygame.sprite.collide_rect(self,plataforma)==True:
+            if self.rect.bottom>plataforma.rect.top and self.rect.top < plataforma.rect.top and self.move == True and pygame.sprite.collide_rect(self,plataforma)==True:
                 self.move = False
                 self.moveup = True
                 self.speed = 5
@@ -404,7 +405,7 @@ class Camaespina(pygame.sprite.Sprite):
             self.rect.centery -= self.speed
         if self.rect.centery < self.yi-2 and self.moveup == True:
             self.rect.centery = self.yi
-            self.moveup == False
+            self.moveup = False
             self.speed = 20
 
 class Nubechica(pygame.sprite.Sprite):

@@ -15,6 +15,7 @@ jspeed = 0
 t = 0
 construir = 2
 s=0
+pygame.mixer.music.load("music1.mp3")
 shoot=False
 fondo = pygame.image.load("Imagenes/fondo.png")
 #Es una variable que indica la etapa a jugar
@@ -37,6 +38,7 @@ screen = pygame.display.set_mode(size, FULLSCREEN)
 cabeza = Clases.Extremidad(0,0,"cabeza",0)
 brazo_i = Clases.Extremidad(0,0,"brazo_i",0)
 brazo_d = Clases.Extremidad(0,0,"brazo_d",0)
+pygame.mixer.music.play(-1)
 
 while 1:
     clock.tick(30)
@@ -108,10 +110,17 @@ while 1:
         Novatin.shoot(shoot,directionx,plataformas,x)
         Novatin.ambiente(espinas,directionx,cabeza,brazo_d,brazo_i, manzanas,camaespinas)
     else:
+        if Novatin.play == True:
+            pygame.mixer.music.load("gameover.mp3")
+            pygame.mixer.music.play()
+            Novatin.play = False
         Novatin.revivir += 1
-        if Novatin.revivir == 90:
+        if Novatin.revivir == 300:
+            pygame.mixer.music.load("music1.mp3")
+            pygame.mixer.music.play(-1)
             Novatin.revivir = 0
             Novatin.alive = True
+            Novatin.play = True
             Novatin.rect.centerx = 25
             Novatin.rect.centery = 0
             cabeza.alive = False
@@ -137,6 +146,9 @@ while 1:
     #primero el if para que novatin se mueva por enfrente de las plataformas
     for nube in nubes:
         screen.blit(nube.image, nube.rect)
+    for camaespina in camaespinas:
+        camaespina.trampa(Novatin,plataformas)
+        screen.blit(camaespina.image, camaespina.rect)
     for plataforma in plataformas:
         screen.blit(plataforma.image, plataforma.rect)
     screen.blit(save.image, save.rect)
@@ -146,11 +158,6 @@ while 1:
         manzana.trampa(Novatin,y)
         if manzana.alive == True:
             screen.blit(manzana.image, manzana.rect)
-    for camaespina in camaespinas:
-        camaespina.trampa(Novatin,plataformas)
-        screen.blit(camaespina.image, camaespina.rect)
-        """la cama de espinas debera ir originalmente por debajo de las plataformas
-           ,la razon por la que esta sobre ellas es para ver ubicacion"""
     for espina in espinas:
         espina.trampa(Novatin)
         if espina.alive == True:

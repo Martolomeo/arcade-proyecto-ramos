@@ -58,6 +58,7 @@ class Novatin(pygame.sprite.Sprite):
         self.pos_actual = (self.rect.centerx, self.rect.centery)
         self.pos_anterior = (self.rect.centerx, self.rect.centery)
         self.play = True
+        self.muertes = 0
     
     def move (self,n,down,plataformas,x):
         '''n es una variable binaria que indica si el personaje
@@ -212,12 +213,12 @@ class Novatin(pygame.sprite.Sprite):
                 self.rect.centery = self.height/2
                 self.jumpspeed = 2
 
-    def shoot (self,shoot,n,plataformas,x):
+    def shoot (self,shoot,n,plataformas,save,x):
         
         if shoot == True:
             self.bullets.append(Bullet(self.rect.centerx, self.rect.centery, n))
         for bullet in self.bullets:
-            bullet.move(plataformas,x)
+            bullet.move(plataformas,save,x)
 
     def ambiente(self,espinas,n,cabeza,brazo_d,brazo_i, manzanas, camaespinas):
         if self.alive == True:
@@ -242,6 +243,7 @@ class Novatin(pygame.sprite.Sprite):
             extremidad.rect.centerx = self.rect.centerx
             extremidad.rect.centery = self.rect.centery
             extremidad.direccion = n
+        self.muertes += 1
 
 class Extremidad(pygame.sprite.Sprite):
     def __init__(self,x,y,n,direccionx):
@@ -300,11 +302,14 @@ class Bullet(pygame.sprite.Sprite):
         elif n==1:
             self.speed = -20
 
-    def move(self, plataformas,x):
+    def move(self, plataformas,saves,x):
         if self.alive == True:
             self.rect.centerx += self.speed
             for plataforma in plataformas:
                 if pygame.sprite.collide_rect(self,plataforma)==True:
+                    self.kill()
+            for save in saves:
+                if pygame.sprite.collide_rect(self,save)==True:
                     self.kill()
             if self.rect.centerx<0 or self.rect.centerx>x:
                 self.kill()

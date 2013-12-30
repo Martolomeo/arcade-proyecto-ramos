@@ -57,6 +57,7 @@ class Novatin(pygame.sprite.Sprite):
         self.revivir = 0
         self.pos_actual = (self.rect.centerx, self.rect.centery)
         self.pos_anterior = (self.rect.centerx, self.rect.centery)
+        self.play = True
     
     def move (self,n,down,plataformas,x):
         '''n es una variable binaria que indica si el personaje
@@ -218,10 +219,19 @@ class Novatin(pygame.sprite.Sprite):
         for bullet in self.bullets:
             bullet.move(plataformas,x)
 
-    def ambiente(self,espinas,n,cabeza,brazo_d,brazo_i):
-        for espina in espinas:
-            if pygame.sprite.collide_rect(self,espina)==True:
-                self.kill(n,cabeza,brazo_d,brazo_i)
+    def ambiente(self,espinas,n,cabeza,brazo_d,brazo_i, manzanas, camaespinas):
+        if self.alive == True:
+            for espina in espinas:
+                if pygame.sprite.collide_rect(self,espina)==True:
+                    self.kill(n,cabeza,brazo_d,brazo_i)
+        if self.alive == True:
+            for manzana in manzanas:
+                if pygame.sprite.collide_rect(self,manzana)==True:
+                    self.kill(n,cabeza,brazo_d,brazo_i)
+        if self.alive == True:
+            for camaespina in camaespinas:
+                if pygame.sprite.collide_rect(self,camaespina)==True:
+                    self.kill(n,cabeza,brazo_d,brazo_i)
 
     def kill(self,n,cabeza,brazo_d,brazo_i):
         if self.alive==True:
@@ -339,12 +349,35 @@ class Arbol(pygame.sprite.Sprite):
         self.rect.centery = y
         
 class Manzana(pygame.sprite.Sprite):
-    def __init__(self,x,y):
+    def __init__(self,x,y,moveru,moverd):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.image.load("Imagenes/manzana.png")
         self.rect = self.image.get_rect()
         self.rect.centerx = x
         self.rect.centery = y
+        self.moveru = moveru
+        self.moverd = moverd
+        self.move = False
+        self.speed = 20
+        self.alive = True
+
+    def trampa(self,novatin,y):
+        if self.alive == True:
+            if self.moveru == True and (novatin.rect.centerx>self.rect.centerx-10 and novatin.rect.centerx<self.rect.centerx+10) and self.rect.top>novatin.rect.bottom:
+                self.move = True
+            elif self.moverd == True and (novatin.rect.centerx>self.rect.centerx-10 and novatin.rect.centerx<self.rect.centerx+10) and self.rect.bottom<novatin.rect.top:
+                self.move = True
+            if self.move == True and self.moveru == True:
+                self.rect.centery -= self.speed
+            elif self.move == True and self.moverd == True:
+                self.rect.centery += self.speed
+            if self.rect.centery < 0 or self.rect.centery > y:
+                self.kill()
+
+    def kill(self):
+        self.alive = False
+        del self.image
+        pygame.sprite.Sprite.kill(self)
 
 class Camaespina(pygame.sprite.Sprite):
     def __init__(self,x,y):
@@ -353,6 +386,27 @@ class Camaespina(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.centerx = x
         self.rect.centery = y
+        self.yi = y
+        self.move = False
+        self.moveup = False
+        self.speed = 20
+
+    def trampa(self,novatin,plataformas):
+        if self.move == False and self.moveup == False and self.rect.bottom < novatin.rect.top and self.rect.left<novatin.rect.centerx and self.rect.right>novatin.rect.centerx:
+            self.move = True
+        elif self.move == True:
+            self.rect.centery += self.speed
+        for plataforma in plataformas:
+            if self.rect.bottom>plataforma.rect.top and self.rect.top < plataforma.rect.top and self.move == True and pygame.sprite.collide_rect(self,plataforma)==True:
+                self.move = False
+                self.moveup = True
+                self.speed = 5
+        if self.moveup == True and self.move == False:
+            self.rect.centery -= self.speed
+        if self.rect.centery < self.yi-2 and self.moveup == True:
+            self.rect.centery = self.yi
+            self.moveup = False
+            self.speed = 20
 
 class Nubechica(pygame.sprite.Sprite):
     def __init__(self,x,y):

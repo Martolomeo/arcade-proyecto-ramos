@@ -94,7 +94,10 @@ while 1:
                 if var_password[3]:
                     var_password[3] = False
                     if var_password[0] == 37:
-                        pass
+                        aux = ""
+                        for j in range(len(var_password[2])-1):
+                            aux += var_password[2][j]
+                        var_password[2] = aux
                     elif var_password[0] == 38:
                         main = 3
 #En esta parte va a ir la parte del save, una vez que hayan mas cosas que guardar                        

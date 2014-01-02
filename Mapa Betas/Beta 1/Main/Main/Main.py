@@ -157,8 +157,6 @@ while 1:
                     var_password[1] = False
                 else:
                     var_password[1] = True
-            if event.key == K_RETURN:
-                print(var_password[0])
         screen.blit(fondo_pass, (0,0))
         for j in range(len(caracteres)):
             text, text_rect = texto(caracteres[j], 100 + j%12 * 80, 200 + j//12 * 100, 40)

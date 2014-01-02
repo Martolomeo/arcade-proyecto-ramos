@@ -15,6 +15,7 @@ jspeed = 0
 t = 0
 construir = 2
 s=0
+restart = False
 saven=0
 pygame.mixer.music.load("music1.mp3")
 shoot=False
@@ -171,6 +172,7 @@ while 1:
         pygame.display.flip()
     else:
         shoot = False
+        restart = False
         for event in pygame.event.get():
             if hasattr(event, 'key')==False:
                 continue
@@ -178,6 +180,8 @@ while 1:
             if event.key == K_RIGHT:
                 directionx = 0
                 speed = down*1
+            elif event.key == K_r:
+                restart = True
             elif event.key == K_LEFT:
                 directionx = 1
                 speed = down*1
@@ -231,7 +235,7 @@ while 1:
             nubes.append(Clases.NubeM(1098, 100))
             nubes.append(Clases.NubeM(1146, 100))
             nubes.append(Clases.NubeR(1194, 100))
-            save.append(Clases.Save(500,50,25,0))
+            save.append(Clases.Save(896,y-100,25,0))
             saven=0
             construir = 0
         if Novatin.alive==True:
@@ -245,7 +249,7 @@ while 1:
                 pygame.mixer.music.play()
                 Novatin.play = False
             Novatin.revivir += 1
-            if Novatin.revivir == 300:
+            if Novatin.revivir == 300 or restart == True:
                 pygame.mixer.music.load("music1.mp3")
                 pygame.mixer.music.play(-1)
                 Novatin.revivir = 0

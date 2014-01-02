@@ -15,6 +15,7 @@ jspeed = 0
 t = 0
 construir = 2
 s=0
+saven=0
 pygame.mixer.music.load("music1.mp3")
 shoot=False
 fondo = pygame.image.load("Imagenes/fondo.png")
@@ -114,6 +115,7 @@ while 1:
             plataformas.append(Clases.PlataformaAlta(x-128, y-180))
             plataformas.append(Clases.PlataformaBaja(384, y-45))
             plataformas.append(Clases.PlataformaBaja(x-384, y-45))
+            saven=0
             construir = 0
         if construir == 2:
             plataformas.append(Clases.PlataformaBaja(128, 95))
@@ -140,7 +142,8 @@ while 1:
             nubes.append(Clases.NubeM(1098, 100))
             nubes.append(Clases.NubeM(1146, 100))
             nubes.append(Clases.NubeR(1194, 100))
-            save.append(Clases.Save(500,50))
+            save.append(Clases.Save(500,50,25,0))
+            saven=0
             construir = 0
         if Novatin.alive==True:
             Novatin.move(directionx,speed,plataformas,x)
@@ -159,8 +162,8 @@ while 1:
                 Novatin.revivir = 0
                 Novatin.alive = True
                 Novatin.play = True
-                Novatin.rect.centerx = 25
-                Novatin.rect.centery = 0
+                Novatin.rect.centerx = save[saven].savex
+                Novatin.rect.centery = save[saven].savey
                 cabeza.alive = False
                 cabeza.roce = random.randint(-15,15)
                 cabeza.jumpspeed = random.randint(10, 25)

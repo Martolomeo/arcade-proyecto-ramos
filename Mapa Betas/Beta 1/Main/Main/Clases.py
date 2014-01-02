@@ -218,7 +218,7 @@ class Novatin(pygame.sprite.Sprite):
         if shoot == True:
             self.bullets.append(Bullet(self.rect.centerx, self.rect.centery, n))
         for bullet in self.bullets:
-            bullet.move(plataformas,save,x)
+            bullet.move(plataformas,save,x,self)
 
     def ambiente(self,espinas,n,cabeza,brazo_d,brazo_i, manzanas, camaespinas):
         if self.alive == True:
@@ -302,7 +302,7 @@ class Bullet(pygame.sprite.Sprite):
         elif n==1:
             self.speed = -20
 
-    def move(self, plataformas,saves,x):
+    def move(self, plataformas,saves,x,novatin):
         if self.alive == True:
             self.rect.centerx += self.speed
             for plataforma in plataformas:
@@ -310,6 +310,7 @@ class Bullet(pygame.sprite.Sprite):
                     self.kill()
             for save in saves:
                 if pygame.sprite.collide_rect(self,save)==True:
+                    save.set_save(novatin,self)
                     self.kill()
             if self.rect.centerx<0 or self.rect.centerx>x:
                 self.kill()
@@ -446,10 +447,17 @@ class NubeR(pygame.sprite.Sprite):
         self.rect.centery = y
 
 class Save(pygame.sprite.Sprite):
-    def __init__(self,x,y):
+    def __init__(self,x,y,sx,sy):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.image.load("Imagenes/save.png")
         self.rect = self.image.get_rect()
         self.rect.centerx = x
         self.rect.centery = y
+        self.savex=sx
+        self.savey=sy
+
+    def set_save(self,novatin,bullet):
+        if pygame.sprite.collide_rect(self,bullet)==True and bullet.alive==True:
+             self.savex=novatin.rect.centerx
+             self.savey=novatin.rect.centery
 

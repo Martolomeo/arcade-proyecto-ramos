@@ -19,6 +19,7 @@ saven=0
 pygame.mixer.music.load("music1.mp3")
 shoot=False
 fondo = pygame.image.load("Imagenes/fondo.png")
+fondo_pass = pygame.image.load("Imagenes/fondo_pass.png")
 #Es una variable que indica la etapa a jugar
 plataformas = []
 #Aca se almacenan los objetos plataformas
@@ -32,8 +33,8 @@ nubes = []
 save = []
 main = 1
 seleccion = 0
-caracteres = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','1','2','3','4','5','6','7','8','9','0']
-var_passwords = [1, True, 1, True, 1, True, 1, True]
+caracteres = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','1','2','3','4','5','6','7','8','9','0']
+var_password = [1, True, "", False]
 if construir == 1:
     Novatin = Clases.Novatin((x/2),y)
 if construir == 2:
@@ -47,7 +48,7 @@ menu = pygame.image.load('Imagenes/menu.png')
 pygame.mixer.music.play(-1)
 
 def texto(texto, posx, posy, tamano, color=(255, 255, 255)):
-    fuente = pygame.font.Font("DroidSans.ttf", tamano)
+    fuente = pygame.font.Font("SF Pixelate.ttf", tamano)
     salida = pygame.font.Font.render(fuente, texto, 1, color)
     salida_rect = salida.get_rect()
     salida_rect.centerx = posx
@@ -89,13 +90,83 @@ while 1:
             if event.key == K_ESCAPE:
                 pygame.quit()
                 sys.exit(0)
-#        key = pygame.key.get_pressed()
-#        if key[K_UP] == True and var_password[1]:
-#            
-        screen.blit(fondo, (0,0))
+            if event.key == K_SPACE:
+                if var_password[3]:
+                    var_password[3] = False
+                    if var_password[0] == 37:
+                        pass
+                    elif var_password[0] == 38:
+                        main = 3
+#En esta parte va a ir la parte del save, una vez que hayan mas cosas que guardar                        
+                    else:
+                        var_password[2] += caracteres[(var_password[0]-1)]
+                else:
+                    var_password[3] = True
+            if event.key == K_UP:
+                if var_password[1]:
+                    if var_password[0] > 12:
+                        var_password[0] -= 12
+                    elif var_password[0]%12 <= 6:
+                        var_password[0] = 37
+                    else:
+                        var_password[0] = 38
+                    var_password[1] = False
+                else:
+                    var_password[1] = True
+            if event.key == K_DOWN:
+                if var_password[1]:
+                    if var_password[0] <= 24:
+                        var_password[0] += 12
+                    elif var_password[0] > 36:
+                        var_password[0] = 6
+                    elif var_password[0]%12 <= 6:
+                        var_password[0] = 37
+                    else:
+                        var_password[0] = 38
+                    var_password[1] = False
+                else:
+                    var_password[1] = True
+            if event.key == K_RIGHT:
+                if var_password[1]:
+                    if var_password[0] <= 36:
+                        if var_password[0]%12 == 0:
+                            var_password[0] -= 11
+                        else:
+                            var_password[0] += 1
+                    elif var_password[0] == 37:
+                        var_password[0] = 38
+                    else:
+                        var_password[0] = 37
+                    var_password[1] = False
+                else:
+                    var_password[1] = True
+            if event.key == K_LEFT:
+                if var_password[1]:
+                    if var_password[0] <= 36:
+                        if var_password[0]%12 == 1:
+                            var_password[0] += 11
+                        else:
+                            var_password[0] -= 1
+                    elif var_password[0] == 37:
+                        var_password[0] = 38
+                    else:
+                        var_password[0] = 37
+                    var_password[1] = False
+                else:
+                    var_password[1] = True
+            if event.key == K_RETURN:
+                print(var_password[0])
+        screen.blit(fondo_pass, (0,0))
         for j in range(len(caracteres)):
             text, text_rect = texto(caracteres[j], 100 + j%12 * 80, 200 + j//12 * 100, 40)
             screen.blit(text, text_rect)
+        if var_password[0] <= 36:
+            screen.blit(cabeza.image, (55 + (var_password[0]-1)%12*80, 185 + (var_password[0]-1)//12 * 100))
+        else:
+            screen.blit(cabeza.image, (290 + (var_password[0] - 37) * 350, 520))
+        for i in range(len(var_password[2])):
+            password, password_rect = texto(var_password[2][i], 400 + 40 * i, 100, 40)
+            screen.blit(password, password_rect)
         pygame.display.flip()
     else:
         shoot = False

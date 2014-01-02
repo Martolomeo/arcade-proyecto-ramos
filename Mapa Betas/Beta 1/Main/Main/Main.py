@@ -31,6 +31,8 @@ nubes = []
 save = []
 main = 1
 seleccion = 0
+caracteres = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','1','2','3','4','5','6','7','8','9','0']
+var_passwords = [1, True, 1, True, 1, True, 1, True]
 if construir == 1:
     Novatin = Clases.Novatin((x/2),y)
 if construir == 2:
@@ -66,6 +68,7 @@ while 1:
                     main = 0
                 else:
                     main = 2
+                s = 1
         key = pygame.key.get_pressed()
         if key[K_UP] == True:
             seleccion = 0
@@ -78,7 +81,21 @@ while 1:
             screen.blit(cabeza.image, (600,605))
         pygame.display.flip()
     elif main == 2:
-        main = 0
+        for event in pygame.event.get():
+            if hasattr(event, 'key')==False:
+                continue
+            down = event.type == KEYDOWN
+            if event.key == K_ESCAPE:
+                pygame.quit()
+                sys.exit(0)
+#        key = pygame.key.get_pressed()
+#        if key[K_UP] == True and var_password[1]:
+#            
+        screen.blit(fondo, (0,0))
+        for j in range(len(caracteres)):
+            text, text_rect = texto(caracteres[j], 100 + j%12 * 80, 200 + j//12 * 100, 40)
+            screen.blit(text, text_rect)
+        pygame.display.flip()
     else:
         shoot = False
         for event in pygame.event.get():

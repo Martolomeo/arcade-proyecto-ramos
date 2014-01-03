@@ -13,6 +13,7 @@ jump = False
 speed = 0
 jspeed = 0
 t = 0
+gameover = pygame.image.load("Imagenes/gameover.png")
 construir = 2
 s=0
 restart = False
@@ -310,5 +311,7 @@ while 1:
         for bullet in Novatin.bullets:
             if bullet.alive==True:
                 screen.blit(bullet.image, bullet.rect)
+        if Novatin.alive == False:
+            screen.blit(gameover,(x/2-400,(y-191)/2))
         pygame.display.flip()
     

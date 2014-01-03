@@ -213,28 +213,32 @@ class Novatin(pygame.sprite.Sprite):
                 self.rect.centery = self.height/2
                 self.jumpspeed = 2
 
-    def shoot (self,shoot,n,plataformas,save,x):
+    def shoot (self,shoot,n,plataformas,save,enemigos,x):
         
         if shoot == True:
             self.bullets.append(Bullet(self.rect.centerx, self.rect.centery, n))
         for bullet in self.bullets:
-            bullet.move(plataformas,save,x,self)
+            bullet.move(plataformas,save,x,enemigos,self)
 
-    def ambiente(self,espinas,n,cabeza,brazo_d,brazo_i, manzanas, camaespinas):
+    def ambiente(self,espinas,cabeza,brazo_d,brazo_i, manzanas, camaespinas, enemigos):
         if self.alive == True:
             for espina in espinas:
                 if pygame.sprite.collide_rect(self,espina)==True:
-                    self.kill(n,cabeza,brazo_d,brazo_i)
+                    self.kill(cabeza,brazo_d,brazo_i)
         if self.alive == True:
             for manzana in manzanas:
                 if pygame.sprite.collide_rect(self,manzana)==True:
-                    self.kill(n,cabeza,brazo_d,brazo_i)
+                    self.kill(cabeza,brazo_d,brazo_i)
         if self.alive == True:
             for camaespina in camaespinas:
                 if pygame.sprite.collide_rect(self,camaespina)==True:
-                    self.kill(n,cabeza,brazo_d,brazo_i)
-
-    def kill(self,n,cabeza,brazo_d,brazo_i):
+                    self.kill(cabeza,brazo_d,brazo_i)
+        if self.alive == True:
+            for enemigo in enemigos:
+                if pygame.sprite.collide_rect(self,enemigo)==True and enemigo.alive:
+                    self.kill(cabeza,brazo_d,brazo_i)
+                
+    def kill(self,cabeza,brazo_d,brazo_i):
         if self.alive==True:
             self.alive=False
         lista = [cabeza, brazo_d, brazo_i]
@@ -242,11 +246,10 @@ class Novatin(pygame.sprite.Sprite):
             extremidad.alive = True
             extremidad.rect.centerx = self.rect.centerx
             extremidad.rect.centery = self.rect.centery
-            extremidad.direccion = n
         self.muertes += 1
 
 class Extremidad(pygame.sprite.Sprite):
-    def __init__(self,x,y,n,direccionx):
+    def __init__(self,x,y,n):
         pygame.sprite.Sprite.__init__(self)
         if n == "cabeza":
             self.image = pygame.image.load("Imagenes/novatin_cabeza.png")
@@ -262,7 +265,6 @@ class Extremidad(pygame.sprite.Sprite):
         self.alive = False
         self.jumpspeed = random.randint(10,25)
         self.fall = 2
-        self.direccion = direccionx
         self.roce = random.randint(-15,15)
         
     def jump(self,y):
@@ -272,17 +274,8 @@ class Extremidad(pygame.sprite.Sprite):
             self.rect.centery -= self.jumpspeed
             self.jumpspeed -= self.fall
 
-    def mover(self,y,lado):
-        if self.direccion == 0:
-            if lado == 1:
-                self.rect.centerx -= self.roce
-            else:
-                self.rect.centerx += self.roce
-        if self.direccion == 1:
-            if lado == 1:
-                self.rect.centerx += self.roce
-            else:
-                self.rect.centerx -= self.roce
+    def mover(self,y):
+        self.rect.centerx += self.roce
         if self.rect.centery >= y - self.height/2:
             if self.roce > 0:
                 self.roce -= 1
@@ -302,7 +295,7 @@ class Bullet(pygame.sprite.Sprite):
         elif n==1:
             self.speed = -20
 
-    def move(self, plataformas,saves,x,novatin):
+    def move(self, plataformas,saves,x,enemigos,novatin):
         if self.alive == True:
             self.rect.centerx += self.speed
             for plataforma in plataformas:
@@ -311,6 +304,10 @@ class Bullet(pygame.sprite.Sprite):
             for save in saves:
                 if pygame.sprite.collide_rect(self,save)==True:
                     save.set_save(novatin,self)
+                    self.kill()
+            for enemigo in enemigos:
+                if pygame.sprite.collide_rect(self, enemigo)==True and enemigo.alive == True:
+                    enemigo.kill()
                     self.kill()
             if self.rect.centerx<0 or self.rect.centerx>x:
                 self.kill()
@@ -470,9 +467,12 @@ class Enemigo(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.centerx = x
         self.rect.centery = y
+        self.x = x
+        self.y = y
         self.height = self.image.get_height()
         self.width = self.image.get_width()
         self.direccionx = 0
+        self.alive = True
 
     def move(self, plataformas,x):
         if self.direccionx == 0:
@@ -491,3 +491,11 @@ class Enemigo(pygame.sprite.Sprite):
                     self.rect.centerx += 4
                     self.direccionx = 0
                     self.image = self.derecha
+
+    def matar(self, novatin):
+        if pygame.sprite.collide_rect(self, novatin):
+            novatin.kill()
+    def kill(self):
+        self.alive=False
+        del self.image
+        pygame.sprite.Sprite.kill(self)

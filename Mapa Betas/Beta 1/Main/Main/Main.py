@@ -44,9 +44,9 @@ if construir == 2:
     Novatin = Clases.Novatin(25,0)
 #Seteamos la pantalla
 screen = pygame.display.set_mode(size, FULLSCREEN)
-cabeza = Clases.Extremidad(0,0,"cabeza",0)
-brazo_i = Clases.Extremidad(0,0,"brazo_i",0)
-brazo_d = Clases.Extremidad(0,0,"brazo_d",0)
+cabeza = Clases.Extremidad(0,0,"cabeza")
+brazo_i = Clases.Extremidad(0,0,"brazo_i")
+brazo_d = Clases.Extremidad(0,0,"brazo_d")
 menu = pygame.image.load('Imagenes/menu.png')
 pygame.mixer.music.play(-1)
 
@@ -250,8 +250,8 @@ while 1:
         if Novatin.alive==True:
             Novatin.move(directionx,speed,plataformas,x)
             Novatin.jump(directionx,y,jump,plataformas)
-            Novatin.shoot(shoot,directionx,plataformas,save,x)
-            Novatin.ambiente(espinas,directionx,cabeza,brazo_d,brazo_i, manzanas,camaespinas)
+            Novatin.shoot(shoot,directionx,plataformas,save,enemigos,x)
+            Novatin.ambiente(espinas,cabeza,brazo_d,brazo_i, manzanas,camaespinas,enemigos)
         else:
             if Novatin.play == True:
                 pygame.mixer.music.load("gameover.mp3")
@@ -277,14 +277,18 @@ while 1:
                 brazo_i.jumpspeed = random.randint(10,25)
                 espinas.append(Clases.Espina(600,y-24, True))
                 manzanas.append(Clases.Manzana(480,y-120,False,True))
+                for enemigo in enemigos:
+                    enemigo.alive = True
+                    enemigo.rect.centerx = enemigo.x
+                    enemigo.rect.centery = enemigo.y
         muertes, muertes_rect = texto(str(Novatin.muertes), x-100, 20, 20)
         if cabeza.alive:
             cabeza.jump(y)
         if brazo_i.alive:
             brazo_i.jump(y)
-            brazo_i.mover(y,0)
+            brazo_i.mover(y)
         if brazo_d.alive:
-            brazo_d.mover(y,1)
+            brazo_d.mover(y)
             brazo_d.jump(y)
         screen.blit(fondo, (0,0))
         #primero el if para que novatin se mueva por enfrente de las plataformas
@@ -308,8 +312,9 @@ while 1:
             if espina.alive == True:
                 screen.blit(espina.image, espina.rect)
         for enemigo in enemigos:
-            enemigo.move(plataformas,x)
-            screen.blit(enemigo.image, enemigo.rect)
+            if enemigo.alive == True:
+                enemigo.move(plataformas,x)
+                screen.blit(enemigo.image, enemigo.rect)
         if Novatin.alive==True:
             screen.blit(Novatin.image, Novatin.rect)
         if cabeza.alive:

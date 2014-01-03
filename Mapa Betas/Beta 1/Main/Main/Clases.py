@@ -461,3 +461,33 @@ class Save(pygame.sprite.Sprite):
              self.savex=novatin.rect.centerx
              self.savey=novatin.rect.centery
 
+class Enemigo(pygame.sprite.Sprite):
+    def __init__(self, x, y):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load("Imagenes/enemigo.png")
+        self.izquierda = pygame.image.load("Imagenes/enemigo.png")
+        self.derecha = pygame.transform.flip(self.izquierda, True, False)
+        self.rect = self.image.get_rect()
+        self.rect.centerx = x
+        self.rect.centery = y
+        self.height = self.image.get_height()
+        self.width = self.image.get_width()
+        self.direccionx = 0
+
+    def move(self, plataformas,x):
+        if self.direccionx == 0:
+            self.rect.centerx += 2
+            self.image = self.derecha
+            for plataforma in plataformas:
+                if (pygame.sprite.collide_rect(self, plataforma) and (self.rect.top <= plataforma.rect.bottom or self.rect.bottom >= plataforma.rect.top) or (self.rect.bottom == plataforma.rect.top and self.rect.right > plataforma.rect.right) or self.rect.right > x):
+                    self.rect.centerx -= 4
+                    self.direccionx = 1
+                    self.image = self.izquierda
+        else:
+            self.rect.centerx -= 2
+            self.image = self.izquierda
+            for plataforma in plataformas:
+                if (pygame.sprite.collide_rect(self, plataforma) and (self.rect.top <= plataforma.rect.bottom or self.rect.bottom >= plataforma.rect.top) or (self.rect.bottom == plataforma.rect.top and self.rect.left < plataforma.rect.left) or self.rect.left < 0):
+                    self.rect.centerx += 4
+                    self.direccionx = 0
+                    self.image = self.derecha

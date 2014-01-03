@@ -33,6 +33,7 @@ manzanas = []
 camaespinas = []
 nubes = []
 save = []
+enemigos = []
 main = 1
 seleccion = 0
 caracteres = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','1','2','3','4','5','6','7','8','9','0']
@@ -237,6 +238,13 @@ while 1:
             nubes.append(Clases.NubeM(1146, 100))
             nubes.append(Clases.NubeR(1194, 100))
             save.append(Clases.Save(896,y-100,25,0))
+            enemigos.append(Clases.Enemigo(700, 120))
+            enemigos.append(Clases.Enemigo(450, 390))
+            enemigos.append(Clases.Enemigo(550, 390))
+            enemigos.append(Clases.Enemigo(128, 420))
+            enemigos.append(Clases.Enemigo(x-30, y-155))
+            enemigos.append(Clases.Enemigo(x-30, y-335))
+            enemigos.append(Clases.Enemigo(x-30, y-515))
             saven=0
             construir = 0
         if Novatin.alive==True:
@@ -298,7 +306,10 @@ while 1:
         for espina in espinas:
             espina.trampa(Novatin)
             if espina.alive == True:
-                screen.blit(espina.image, espina.rect)        
+                screen.blit(espina.image, espina.rect)
+        for enemigo in enemigos:
+            enemigo.move(plataformas,x)
+            screen.blit(enemigo.image, enemigo.rect)
         if Novatin.alive==True:
             screen.blit(Novatin.image, Novatin.rect)
         if cabeza.alive:

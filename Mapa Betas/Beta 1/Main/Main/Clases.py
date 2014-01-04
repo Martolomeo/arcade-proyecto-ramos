@@ -326,7 +326,7 @@ class Espina(pygame.sprite.Sprite):
         self.rect.centery = y
         self.movil = movil
         self.move = False
-        self.speed = 40
+        self.speed = 30
         self.alive = True
 
     def trampa(self,novatin):

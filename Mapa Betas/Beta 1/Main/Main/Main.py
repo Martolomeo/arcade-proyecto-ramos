@@ -228,9 +228,9 @@ while 1:
             espinas.append(Clases.Espina(600, y-24, True))
             espinas.append(Clases.Espina(648,y-24, False))
             espinas.append(Clases.Espina(552,y-24, False))
-            arboles.append(Clases.Arbol(500,y-75))
-            manzanas.append(Clases.Manzana(480,y-120,False,True))
-            manzanas.append(Clases.Manzana(520, y-130,False,False))
+            arboles.append(Clases.Arbol(450,y-75))
+            manzanas.append(Clases.Manzana(430,y-120,False,True))
+            manzanas.append(Clases.Manzana(470, y-130,False,False))
             camaespinas.append(Clases.Camaespina(950, y-360))
             nubes.append(Clases.Nubechica(600,50))
             nubes.append(Clases.NubeL(1050, 100))
@@ -276,7 +276,7 @@ while 1:
                 brazo_i.roce = random.randint(-15,15)
                 brazo_i.jumpspeed = random.randint(10,25)
                 espinas.append(Clases.Espina(600,y-24, True))
-                manzanas.append(Clases.Manzana(480,y-120,False,True))
+                manzanas.append(Clases.Manzana(430,y-120,False,True))
                 for enemigo in enemigos:
                     enemigo.alive = True
                     enemigo.rect.centerx = enemigo.x

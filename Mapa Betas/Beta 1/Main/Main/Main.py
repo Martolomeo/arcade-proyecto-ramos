@@ -1,4 +1,4 @@
-import pygame, sys, Clases, random
+import pygame, sys, Clases, random, Password
 from pygame.locals import*
 pygame.init()
 
@@ -36,8 +36,6 @@ save = []
 enemigos = []
 main = 1
 seleccion = 0
-caracteres = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','1','2','3','4','5','6','7','8','9','0']
-var_password = [1, True, "", False]
 if construir == 1:
     Novatin = Clases.Novatin((x/2),y)
 if construir == 2:
@@ -94,82 +92,35 @@ while 1:
                 pygame.quit()
                 sys.exit(0)
             if event.key == K_SPACE:
-                if var_password[3]:
-                    var_password[3] = False
-                    if var_password[0] == 37:
-                        aux = ""
-                        for j in range(len(var_password[2])-1):
-                            aux += var_password[2][j]
-                        var_password[2] = aux
-                    elif var_password[0] == 38:
+                if Password.no_repetir:
+                    Password.no_repetir = False
+                    if Password.seleccion == 37:
+                        Password.clave = Password.borra_espacio(Password.clave)
+                    elif Password.seleccion == 38:
                         main = 3
 #En esta parte va a ir la parte del save, una vez que hayan mas cosas que guardar                        
                     else:
-                        var_password[2] += caracteres[(var_password[0]-1)]
+                        Password.clave += Password.caracteres[(Password.seleccion-1)]
                 else:
-                    var_password[3] = True
+                    Password.no_repetir = True
             if event.key == K_UP:
-                if var_password[1]:
-                    if var_password[0] > 12:
-                        var_password[0] -= 12
-                    elif var_password[0]%12 <= 6:
-                        var_password[0] = 37
-                    else:
-                        var_password[0] = 38
-                    var_password[1] = False
-                else:
-                    var_password[1] = True
+                Password.seleccion, Password.movil = Password.mover_arriba(Password.seleccion, Password.movil)
             if event.key == K_DOWN:
-                if var_password[1]:
-                    if var_password[0] <= 24:
-                        var_password[0] += 12
-                    elif var_password[0] > 36:
-                        var_password[0] = 6
-                    elif var_password[0]%12 <= 6:
-                        var_password[0] = 37
-                    else:
-                        var_password[0] = 38
-                    var_password[1] = False
-                else:
-                    var_password[1] = True
+                Password.seleccion, Password.movil = Password.mover_abajo(Password.seleccion, Password.movil)
             if event.key == K_RIGHT:
-                if var_password[1]:
-                    if var_password[0] <= 36:
-                        if var_password[0]%12 == 0:
-                            var_password[0] -= 11
-                        else:
-                            var_password[0] += 1
-                    elif var_password[0] == 37:
-                        var_password[0] = 38
-                    else:
-                        var_password[0] = 37
-                    var_password[1] = False
-                else:
-                    var_password[1] = True
+                Password.seleccion, Password.movil = Password.mover_derecha(Password.seleccion, Password.movil)
             if event.key == K_LEFT:
-                if var_password[1]:
-                    if var_password[0] <= 36:
-                        if var_password[0]%12 == 1:
-                            var_password[0] += 11
-                        else:
-                            var_password[0] -= 1
-                    elif var_password[0] == 37:
-                        var_password[0] = 38
-                    else:
-                        var_password[0] = 37
-                    var_password[1] = False
-                else:
-                    var_password[1] = True
+                Password.seleccion, Password.movil = Password.mover_izquierda(Password.seleccion, Password.movil)
         screen.blit(fondo_pass, (0,0))
-        for j in range(len(caracteres)):
-            text, text_rect = texto(caracteres[j], 100 + j%12 * 80, 200 + j//12 * 100, 40)
+        for j in range(len(Password.caracteres)):
+            pos = (Password.posicion_teclado(j))
+            text, text_rect = texto(Password.caracteres[j], pos[0], pos[1], 40)
             screen.blit(text, text_rect)
-        if var_password[0] <= 36:
-            screen.blit(cabeza.image, (55 + (var_password[0]-1)%12*80, 185 + (var_password[0]-1)//12 * 100))
-        else:
-            screen.blit(cabeza.image, (290 + (var_password[0] - 37) * 350, 520))
-        for i in range(len(var_password[2])):
-            password, password_rect = texto(var_password[2][i], 400 + 40 * i, 100, 40)
+        pos = Password.posicion_cursor(Password.seleccion)
+        screen.blit(cabeza.image, pos)
+        for i in range(len(Password.clave)):
+            pos = (Password.posicion_clave(i))
+            password, password_rect = texto(Password.clave[i], pos[0], pos[1], 40)
             screen.blit(password, password_rect)
         pygame.display.flip()
     else:

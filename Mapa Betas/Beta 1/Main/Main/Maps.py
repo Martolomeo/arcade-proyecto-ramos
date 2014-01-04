@@ -24,12 +24,15 @@ class MapaDosBeta(pygame.sprite.Sprite):
         self.x = x
         self.y = y
         self.plataformas = []
+        self.espinasr = []
         self.espinas = []
         self.arboles = []
+        self.manzanasr = []
         self.manzanas = []
         self.camaespinas = []
         self.nubes = []
         self.save = []
+        self.enemigosr = []
         self.enemigos = []
         self.plataformas.append(Clases.PlataformaBaja(128, 95))
         self.plataformas.append(Clases.PlataformaBaja(384, 145))
@@ -43,10 +46,15 @@ class MapaDosBeta(pygame.sprite.Sprite):
         self.plataformas.append(Clases.PlataformaBaja(x, y-270))
         self.plataformas.append(Clases.PlataformaBaja(896, y-360))
         self.plataformas.append(Clases.PlataformaBaja(x, y-450))
+        self.espinasr.append(Clases.Espina(600, y-24, True))
+        self.espinasr.append(Clases.Espina(648,y-24, False))
+        self.espinasr.append(Clases.Espina(552,y-24, False))
         self.espinas.append(Clases.Espina(600, y-24, True))
         self.espinas.append(Clases.Espina(648,y-24, False))
         self.espinas.append(Clases.Espina(552,y-24, False))
         self.arboles.append(Clases.Arbol(450,y-75))
+        self.manzanasr.append(Clases.Manzana(430,y-120,False,True))
+        self.manzanasr.append(Clases.Manzana(470, y-130,False,False))
         self.manzanas.append(Clases.Manzana(430,y-120,False,True))
         self.manzanas.append(Clases.Manzana(470, y-130,False,False))
         self.camaespinas.append(Clases.Camaespina(950, y-360))
@@ -56,6 +64,13 @@ class MapaDosBeta(pygame.sprite.Sprite):
         self.nubes.append(Clases.NubeM(1146, 100))
         self.nubes.append(Clases.NubeR(1194, 100))
         self.save.append(Clases.Save(896,y-100,25,0))
+        self.enemigosr.append(Clases.Enemigo(700, 120))
+        self.enemigosr.append(Clases.Enemigo(450, 390))
+        self.enemigosr.append(Clases.Enemigo(550, 390))
+        self.enemigosr.append(Clases.Enemigo(128, 420))
+        self.enemigosr.append(Clases.Enemigo(x-30, y-155))
+        self.enemigosr.append(Clases.Enemigo(x-30, y-335))
+        self.enemigosr.append(Clases.Enemigo(x-30, y-515))
         self.enemigos.append(Clases.Enemigo(700, 120))
         self.enemigos.append(Clases.Enemigo(450, 390))
         self.enemigos.append(Clases.Enemigo(550, 390))
@@ -63,9 +78,6 @@ class MapaDosBeta(pygame.sprite.Sprite):
         self.enemigos.append(Clases.Enemigo(x-30, y-155))
         self.enemigos.append(Clases.Enemigo(x-30, y-335))
         self.enemigos.append(Clases.Enemigo(x-30, y-515))
-        self.espinasr = self.espinas
-        self.manzanasr = self.manzanas
-        self.enemigosr = self.enemigos
         self.screen = pygame.display.set_mode((x,y), FULLSCREEN)
 
     def Imprimir(self, Novatin):
@@ -94,6 +106,12 @@ class MapaDosBeta(pygame.sprite.Sprite):
                 self.screen.blit(enemigo.image, enemigo.rect)
 
     def Restaurar(self):
-        self.espinas = self.espinasr
-        self.manzanas = self.manzanasr
-        self.enemigos = self.enemigosr
+        self.espinas = []
+        for espina in self.espinasr:
+            self.espinas.append(Clases.Espina(espina.rect.centerx, espina.rect.centery, espina.movil))
+        self.manzanas = []
+        for manzana in self.manzanasr:
+            self.manzanas.append(Clases.Manzana(manzana.rect.centerx, manzana.rect.centery, manzana.moveru, manzana.moverd))
+        self.enemigos = []
+        for enemigo in self.enemigosr:
+            self.enemigos.append(Clases.Enemigo(enemigo.rect.centerx, enemigo.rect.centery))

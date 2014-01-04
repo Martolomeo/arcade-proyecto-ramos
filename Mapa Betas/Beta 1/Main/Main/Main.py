@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import pygame, sys, Clases, random, Password
+=======
+import pygame, sys, Clases, random, Maps
+>>>>>>> origin/Archivo-Mapas
 from pygame.locals import*
 pygame.init()
 
@@ -14,31 +18,27 @@ speed = 0
 jspeed = 0
 t = 0
 gameover = pygame.image.load("Imagenes/gameover.png")
-construir = 2
+construir = 1
 s=0
 restart = False
 saven=0
 pygame.mixer.music.load("music1.mp3")
+Mapa = []
+Mapa.append(Maps.MapaUnoBeta(x,y))
+Mapa.append(Maps.MapaDosBeta(x,y))
 shoot=False
 fondo = pygame.image.load("Imagenes/fondo.png")
 fondo_pass = pygame.image.load("Imagenes/fondo_pass.png")
-#Es una variable que indica la etapa a jugar
-plataformas = []
-#Aca se almacenan los objetos plataformas
-espinas = []
-#Aqui se almacenan los objetos espinas :)
-arboles = []
-#creo que de ahora en adelante se entiende la idea
-manzanas = []
-camaespinas = []
-nubes = []
-save = []
-enemigos = []
 main = 1
 seleccion = 0
+<<<<<<< HEAD
+=======
+caracteres = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','1','2','3','4','5','6','7','8','9','0']
+var_password = [1, True, "", False]
+if construir == 0:
+    Novatin = Clases.Novatin((x/2),y-20)
+>>>>>>> origin/Archivo-Mapas
 if construir == 1:
-    Novatin = Clases.Novatin((x/2),y)
-if construir == 2:
     Novatin = Clases.Novatin(25,0)
 #Seteamos la pantalla
 screen = pygame.display.set_mode(size, FULLSCREEN)
@@ -156,6 +156,7 @@ while 1:
         #########################################################################
         screen.fill(black) #si se pone dentro del if entonces se vuelve negra una vez
         #########################################################################
+<<<<<<< HEAD
         if construir == 1:
             plataformas.append(Clases.PlataformaAlta(128, y-180))
             plataformas.append(Clases.PlataformaAlta(x-128, y-180))
@@ -198,11 +199,13 @@ while 1:
             enemigos.append(Clases.Enemigo(x-30, y-515))
             saven=0
             construir = 0
+=======
+>>>>>>> origin/Archivo-Mapas
         if Novatin.alive==True:
-            Novatin.move(directionx,speed,plataformas,x)
-            Novatin.jump(directionx,y,jump,plataformas)
-            Novatin.shoot(shoot,directionx,plataformas,save,enemigos,x)
-            Novatin.ambiente(espinas,cabeza,brazo_d,brazo_i, manzanas,camaespinas,enemigos)
+            Novatin.move(directionx,speed,Mapa[construir].plataformas,x)
+            Novatin.jump(directionx,y,jump,Mapa[construir].plataformas)
+            Novatin.shoot(shoot,directionx,Mapa[construir].plataformas,Mapa[construir].save,Mapa[construir].enemigos,x)
+            Novatin.ambiente(Mapa[construir].espinas,cabeza,brazo_d,brazo_i, Mapa[construir].manzanas,Mapa[construir].camaespinas,Mapa[construir].enemigos)
         else:
             if Novatin.play == True:
                 pygame.mixer.music.load("gameover.mp3")
@@ -215,8 +218,8 @@ while 1:
                 Novatin.revivir = 0
                 Novatin.alive = True
                 Novatin.play = True
-                Novatin.rect.centerx = save[saven].savex
-                Novatin.rect.centery = save[saven].savey
+                Novatin.rect.centerx = Mapa[construir].save[saven].savex
+                Novatin.rect.centery = Mapa[construir].save[saven].savey
                 cabeza.alive = False
                 cabeza.roce = random.randint(-15,15)
                 cabeza.jumpspeed = random.randint(10, 25)
@@ -226,12 +229,16 @@ while 1:
                 brazo_i.alive = False
                 brazo_i.roce = random.randint(-15,15)
                 brazo_i.jumpspeed = random.randint(10,25)
+<<<<<<< HEAD
                 espinas.append(Clases.Espina(600,y-24, True))
                 manzanas.append(Clases.Manzana(430,y-120,False,True))
                 for enemigo in enemigos:
                     enemigo.alive = True
                     enemigo.rect.centerx = enemigo.x
                     enemigo.rect.centery = enemigo.y
+=======
+                Mapa[construir].Restaurar()
+>>>>>>> origin/Archivo-Mapas
         muertes, muertes_rect = texto(str(Novatin.muertes), x-100, 20, 20)
         if cabeza.alive:
             cabeza.jump(y)
@@ -243,29 +250,7 @@ while 1:
             brazo_d.jump(y)
         screen.blit(fondo, (0,0))
         #primero el if para que novatin se mueva por enfrente de las plataformas
-        for nube in nubes:
-            screen.blit(nube.image, nube.rect)
-        for camaespina in camaespinas:
-            camaespina.trampa(Novatin,plataformas)
-            screen.blit(camaespina.image, camaespina.rect)
-        for plataforma in plataformas:
-            screen.blit(plataforma.image, plataforma.rect)
-        for sav in save:
-            screen.blit(sav.image, sav.rect)
-        for arbol in arboles:
-            screen.blit(arbol.image, arbol.rect)
-        for manzana in manzanas:
-            manzana.trampa(Novatin,y)
-            if manzana.alive == True:
-                screen.blit(manzana.image, manzana.rect)
-        for espina in espinas:
-            espina.trampa(Novatin)
-            if espina.alive == True:
-                screen.blit(espina.image, espina.rect)
-        for enemigo in enemigos:
-            if enemigo.alive == True:
-                enemigo.move(plataformas,x)
-                screen.blit(enemigo.image, enemigo.rect)
+        Mapa[construir].Imprimir(Novatin)
         if Novatin.alive==True:
             screen.blit(Novatin.image, Novatin.rect)
         if cabeza.alive:

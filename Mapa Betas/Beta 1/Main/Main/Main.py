@@ -14,7 +14,7 @@ speed = 0
 jspeed = 0
 t = 0
 gameover = pygame.image.load("Imagenes/gameover.png")
-construir = 0
+construir = 1
 s=0
 restart = False
 saven=0
@@ -30,7 +30,7 @@ seleccion = 0
 caracteres = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','1','2','3','4','5','6','7','8','9','0']
 var_password = [1, True, "", False]
 if construir == 0:
-    Novatin = Clases.Novatin((x/2),y)
+    Novatin = Clases.Novatin((x/2),y-20)
 if construir == 1:
     Novatin = Clases.Novatin(25,0)
 #Seteamos la pantalla

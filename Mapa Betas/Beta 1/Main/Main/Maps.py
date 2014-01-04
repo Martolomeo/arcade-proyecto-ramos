@@ -10,6 +10,11 @@ class MapaUnoBeta(pygame.sprite.Sprite):
         self.plataformas.append(Clases.PlataformaBaja(x-384, y-45))
         self.plataformasr = self.plataformas
         self.screen = pygame.display.set_mode((x,y), FULLSCREEN)
+        self.save = []
+        self.enemigos = []
+        self.espinas = []
+        self.manzanas = []
+        self.camaespinas = []
 
     def Imprimir(self,Novatin):
         for plataforma in self.plataformas:

@@ -1,8 +1,5 @@
-<<<<<<< HEAD
-import pygame, sys, Clases, random, Password
-=======
 import pygame, sys, Clases, random, Maps
->>>>>>> origin/Archivo-Mapas
+
 from pygame.locals import*
 pygame.init()
 
@@ -31,13 +28,10 @@ fondo = pygame.image.load("Imagenes/fondo.png")
 fondo_pass = pygame.image.load("Imagenes/fondo_pass.png")
 main = 1
 seleccion = 0
-<<<<<<< HEAD
-=======
 caracteres = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','1','2','3','4','5','6','7','8','9','0']
 var_password = [1, True, "", False]
 if construir == 0:
     Novatin = Clases.Novatin((x/2),y-20)
->>>>>>> origin/Archivo-Mapas
 if construir == 1:
     Novatin = Clases.Novatin(25,0)
 #Seteamos la pantalla
@@ -156,51 +150,6 @@ while 1:
         #########################################################################
         screen.fill(black) #si se pone dentro del if entonces se vuelve negra una vez
         #########################################################################
-<<<<<<< HEAD
-        if construir == 1:
-            plataformas.append(Clases.PlataformaAlta(128, y-180))
-            plataformas.append(Clases.PlataformaAlta(x-128, y-180))
-            plataformas.append(Clases.PlataformaBaja(384, y-45))
-            plataformas.append(Clases.PlataformaBaja(x-384, y-45))
-            saven=0
-            construir = 0
-        if construir == 2:
-            plataformas.append(Clases.PlataformaBaja(128, 95))
-            plataformas.append(Clases.PlataformaBaja(384, 145))
-            plataformas.append(Clases.PlataformaAlta(768, 320))
-            plataformas.append(Clases.PlataformaAlta(896, 0))
-            plataformas.append(Clases.PlataformaBaja(512, 455))
-            plataformas.append(Clases.PlataformaAlta(128, 620))
-            plataformas.append(Clases.PlataformaBaja(896, y))
-            plataformas.append(Clases.PlataformaBaja(x, y-90))
-            plataformas.append(Clases.PlataformaBaja(896, y-180))
-            plataformas.append(Clases.PlataformaBaja(x, y-270))
-            plataformas.append(Clases.PlataformaBaja(896, y-360))
-            plataformas.append(Clases.PlataformaBaja(x, y-450))
-            espinas.append(Clases.Espina(600, y-24, True))
-            espinas.append(Clases.Espina(648,y-24, False))
-            espinas.append(Clases.Espina(552,y-24, False))
-            arboles.append(Clases.Arbol(450,y-75))
-            manzanas.append(Clases.Manzana(430,y-120,False,True))
-            manzanas.append(Clases.Manzana(470, y-130,False,False))
-            camaespinas.append(Clases.Camaespina(950, y-360))
-            nubes.append(Clases.Nubechica(600,50))
-            nubes.append(Clases.NubeL(1050, 100))
-            nubes.append(Clases.NubeM(1098, 100))
-            nubes.append(Clases.NubeM(1146, 100))
-            nubes.append(Clases.NubeR(1194, 100))
-            save.append(Clases.Save(896,y-100,25,0))
-            enemigos.append(Clases.Enemigo(700, 120))
-            enemigos.append(Clases.Enemigo(450, 390))
-            enemigos.append(Clases.Enemigo(550, 390))
-            enemigos.append(Clases.Enemigo(128, 420))
-            enemigos.append(Clases.Enemigo(x-30, y-155))
-            enemigos.append(Clases.Enemigo(x-30, y-335))
-            enemigos.append(Clases.Enemigo(x-30, y-515))
-            saven=0
-            construir = 0
-=======
->>>>>>> origin/Archivo-Mapas
         if Novatin.alive==True:
             Novatin.move(directionx,speed,Mapa[construir].plataformas,x)
             Novatin.jump(directionx,y,jump,Mapa[construir].plataformas)
@@ -229,16 +178,7 @@ while 1:
                 brazo_i.alive = False
                 brazo_i.roce = random.randint(-15,15)
                 brazo_i.jumpspeed = random.randint(10,25)
-<<<<<<< HEAD
-                espinas.append(Clases.Espina(600,y-24, True))
-                manzanas.append(Clases.Manzana(430,y-120,False,True))
-                for enemigo in enemigos:
-                    enemigo.alive = True
-                    enemigo.rect.centerx = enemigo.x
-                    enemigo.rect.centery = enemigo.y
-=======
                 Mapa[construir].Restaurar()
->>>>>>> origin/Archivo-Mapas
         muertes, muertes_rect = texto(str(Novatin.muertes), x-100, 20, 20)
         if cabeza.alive:
             cabeza.jump(y)

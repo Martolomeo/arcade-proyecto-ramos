@@ -23,10 +23,9 @@ def main():
     fondo = pygame.image.load("Imagenes/fondo.png")
     fondo_pass = pygame.image.load("Imagenes/fondo_pass.png")
     gameover = pygame.image.load("Imagenes/gameover.png")
-    gameover = pygame.image.load("Imagenes/gameover.png")
     #Musica
-    pygame.mixer.music.load("music1.mp3")
-    pygame.mixer.music.play(-1)
+    #pygame.mixer.music.load("Music/music1.mp3")
+    #pygame.mixer.music.play(-1)
     #Clock
     clock = pygame.time.Clock()
     #Variables de Novatin
@@ -140,10 +139,10 @@ def main():
                     pygame.quit()
                     sys.exit(0)
                 if event.key == K_SPACE:
-                    if s==0:
+                    if s==0 and Novatin.metralleta == False:
                         shoot=True
                         s=1
-                    elif s==1:
+                    elif s==1 and Novatin.metralleta == False:
                         shoot=False
                         s=0
             key = pygame.key.get_pressed()
@@ -151,6 +150,10 @@ def main():
                 jump = True
             elif key[K_UP] == False:
                 jump = False
+            if key[K_SPACE] == True and Novatin.metralleta == True:
+                shoot = True
+            elif key[K_SPACE] == False and Novatin.metralleta == True:
+                shoot = False
             #########################################################################
             screen.fill(black) #si se pone dentro del if entonces se vuelve negra una vez
             #########################################################################
@@ -158,16 +161,16 @@ def main():
                 Novatin.move(speed,Mapa[construir].plataformas,x)
                 Novatin.jump(y,jump,Mapa[construir].plataformas)
                 Novatin.shoot(shoot,Mapa[construir].plataformas,Mapa[construir].save,Mapa[construir].enemigos,x)
-                Novatin.ambiente(Mapa[construir].espinas,cabeza,brazo_d,brazo_i, Mapa[construir].manzanas,Mapa[construir].camaespinas,Mapa[construir].enemigos)
+                Novatin.ambiente(Mapa[construir].espinas,cabeza,brazo_d,brazo_i, Mapa[construir].manzanas,Mapa[construir].camaespinas,Mapa[construir].enemigos,Mapa[construir].powerups)
             else:
                 if Novatin.play == True:
-                    pygame.mixer.music.load("gameover.mp3")
-                    pygame.mixer.music.play()
+                    #pygame.mixer.music.load("Music/gameover.mp3")
+                    #pygame.mixer.music.play()
                     Novatin.play = False
                 Novatin.revivir += 1
                 if Novatin.revivir == 300 or restart == True:
-                    pygame.mixer.music.load("music1.mp3")
-                    pygame.mixer.music.play(-1)
+                    #pygame.mixer.music.load("Music/music1.mp3")
+                    #pygame.mixer.music.play(-1)
                     Novatin.revivir = 0
                     Novatin.alive = True
                     Novatin.play = True

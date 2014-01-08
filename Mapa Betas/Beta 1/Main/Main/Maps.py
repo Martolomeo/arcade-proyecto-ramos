@@ -18,7 +18,7 @@ class MapaUnoBeta(pygame.sprite.Sprite):
         self.changes = []
         self.changes.append([x, y-20,1,25,0,0])
 
-    def Imprimir(self,Novatin):
+    def Imprimir(self,Novatin,PowerUp):
         for plataforma in self.plataformas:
             self.screen.blit(plataforma.image, plataforma.rect)
 
@@ -88,11 +88,11 @@ class MapaDosBeta(pygame.sprite.Sprite):
         self.enemigos.append(Clases.Enemigo(x-30, y-515))
         self.powerups.append(Clases.PowerUp(200, 25))
         self.screen = pygame.display.set_mode((x,y), FULLSCREEN)
+        self.ombudsman = Clases.Ombudsman(50,420)
         self.changes = []
         self.changes.append([0,30,0,x-30,y-20,1])
-        
 
-    def Imprimir(self, Novatin):
+    def Imprimir(self, Novatin, PowerUp):
         for nube in self.nubes:
             self.screen.blit(nube.image, nube.rect)
         for camaespina in self.camaespinas:
@@ -112,6 +112,8 @@ class MapaDosBeta(pygame.sprite.Sprite):
             espina.trampa(Novatin)
             if espina.alive == True:
                 self.screen.blit(espina.image, espina.rect)
+        self.ombudsman.liberarse(Novatin, self, PowerUp)
+        self.screen.blit(self.ombudsman.image, self.ombudsman.rect)                
         for enemigo in self.enemigos:
             if enemigo.alive == True:
                 enemigo.move(self.plataformas,self.x)
@@ -130,3 +132,6 @@ class MapaDosBeta(pygame.sprite.Sprite):
         self.enemigos = []
         for enemigo in self.enemigosr:
             self.enemigos.append(Clases.Enemigo(enemigo.rect.centerx, enemigo.rect.centery))
+        if not self.ombudsman.atrapado:
+            self.ombudsman.atrapado = True
+            self.ombudsman.restaurar()

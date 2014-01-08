@@ -59,17 +59,18 @@ class Novatin(pygame.sprite.Sprite):
         self.pos_anterior = (self.rect.centerx, self.rect.centery)
         self.play = True
         self.muertes = 0
-        self.direccionx = d
+        self.direccionx = 0
+        self.restart = False
+        self.speed = 0
+        self.jump = False
+        self.shoot = False
         self.metralleta = m
-        self.st = 0
+        self.contador_m = 300
     
-    def move (self,down,plataformas,x):
-        '''n es una variable binaria que indica si el personaje
-        se mueve a la derecha o a la izquierda, 0 para la
-        derecha, 1 para la izquierda'''
+    def move (self,plataformas,x):
         self.pos_anterior = self.pos_actual
         if self.direccionx==0:
-            self.rect.centerx += down*15
+            self.rect.centerx += self.speed
             if self.animar_d <= 5:
                 self.image = self.mov1_d
                 self.animar_d += 1
@@ -83,7 +84,7 @@ class Novatin(pygame.sprite.Sprite):
                 self.animar_d = 0
             self.animar_i = 0
         elif self.direccionx==1:
-            self.rect.centerx -= down*15
+            self.rect.centerx -= self.speed
             if self.animar_i <= 5:
                 self.image = self.mov1_i
                 self.animar_i += 1
@@ -118,14 +119,12 @@ class Novatin(pygame.sprite.Sprite):
                 self.image = self.quieto_d
             if self.direccionx == 1:
                 self.image = self.quieto_i            
-    '''nuevo jump v 0.25, esta vez reconociendo el entorno (solo plataformas,
-    esto es bajo el supuesto de que todos los niveles tendran plataformas)'''
-    def jump (self,y,jump,plataformas):
+    def saltar(self,y,plataformas):
         a = 0
         if self.rect.top <= 0:
             self.rect.centery = self.height/2
             self.jumpspeed = -10
-        if jump == False:
+        if self.jump == False:
             for i in range(len(plataformas)):
                 if self.rect.bottom >= plataformas[i].rect.top and pygame.sprite.collide_rect(self, plataformas[i]) == True and self.rect.top<plataformas[i].rect.top and self.rect.centerx<=plataformas[i].rect.right and self.rect.centerx>=plataformas[i].rect.left:
                     self.rect.centery = plataformas[i].rect.top-(self.height/2)+1
@@ -147,7 +146,7 @@ class Novatin(pygame.sprite.Sprite):
                     a += 1
                     if a== len(plataformas) and self.rect.bottom<y and self.j==0:
                         self.jumpspeed=15
-                        while jump==True:
+                        while self.jump==True:
                             if self.jumpspeed >= -20:
                                 self.rect.centery -= self.jumpspeed
                                 self.jumpspeed -= self.fall
@@ -167,7 +166,7 @@ class Novatin(pygame.sprite.Sprite):
                     self.speedcero -= self.fall
                 else:
                     self.rect.centery -= -20
-        elif jump == True:
+        elif self.jump == True:
             a=0
             for i in range(len(plataformas)):
                 
@@ -216,12 +215,17 @@ class Novatin(pygame.sprite.Sprite):
                 self.rect.centery = self.height/2
                 self.jumpspeed = 2
 
-    def shoot(self,shoot,plataformas,save,enemigos,x):
-
-        if shoot == True:
+    def disparar(self,plataformas,save,enemigos,x):        
+        if self.shoot == True:
             self.bullets.append(Bullet(self.rect.centerx, self.rect.centery, self.direccionx))
         for bullet in self.bullets:
             bullet.move(plataformas,save,x,enemigos,self)
+        if self.metralleta:
+            self.contador_m -= 1
+            if self.contador_m == 0:
+                self.metralleta = False
+        if not self.metralleta:
+            self.contador_m = 300
                 
     def ambiente(self,espinas,cabeza,brazo_d,brazo_i, manzanas, camaespinas, enemigos, powerups):
         if self.alive == True:
@@ -244,6 +248,7 @@ class Novatin(pygame.sprite.Sprite):
             for powerup in powerups:
                 if pygame.sprite.collide_rect(self,powerup) == True and powerup.alive:
                     self.metralleta = True
+                    self.contador_m = 300
                     powerup.kill()
                 
     def kill(self,cabeza,brazo_d,brazo_i):
@@ -323,7 +328,7 @@ class Bullet(pygame.sprite.Sprite):
 
     def kill(self):
         self.alive=False
-        del self.image
+        #del self.image
         pygame.sprite.Sprite.kill(self)
 
 class Espina(pygame.sprite.Sprite):
@@ -506,9 +511,32 @@ class Enemigo(pygame.sprite.Sprite):
             novatin.kill()
     def kill(self):
         self.alive=False
-        del self.image
-        pygame.sprite.Sprite.kill(self)
+        #del self.image
+        #pygame.sprite.Sprite.kill(self)
 
+class Ombudsman(pygame.sprite.Sprite):
+    def __init__(self, x,y):
+        pygame.sprite.Sprite.__init__(self)
+        self.atrapado = True
+        self.atrapado_i = pygame.image.load("Imagenes/ombudsman_atrapado_1.png")
+        self.image = self.atrapado_i
+        self.libre_i = pygame.image.load("Imagenes/ombudsman_libre.png")
+        #Falta la imagen de Ombudsman libre
+        self.bonus = random.randint(1,3)
+        self.rect = self.image.get_rect()
+        self.rect.centerx = x
+        self.rect.centery = y
+
+    def liberarse(self, novatin, mapa, powerup):
+        if self.atrapado and pygame.sprite.collide_rect(self, novatin):
+            self.atrapado = False
+            self.image = self.libre_i
+            mapa.powerups.append(powerup(self.rect.centerx, self.rect.centery - 50))
+
+    def restaurar(self):
+        if self.atrapado == True:
+            self.image = self.atrapado_i
+            
 class PowerUp(pygame.sprite.Sprite):
     def __init__(self,x,y):
         self.image = pygame.image.load("Imagenes/PowerUp.png")

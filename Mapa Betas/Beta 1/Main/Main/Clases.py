@@ -59,13 +59,14 @@ class Novatin(pygame.sprite.Sprite):
         self.pos_anterior = (self.rect.centerx, self.rect.centery)
         self.play = True
         self.muertes = 0
+        self.direccionx = 0
     
-    def move (self,n,down,plataformas,x):
+    def move (self,down,plataformas,x):
         '''n es una variable binaria que indica si el personaje
         se mueve a la derecha o a la izquierda, 0 para la
         derecha, 1 para la izquierda'''
         self.pos_anterior = self.pos_actual
-        if n==0:
+        if self.direccionx==0:
             self.rect.centerx += down*15
             if self.animar_d <= 5:
                 self.image = self.mov1_d
@@ -79,7 +80,7 @@ class Novatin(pygame.sprite.Sprite):
             elif self.animar_d > 15:
                 self.animar_d = 0
             self.animar_i = 0
-        elif n==1:
+        elif self.direccionx==1:
             self.rect.centerx -= down*15
             if self.animar_i <= 5:
                 self.image = self.mov1_i
@@ -95,10 +96,10 @@ class Novatin(pygame.sprite.Sprite):
             self.animar_d = 0
         for i in range(len(plataformas)):
             if pygame.sprite.collide_rect(self,plataformas[i]) == True and self.rect.top>plataformas[i].rect.top:
-                if n==0 and self.rect.left<plataformas[i].rect.right and self.rect.top<plataformas[i].rect.bottom and self.rect.bottom<=plataformas[i].rect.bottom:
+                if self.direccionx==0 and self.rect.left<plataformas[i].rect.right and self.rect.top<plataformas[i].rect.bottom and self.rect.bottom<=plataformas[i].rect.bottom:
                     self.image = self.quieto_d
                     self.rect.centerx = plataformas[i].rect.left-(self.width/2)
-                elif n==1 and self.rect.right>plataformas[i].rect.left and self.rect.top<plataformas[i].rect.bottom and self.rect.bottom<=plataformas[i].rect.bottom:
+                elif self.direccionx==1 and self.rect.right>plataformas[i].rect.left and self.rect.top<plataformas[i].rect.bottom and self.rect.bottom<=plataformas[i].rect.bottom:
                     self.image = self.quieto_i
                     self.rect.centerx = plataformas[i].rect.right+(self.width/2)
         if self.rect.left <= 0:
@@ -111,13 +112,13 @@ class Novatin(pygame.sprite.Sprite):
         if self.pos_actual == self.pos_anterior:
             self.animar_d = 0
             self.animar_i = 0
-            if n == 0:
+            if self.direccionx == 0:
                 self.image = self.quieto_d
-            if n == 1:
+            if self.direccionx == 1:
                 self.image = self.quieto_i            
     '''nuevo jump v 0.25, esta vez reconociendo el entorno (solo plataformas,
     esto es bajo el supuesto de que todos los niveles tendran plataformas)'''
-    def jump (self,n,y,jump,plataformas):
+    def jump (self,y,jump,plataformas):
         a = 0
         if self.rect.top <= 0:
             self.rect.centery = self.height/2
@@ -155,7 +156,7 @@ class Novatin(pygame.sprite.Sprite):
                         self.stopm = False
                         a=0
             if self.stopm == False:
-                if n == 0:
+                if self.direccionx == 0:
                     self.image = self.salto_3_d
                 else:
                     self.image = self.salto_3_i
@@ -189,7 +190,7 @@ class Novatin(pygame.sprite.Sprite):
             if self.jumpspeed >= -20:
                 self.rect.centery -= self.jumpspeed
                 self.jumpspeed -= self.fall
-                if n == 0:
+                if self.direccionx == 0:
                     if self.jumpspeed > 4:
                         self.image = self.salto_1_d
                     elif self.jumpspeed > -9:
@@ -205,7 +206,7 @@ class Novatin(pygame.sprite.Sprite):
                         self.image = self.salto_3_i
             else:
                 self.rect.centery -= -20
-                if n == 0:
+                if self.direccionx == 0:
                     self.image = self.salto_3_d
                 else:
                     self.image = self.salto_3_i
@@ -213,10 +214,10 @@ class Novatin(pygame.sprite.Sprite):
                 self.rect.centery = self.height/2
                 self.jumpspeed = 2
 
-    def shoot (self,shoot,n,plataformas,save,enemigos,x):
+    def shoot(self,shoot,plataformas,save,enemigos,x):
         
         if shoot == True:
-            self.bullets.append(Bullet(self.rect.centerx, self.rect.centery, n))
+            self.bullets.append(Bullet(self.rect.centerx, self.rect.centery, self.direccionx))
         for bullet in self.bullets:
             bullet.move(plataformas,save,x,enemigos,self)
 

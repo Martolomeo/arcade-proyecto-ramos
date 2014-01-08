@@ -12,7 +12,7 @@ def texto(texto, posx, posy, tamano, color=(255, 255, 255)):
 
 def main():
     pygame.init()
-    #Variables para la pantalla y seteo de esta
+    #Variables para la panalla y seeo de esa
     x = 1280
     y = 720
     size = (x,y)
@@ -23,20 +23,13 @@ def main():
     fondo = pygame.image.load("Imagenes/fondo.png")
     fondo_pass = pygame.image.load("Imagenes/fondo_pass.png")
     gameover = pygame.image.load("Imagenes/gameover.png")
-    gameover = pygame.image.load("Imagenes/gameover.png")
     #Musica
-    pygame.mixer.music.load("music1.mp3")
-    pygame.mixer.music.play(-1)
+    #pygame.mixer.music.load("music1.mp3")
+    #pygame.mixer.music.play(-1)
     #Clock
     clock = pygame.time.Clock()
     #Variables de Novatin
-    jump = False
-    speed = 0
-    jspeed = 0
-    t = 0
     s = 0
-    restart = False
-    shoot=False
     cabeza = Clases.Extremidad(0,0,"cabeza")
     brazo_i = Clases.Extremidad(0,0,"brazo_i")
     brazo_d = Clases.Extremidad(0,0,"brazo_d")
@@ -122,55 +115,56 @@ def main():
                 screen.blit(password, password_rect)
             pygame.display.flip()
         else:
-            shoot = False
-            restart = False
+            Novatin.shoot = False
             for event in pygame.event.get():
                 if hasattr(event, 'key')==False:
                     continue
                 down = event.type == KEYDOWN
                 if event.key == K_RIGHT:
                     Novatin.direccionx = 0
-                    speed = down*1
+                    Novatin.speed = down*15
                 elif event.key == K_r:
-                    restart = True
+                    if Novatin.alive == False:
+                        Novatin.restart = True
                 elif event.key == K_LEFT:
                     Novatin.direccionx = 1
-                    speed = down*1
+                    Novatin.speed = down*15
                 elif event.key==K_ESCAPE:
                     pygame.quit()
                     sys.exit(0)
                 if event.key == K_SPACE:
                     if s==0:
-                        shoot=True
+                        Novatin.shoot=True
                         s=1
-                    elif s==1:
-                        shoot=False
+                    else:
+                        Novatin.shoot=False
                         s=0
             key = pygame.key.get_pressed()
             if key[K_UP] == True:
-                jump = True
+                Novatin.jump = True
             elif key[K_UP] == False:
-                jump = False
+                Novatin.jump = False
             #########################################################################
             screen.fill(black) #si se pone dentro del if entonces se vuelve negra una vez
             #########################################################################
             if Novatin.alive==True:
-                Novatin.move(speed,Mapa[construir].plataformas,x)
-                Novatin.jump(y,jump,Mapa[construir].plataformas)
-                Novatin.shoot(shoot,Mapa[construir].plataformas,Mapa[construir].save,Mapa[construir].enemigos,x)
+                Novatin.move(Mapa[construir].plataformas,x)
+                Novatin.saltar(y,Mapa[construir].plataformas)
+                Novatin.disparar(Mapa[construir].plataformas,Mapa[construir].save,Mapa[construir].enemigos,x)
                 Novatin.ambiente(Mapa[construir].espinas,cabeza,brazo_d,brazo_i, Mapa[construir].manzanas,Mapa[construir].camaespinas,Mapa[construir].enemigos)
             else:
                 if Novatin.play == True:
-                    pygame.mixer.music.load("gameover.mp3")
-                    pygame.mixer.music.play()
+                    #pygame.mixer.music.load("gameover.mp3")
+                    #pygame.mixer.music.play()
                     Novatin.play = False
                 Novatin.revivir += 1
-                if Novatin.revivir == 300 or restart == True:
-                    pygame.mixer.music.load("music1.mp3")
-                    pygame.mixer.music.play(-1)
+                if Novatin.revivir == 300 or Novatin.restart == True:
+                    #pygame.mixer.music.load("music1.mp3")
+                    #pygame.mixer.music.play(-1)
                     Novatin.revivir = 0
                     Novatin.alive = True
                     Novatin.play = True
+                    Novatin.restart = False
                     Novatin.rect.centerx = Mapa[construir].save[saven].savex
                     Novatin.rect.centery = Mapa[construir].save[saven].savey
                     cabeza.alive = False

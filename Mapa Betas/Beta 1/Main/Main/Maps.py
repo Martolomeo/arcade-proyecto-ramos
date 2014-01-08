@@ -5,7 +5,6 @@ class MapaUnoBeta(pygame.sprite.Sprite):
     def __init__(self,x,y):
         self.plataformas = []
         self.plataformas.append(Clases.PlataformaAlta(128, y-180))
-        self.plataformas.append(Clases.PlataformaAlta(x-128, y-180))
         self.plataformas.append(Clases.PlataformaBaja(384, y-45))
         self.plataformas.append(Clases.PlataformaBaja(x-384, y-45))
         self.plataformasr = self.plataformas
@@ -15,6 +14,9 @@ class MapaUnoBeta(pygame.sprite.Sprite):
         self.espinas = []
         self.manzanas = []
         self.camaespinas = []
+        self.powerups = []
+        self.changes = []
+        self.changes.append([x, y-20,1,25,0,0])
 
     def Imprimir(self,Novatin):
         for plataforma in self.plataformas:
@@ -39,6 +41,7 @@ class MapaDosBeta(pygame.sprite.Sprite):
         self.save = []
         self.enemigosr = []
         self.enemigos = []
+        self.powerups = []
         self.plataformas.append(Clases.PlataformaBaja(128, 95))
         self.plataformas.append(Clases.PlataformaBaja(384, 145))
         self.plataformas.append(Clases.PlataformaAlta(768, 320))
@@ -83,8 +86,11 @@ class MapaDosBeta(pygame.sprite.Sprite):
         self.enemigos.append(Clases.Enemigo(x-30, y-155))
         self.enemigos.append(Clases.Enemigo(x-30, y-335))
         self.enemigos.append(Clases.Enemigo(x-30, y-515))
+        self.powerups.append(Clases.PowerUp(200, 25))
         self.screen = pygame.display.set_mode((x,y), FULLSCREEN)
         self.ombudsman = Clases.Ombudsman(50,420)
+        self.changes = []
+        self.changes.append([0,30,0,x-30,y-20,1])
 
     def Imprimir(self, Novatin):
         for nube in self.nubes:
@@ -112,6 +118,9 @@ class MapaDosBeta(pygame.sprite.Sprite):
             if enemigo.alive == True:
                 enemigo.move(self.plataformas,self.x)
                 self.screen.blit(enemigo.image, enemigo.rect)
+        for powerup in self.powerups:
+            if powerup.alive == True:
+                self.screen.blit(powerup.image, powerup.rect)
 
     def Restaurar(self):
         self.espinas = []

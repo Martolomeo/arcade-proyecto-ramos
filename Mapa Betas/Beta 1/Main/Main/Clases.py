@@ -23,7 +23,7 @@ class PlataformaAlta(pygame.sprite.Sprite):
         self.height = self.image.get_height()
 
 class Novatin(pygame.sprite.Sprite):
-    def __init__(self, x, y):
+    def __init__(self, x, y, d, m):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.image.load("Imagenes/novatin_derecha.png")
         self.quieto_d = pygame.image.load("Imagenes/novatin_derecha.png")
@@ -64,6 +64,7 @@ class Novatin(pygame.sprite.Sprite):
         self.speed = 0
         self.jump = False
         self.shoot = False
+        self.metralleta = m
     
     def move (self,plataformas,x):
         self.pos_anterior = self.pos_actual
@@ -213,14 +214,13 @@ class Novatin(pygame.sprite.Sprite):
                 self.rect.centery = self.height/2
                 self.jumpspeed = 2
 
-    def disparar(self,plataformas,save,enemigos,x):
-        
+    def disparar(self,plataformas,save,enemigos,x):        
         if self.shoot == True:
             self.bullets.append(Bullet(self.rect.centerx, self.rect.centery, self.direccionx))
         for bullet in self.bullets:
             bullet.move(plataformas,save,x,enemigos,self)
-
-    def ambiente(self,espinas,cabeza,brazo_d,brazo_i, manzanas, camaespinas, enemigos):
+                
+    def ambiente(self,espinas,cabeza,brazo_d,brazo_i, manzanas, camaespinas, enemigos, powerups):
         if self.alive == True:
             for espina in espinas:
                 if pygame.sprite.collide_rect(self,espina)==True:
@@ -237,6 +237,11 @@ class Novatin(pygame.sprite.Sprite):
             for enemigo in enemigos:
                 if pygame.sprite.collide_rect(self,enemigo)==True and enemigo.alive:
                     self.kill(cabeza,brazo_d,brazo_i)
+        if self.alive == True:
+            for powerup in powerups:
+                if pygame.sprite.collide_rect(self,powerup) == True and powerup.alive:
+                    self.metralleta = True
+                    powerup.kill()
                 
     def kill(self,cabeza,brazo_d,brazo_i):
         if self.alive==True:
@@ -247,6 +252,7 @@ class Novatin(pygame.sprite.Sprite):
             extremidad.rect.centerx = self.rect.centerx
             extremidad.rect.centery = self.rect.centery
         self.muertes += 1
+        self.metralleta = False
 
 class Extremidad(pygame.sprite.Sprite):
     def __init__(self,x,y,n):
@@ -497,8 +503,8 @@ class Enemigo(pygame.sprite.Sprite):
             novatin.kill()
     def kill(self):
         self.alive=False
-        del self.image
-        pygame.sprite.Sprite.kill(self)
+        #del self.image
+        #pygame.sprite.Sprite.kill(self)
 
 class Ombudsman(pygame.sprite.Sprite):
     def __init__(self, x,y):
@@ -517,3 +523,15 @@ class Ombudsman(pygame.sprite.Sprite):
         if self.atrapado and pygame.sprite.collide_rect(self, novatin):
             self.atrapado = False
             self.image = self.libre_i
+class PowerUp(pygame.sprite.Sprite):
+    def __init__(self,x,y):
+        self.image = pygame.image.load("Imagenes/PowerUp.png")
+        self.rect = self.image.get_rect()
+        self.rect.centerx = x
+        self.rect.centery = y
+        self.alive = True
+
+    def kill(self):
+        self.alive = False
+        del self.image
+        #pygame.sprite.Sprite.kill(self)

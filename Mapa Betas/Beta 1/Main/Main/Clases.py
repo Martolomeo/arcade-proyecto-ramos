@@ -65,6 +65,7 @@ class Novatin(pygame.sprite.Sprite):
         self.jump = False
         self.shoot = False
         self.metralleta = m
+        self.contador_m = 300
     
     def move (self,plataformas,x):
         self.pos_anterior = self.pos_actual
@@ -219,6 +220,12 @@ class Novatin(pygame.sprite.Sprite):
             self.bullets.append(Bullet(self.rect.centerx, self.rect.centery, self.direccionx))
         for bullet in self.bullets:
             bullet.move(plataformas,save,x,enemigos,self)
+        if self.metralleta:
+            self.contador_m -= 1
+            if self.contador_m == 0:
+                self.metralleta = False
+        if not self.metralleta:
+            self.contador_m = 300
                 
     def ambiente(self,espinas,cabeza,brazo_d,brazo_i, manzanas, camaespinas, enemigos, powerups):
         if self.alive == True:
@@ -241,6 +248,7 @@ class Novatin(pygame.sprite.Sprite):
             for powerup in powerups:
                 if pygame.sprite.collide_rect(self,powerup) == True and powerup.alive:
                     self.metralleta = True
+                    self.contador_m = 300
                     powerup.kill()
                 
     def kill(self,cabeza,brazo_d,brazo_i):
@@ -320,7 +328,7 @@ class Bullet(pygame.sprite.Sprite):
 
     def kill(self):
         self.alive=False
-        del self.image
+        #del self.image
         pygame.sprite.Sprite.kill(self)
 
 class Espina(pygame.sprite.Sprite):
@@ -519,10 +527,16 @@ class Ombudsman(pygame.sprite.Sprite):
         self.rect.centerx = x
         self.rect.centery = y
 
-    def liberarse(self, novatin):
+    def liberarse(self, novatin, mapa, powerup):
         if self.atrapado and pygame.sprite.collide_rect(self, novatin):
             self.atrapado = False
             self.image = self.libre_i
+            mapa.powerups.append(powerup(self.rect.centerx, self.rect.centery - 50))
+
+    def restaurar(self):
+        if self.atrapado == True:
+            self.image = self.atrapado_i
+            
 class PowerUp(pygame.sprite.Sprite):
     def __init__(self,x,y):
         self.image = pygame.image.load("Imagenes/PowerUp.png")

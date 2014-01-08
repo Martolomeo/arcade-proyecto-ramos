@@ -183,7 +183,7 @@ def main():
                     #pygame.mixer.music.play()
                     Novatin.play = False
                 Novatin.revivir += 1
-                if Novatin.revivir == 300 or restart == True:
+                if Novatin.revivir == 300 or Novatin.restart == True:
                     #pygame.mixer.music.load("Music/music1.mp3")
                     #pygame.mixer.music.play(-1)
                     Novatin.revivir = 0
@@ -203,6 +203,8 @@ def main():
                     brazo_i.jumpspeed = random.randint(10,25)
                     Mapa[construir].Restaurar()
             muertes, muertes_rect = texto(str(Novatin.muertes), x-100, 20, 20)
+            if Novatin.contador_m < 300:
+                bonus, bonus_rect = texto(str(Novatin.contador_m//30+1), x-100, 40, 20)
             if cabeza.alive:
                 cabeza.jump(y)
             if brazo_i.alive:
@@ -213,7 +215,7 @@ def main():
                 brazo_d.jump(y)
             screen.blit(fondo, (0,0))
             #primero el if para que novatin se mueva por enfrente de las plataformas
-            Mapa[construir].Imprimir(Novatin)
+            Mapa[construir].Imprimir(Novatin, Clases.PowerUp)
             if Novatin.alive==True:
                 screen.blit(Novatin.image, Novatin.rect)
             if cabeza.alive:
@@ -223,6 +225,8 @@ def main():
             if brazo_i.alive:
                 screen.blit(brazo_i.image, brazo_i.rect)
             screen.blit(muertes, muertes_rect)
+            if Novatin.contador_m < 300:
+                screen.blit(bonus, bonus_rect)
             for bullet in Novatin.bullets:
                 if bullet.alive==True:
                     screen.blit(bullet.image, bullet.rect)

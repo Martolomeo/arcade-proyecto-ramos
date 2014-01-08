@@ -40,20 +40,34 @@ def main():
     brazo_i = Clases.Extremidad(0,0,"brazo_i")
     brazo_d = Clases.Extremidad(0,0,"brazo_d")
     saven = 0
+    xi = x/2
+    yi = y-20
+    di = 0
+    mi = False
+    Novatin = Clases.Novatin(xi,yi,di,mi)
     #Portada
     main = 1
     seleccion = 0
     #Mapas
-    construir = 1
+    construir = 0
+    cambiar = False
     Mapa = []
     Mapa.append(Maps.MapaUnoBeta(x,y))
     Mapa.append(Maps.MapaDosBeta(x,y))
-    if construir == 0:
-        Novatin = Clases.Novatin((x/2),y-20)
-    if construir == 1:
-        Novatin = Clases.Novatin(25,0)
 
     while 1:
+        if construir == 0 and cambiar == True:
+            if Novatin.metralleta == True:
+                Novatin = Clases.Novatin(xi,yi,di,True)
+            else:
+                Novatin = Clases.Novatin(xi,yi,di,False)
+            cambiar = False
+        if construir == 1 and cambiar == True:
+            if Novatin.metralleta == True:
+                Novatin = Clases.Novatin(xi,yi,di,True)
+            else:
+                Novatin = Clases.Novatin(xi,yi,di,False)
+            cambiar = False
         clock.tick(30)
         if main == 1:
             for event in pygame.event.get():
@@ -162,6 +176,13 @@ def main():
                 Novatin.jump(y,jump,Mapa[construir].plataformas)
                 Novatin.shoot(shoot,Mapa[construir].plataformas,Mapa[construir].save,Mapa[construir].enemigos,x)
                 Novatin.ambiente(Mapa[construir].espinas,cabeza,brazo_d,brazo_i, Mapa[construir].manzanas,Mapa[construir].camaespinas,Mapa[construir].enemigos,Mapa[construir].powerups)
+                for change in Mapa[construir].changes:
+                    if ((Novatin.rect.right> change[0] and Novatin.rect.left <= change[0]) or (Novatin.rect.left<change[0] and Novatin.rect.right >= change[0])) and Novatin.rect.centery-10<change[1] and Novatin.rect.centery+10>change[1]:
+                        xi = change[3]
+                        yi = change[4]
+                        di = change[5]
+                        construir = change[2]
+                        cambiar = True
             else:
                 if Novatin.play == True:
                     #pygame.mixer.music.load("Music/gameover.mp3")

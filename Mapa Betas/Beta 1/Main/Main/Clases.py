@@ -23,7 +23,7 @@ class PlataformaAlta(pygame.sprite.Sprite):
         self.height = self.image.get_height()
 
 class Novatin(pygame.sprite.Sprite):
-    def __init__(self, x, y):
+    def __init__(self, x, y, d, m):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.image.load("Imagenes/novatin_derecha.png")
         self.quieto_d = pygame.image.load("Imagenes/novatin_derecha.png")
@@ -59,8 +59,8 @@ class Novatin(pygame.sprite.Sprite):
         self.pos_anterior = (self.rect.centerx, self.rect.centery)
         self.play = True
         self.muertes = 0
-        self.direccionx = 0
-        self.metralleta = False
+        self.direccionx = d
+        self.metralleta = m
         self.st = 0
     
     def move (self,down,plataformas,x):

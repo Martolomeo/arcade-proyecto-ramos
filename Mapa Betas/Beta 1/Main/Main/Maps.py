@@ -84,6 +84,7 @@ class MapaDosBeta(pygame.sprite.Sprite):
         self.enemigos.append(Clases.Enemigo(x-30, y-335))
         self.enemigos.append(Clases.Enemigo(x-30, y-515))
         self.screen = pygame.display.set_mode((x,y), FULLSCREEN)
+        self.ombudsman = Clases.Ombudsman(50,420)
 
     def Imprimir(self, Novatin):
         for nube in self.nubes:
@@ -105,6 +106,8 @@ class MapaDosBeta(pygame.sprite.Sprite):
             espina.trampa(Novatin)
             if espina.alive == True:
                 self.screen.blit(espina.image, espina.rect)
+        self.ombudsman.liberarse(Novatin)
+        self.screen.blit(self.ombudsman.image, self.ombudsman.rect)                
         for enemigo in self.enemigos:
             if enemigo.alive == True:
                 enemigo.move(self.plataformas,self.x)

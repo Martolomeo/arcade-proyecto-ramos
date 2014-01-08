@@ -499,3 +499,21 @@ class Enemigo(pygame.sprite.Sprite):
         self.alive=False
         del self.image
         pygame.sprite.Sprite.kill(self)
+
+class Ombudsman(pygame.sprite.Sprite):
+    def __init__(self, x,y):
+        pygame.sprite.Sprite.__init__(self)
+        self.atrapado = True
+        self.atrapado_i = pygame.image.load("Imagenes/ombudsman_atrapado_1.png")
+        self.image = self.atrapado_i
+        self.libre_i = pygame.image.load("Imagenes/ombudsman_libre.png")
+        #Falta la imagen de Ombudsman libre
+        self.bonus = random.randint(1,3)
+        self.rect = self.image.get_rect()
+        self.rect.centerx = x
+        self.rect.centery = y
+
+    def liberarse(self, novatin):
+        if self.atrapado and pygame.sprite.collide_rect(self, novatin):
+            self.atrapado = False
+            self.image = self.libre_i

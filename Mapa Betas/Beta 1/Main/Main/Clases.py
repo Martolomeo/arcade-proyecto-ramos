@@ -60,6 +60,8 @@ class Novatin(pygame.sprite.Sprite):
         self.play = True
         self.muertes = 0
         self.direccionx = 0
+        self.metralleta = False
+        self.st = 0
     
     def move (self,down,plataformas,x):
         '''n es una variable binaria que indica si el personaje
@@ -215,13 +217,13 @@ class Novatin(pygame.sprite.Sprite):
                 self.jumpspeed = 2
 
     def shoot(self,shoot,plataformas,save,enemigos,x):
-        
+
         if shoot == True:
             self.bullets.append(Bullet(self.rect.centerx, self.rect.centery, self.direccionx))
         for bullet in self.bullets:
             bullet.move(plataformas,save,x,enemigos,self)
-
-    def ambiente(self,espinas,cabeza,brazo_d,brazo_i, manzanas, camaespinas, enemigos):
+                
+    def ambiente(self,espinas,cabeza,brazo_d,brazo_i, manzanas, camaespinas, enemigos, powerups):
         if self.alive == True:
             for espina in espinas:
                 if pygame.sprite.collide_rect(self,espina)==True:
@@ -238,6 +240,11 @@ class Novatin(pygame.sprite.Sprite):
             for enemigo in enemigos:
                 if pygame.sprite.collide_rect(self,enemigo)==True and enemigo.alive:
                     self.kill(cabeza,brazo_d,brazo_i)
+        if self.alive == True:
+            for powerup in powerups:
+                if pygame.sprite.collide_rect(self,powerup) == True and powerup.alive:
+                    self.metralleta = True
+                    powerup.kill()
                 
     def kill(self,cabeza,brazo_d,brazo_i):
         if self.alive==True:
@@ -248,6 +255,7 @@ class Novatin(pygame.sprite.Sprite):
             extremidad.rect.centerx = self.rect.centerx
             extremidad.rect.centery = self.rect.centery
         self.muertes += 1
+        self.metralleta = False
 
 class Extremidad(pygame.sprite.Sprite):
     def __init__(self,x,y,n):
@@ -500,3 +508,16 @@ class Enemigo(pygame.sprite.Sprite):
         self.alive=False
         del self.image
         pygame.sprite.Sprite.kill(self)
+
+class PowerUp(pygame.sprite.Sprite):
+    def __init__(self,x,y):
+        self.image = pygame.image.load("Imagenes/PowerUp.png")
+        self.rect = self.image.get_rect()
+        self.rect.centerx = x
+        self.rect.centery = y
+        self.alive = True
+
+    def kill(self):
+        self.alive = False
+        del self.image
+        #pygame.sprite.Sprite.kill(self)

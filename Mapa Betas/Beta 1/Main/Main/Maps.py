@@ -39,6 +39,7 @@ class MapaDosBeta(pygame.sprite.Sprite):
         self.save = []
         self.enemigosr = []
         self.enemigos = []
+        self.powerups = []
         self.plataformas.append(Clases.PlataformaBaja(128, 95))
         self.plataformas.append(Clases.PlataformaBaja(384, 145))
         self.plataformas.append(Clases.PlataformaAlta(768, 320))
@@ -83,6 +84,7 @@ class MapaDosBeta(pygame.sprite.Sprite):
         self.enemigos.append(Clases.Enemigo(x-30, y-155))
         self.enemigos.append(Clases.Enemigo(x-30, y-335))
         self.enemigos.append(Clases.Enemigo(x-30, y-515))
+        self.powerups.append(Clases.PowerUp(200, 25))
         self.screen = pygame.display.set_mode((x,y), FULLSCREEN)
 
     def Imprimir(self, Novatin):
@@ -109,6 +111,9 @@ class MapaDosBeta(pygame.sprite.Sprite):
             if enemigo.alive == True:
                 enemigo.move(self.plataformas,self.x)
                 self.screen.blit(enemigo.image, enemigo.rect)
+        for powerup in self.powerups:
+            if powerup.alive == True:
+                self.screen.blit(powerup.image, powerup.rect)
 
     def Restaurar(self):
         self.espinas = []

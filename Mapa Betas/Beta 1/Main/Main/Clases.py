@@ -248,7 +248,7 @@ class Novatin(pygame.sprite.Sprite):
             for powerup in powerups:
                 if pygame.sprite.collide_rect(self,powerup) == True and powerup.alive:
                     self.metralleta = True
-                    self.contador_m = 300
+                    self.contador_m = 150
                     powerup.kill()
                 
     def kill(self,cabeza,brazo_d,brazo_i):
@@ -521,7 +521,8 @@ class Ombudsman(pygame.sprite.Sprite):
         self.atrapado_i = pygame.image.load("Imagenes/ombudsman_atrapado_1.png")
         self.image = self.atrapado_i
         self.libre_i = pygame.image.load("Imagenes/ombudsman_libre.png")
-        #Falta la imagen de Ombudsman libre
+        self.libre_i_2 = pygame.image.load("Imagenes/ombudsman_libre_2.png")
+        self.contador = 200
         self.bonus = random.randint(1,3)
         self.rect = self.image.get_rect()
         self.rect.centerx = x
@@ -532,10 +533,21 @@ class Ombudsman(pygame.sprite.Sprite):
             self.atrapado = False
             self.image = self.libre_i
             mapa.powerups.append(powerup(self.rect.centerx, self.rect.centery - 50))
+        if not self.atrapado:
+            if self.contador == 0:
+                self.image = self.libre_i_2
+            else:
+                self.contador -= 1
+                if self.contador <= 60:
+                    if self.contador % 2 == 1:
+                        self.image = self.libre_i
+                    else:
+                        self.image = self.libre_i_2
 
     def restaurar(self):
         if self.atrapado == True:
             self.image = self.atrapado_i
+            self.contador = 200
             
 class PowerUp(pygame.sprite.Sprite):
     def __init__(self,x,y):

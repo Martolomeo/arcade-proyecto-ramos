@@ -86,7 +86,6 @@ class MapaDosBeta(pygame.sprite.Sprite):
         self.enemigos.append(Clases.Enemigo(x-30, y-155))
         self.enemigos.append(Clases.Enemigo(x-30, y-335))
         self.enemigos.append(Clases.Enemigo(x-30, y-515))
-        self.powerups.append(Clases.PowerUp(200, 25))
         self.screen = pygame.display.set_mode((x,y), FULLSCREEN)
         self.ombudsman = Clases.Ombudsman(50,420)
         self.changes = []

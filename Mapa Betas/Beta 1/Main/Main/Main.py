@@ -178,6 +178,8 @@ def main():
                         construir = change[2]
                         cambiar = True
             else:
+                Novatin.shoot = False
+                Novatin.disparar(Mapa[construir].plataformas,Mapa[construir].save,Mapa[construir].enemigos,x)
                 if Novatin.play == True:
                     #pygame.mixer.music.load("Music/gameover.mp3")
                     #pygame.mixer.music.play()

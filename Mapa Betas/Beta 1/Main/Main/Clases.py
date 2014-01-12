@@ -65,7 +65,7 @@ class Novatin(pygame.sprite.Sprite):
         self.jump = False
         self.shoot = False
         self.metralleta = m
-        self.contador_m = 300
+        self.contador_m = 0
     
     def move (self,plataformas,x):
         self.pos_anterior = self.pos_actual
@@ -98,11 +98,14 @@ class Novatin(pygame.sprite.Sprite):
                 self.animar_i = 0
             self.animar_d = 0
         for i in range(len(plataformas)):
-            if pygame.sprite.collide_rect(self,plataformas[i]) == True and self.rect.top>plataformas[i].rect.top:
-                if self.direccionx==0 and self.rect.left<plataformas[i].rect.right and self.rect.top<plataformas[i].rect.bottom and self.rect.bottom<=plataformas[i].rect.bottom:
+            if pygame.sprite.collide_rect(self, plataformas[i]) and ((self.rect.top < plataformas[i].rect.bottom and self.rect.top > plataformas[i].rect.top) or (self.rect.bottom - 5 > plataformas[i].rect.top and self.rect.bottom < plataformas[i].rect.bottom)):
+                if self.rect.right > plataformas[i].rect.left and self.rect.centerx < plataformas[i].rect.centerx:
+                #if pygame.sprite.collide_rect(self,plataformas[i]) and self.rect.top>plataformas[i].rect.top:
+                #if self.rect.right > plataformas[i].rect.left and self.rect.left<plataformas[i].rect.right and self.rect.top<plataformas[i].rect.bottom and self.rect.bottom<=plataformas[i].rect.bottom:
                     self.image = self.quieto_d
                     self.rect.centerx = plataformas[i].rect.left-(self.width/2)
-                elif self.direccionx==1 and self.rect.right>plataformas[i].rect.left and self.rect.top<plataformas[i].rect.bottom and self.rect.bottom<=plataformas[i].rect.bottom:
+                elif self.rect.left < plataformas[i].rect.right and self.rect.centerx > plataformas[i].rect.centerx:
+                #elif self.rect.left < plataformas[i].rect.right and self.rect.right>plataformas[i].rect.left and self.rect.top<plataformas[i].rect.bottom and self.rect.bottom<=plataformas[i].rect.bottom:
                     self.image = self.quieto_i
                     self.rect.centerx = plataformas[i].rect.right+(self.width/2)
         if self.rect.left <= 0:
@@ -126,7 +129,7 @@ class Novatin(pygame.sprite.Sprite):
             self.jumpspeed = -10
         if self.jump == False:
             for i in range(len(plataformas)):
-                if self.rect.bottom >= plataformas[i].rect.top and pygame.sprite.collide_rect(self, plataformas[i]) == True and self.rect.top<plataformas[i].rect.top and self.rect.centerx<=plataformas[i].rect.right and self.rect.centerx>=plataformas[i].rect.left:
+                if self.rect.bottom >= plataformas[i].rect.top and pygame.sprite.collide_rect(self, plataformas[i]) == True and self.rect.top<plataformas[i].rect.top and self.rect.left<=plataformas[i].rect.right and self.rect.right>=plataformas[i].rect.left:
                     self.rect.centery = plataformas[i].rect.top-(self.height/2)+1
                     self.jumpspeed = 15
                     self.speedcero = 0
@@ -170,7 +173,7 @@ class Novatin(pygame.sprite.Sprite):
             a=0
             for i in range(len(plataformas)):
                 
-                if pygame.sprite.collide_rect(self, plataformas[i]) == True and self.rect.bottom >= plataformas[i].rect.top and self.rect.top < plataformas[i].rect.top and self.rect.centerx<=plataformas[i].rect.right and self.rect.centerx>=plataformas[i].rect.left:
+                if pygame.sprite.collide_rect(self, plataformas[i]) == True and self.rect.bottom >= plataformas[i].rect.top and self.rect.top < plataformas[i].rect.top and self.rect.left<=plataformas[i].rect.right and self.rect.right>=plataformas[i].rect.left:
                     self.rect.centery = plataformas[i].rect.top-(self.height/2)
                     self.jumpspeed = 15
                     self.speedcero = 0
@@ -214,6 +217,9 @@ class Novatin(pygame.sprite.Sprite):
             if self.rect.top <= 0:
                 self.rect.centery = self.height/2
                 self.jumpspeed = 2
+        for plataforma in plataformas:
+            if pygame.sprite.collide_rect(self, plataforma) and self.rect.bottom > plataforma.rect.top:
+                self.rect.centery = plataforma.rect.top-self.height/2+1
 
     def disparar(self,plataformas,save,enemigos,x):        
         if self.shoot == True:

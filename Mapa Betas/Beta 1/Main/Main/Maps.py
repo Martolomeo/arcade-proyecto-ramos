@@ -8,7 +8,7 @@ class MapaUnoBeta(pygame.sprite.Sprite):
         self.plataformas.append(Clases.PlataformaBaja(384, y-45))
         self.plataformas.append(Clases.PlataformaBaja(x-384, y-45))
         self.plataformasr = self.plataformas
-        self.screen = pygame.display.set_mode((x,y), FULLSCREEN)
+        self.screen = pygame.display.set_mode((x,y))
         self.save = []
         self.enemigos = []
         self.espinas = []
@@ -25,6 +25,78 @@ class MapaUnoBeta(pygame.sprite.Sprite):
     def Restaurar(self):
         self.plataformas = self.plataformasr
 
+class Mapa(pygame.sprite.Sprite):
+    def __init__(self,x,y,level):
+        self.x = x
+        self.y = y
+        self.screen = pygame.display.set_mode((x,y))
+        self.plataformas = []
+        self.save = []
+        self.enemigos = []
+        self.enemigosr = []
+        self.espinas = []
+        self.espinasr = []
+        self.manzanas = []
+        self.manzanasr = []
+        self.camaespinas = []
+        self.powerups = []
+        self.ombudsman = Clases.Ombudsman(50,420)
+        self.changes = []
+        self.nubes = []
+        self.arboles = []
+        level = open(level)
+        for j in range(24):
+            aux = level.readline()
+            for i in range(32):
+                if aux[i] == "m":
+                    self.plataformas.append(Clases.Plataforma(i*32+16, j*32+16))
+                elif aux[i] == "e":
+                    self.enemigos.append(Clases.Enemigo(i*32+16, j*32+20))
+                    self.enemigosr.append(Clases.Enemigo(i*32+16, j*32+20))
+                    
+    def Imprimir(self, Novatin, PowerUp):
+            for nube in self.nubes:
+                self.screen.blit(nube.image, nube.rect)
+            for camaespina in self.camaespinas:
+                camaespina.trampa(Novatin,self.plataformas)
+                self.screen.blit(camaespina.image, camaespina.rect)
+            for plataforma in self.plataformas:
+                self.screen.blit(plataforma.image, plataforma.rect)
+            for sav in self.save:
+                self.screen.blit(sav.image, sav.rect)
+            for arbol in self.arboles:
+                self.screen.blit(arbol.image, arbol.rect)
+            for manzana in self.manzanas:
+                manzana.trampa(Novatin,self.y)
+                if manzana.alive == True:
+                    self.screen.blit(manzana.image, manzana.rect)
+            for espina in self.espinas:
+                espina.trampa(Novatin)
+                if espina.alive == True:
+                    self.screen.blit(espina.image, espina.rect)
+            self.ombudsman.liberarse(Novatin, self, PowerUp)
+            self.screen.blit(self.ombudsman.image, self.ombudsman.rect)                
+            for enemigo in self.enemigos:
+                if enemigo.alive == True:
+                    enemigo.move(self.plataformas,self.x)
+                    self.screen.blit(enemigo.image, enemigo.rect)
+            for powerup in self.powerups:
+                if powerup.alive == True:
+                    self.screen.blit(powerup.image, powerup.rect)
+
+    def Restaurar(self):
+        self.espinas = []
+        for espina in self.espinasr:
+            self.espinas.append(Clases.Espina(espina.rect.centerx, espina.rect.centery, espina.movil))
+        self.manzanas = []
+        for manzana in self.manzanasr:
+            self.manzanas.append(Clases.Manzana(manzana.rect.centerx, manzana.rect.centery, manzana.moveru, manzana.moverd))
+        self.enemigos = []
+        for enemigo in self.enemigosr:
+            self.enemigos.append(Clases.Enemigo(enemigo.rect.centerx, enemigo.rect.centery))
+        if not self.ombudsman.atrapado:
+            self.ombudsman.atrapado = True
+            self.ombudsman.restaurar()
 
 class MapaDosBeta(pygame.sprite.Sprite):
     def __init__(self,x,y):
@@ -86,7 +158,7 @@ class MapaDosBeta(pygame.sprite.Sprite):
         self.enemigos.append(Clases.Enemigo(x-30, y-155))
         self.enemigos.append(Clases.Enemigo(x-30, y-335))
         self.enemigos.append(Clases.Enemigo(x-30, y-515))
-        self.screen = pygame.display.set_mode((x,y), FULLSCREEN)
+        self.screen = pygame.display.set_mode((x,y))
         self.ombudsman = Clases.Ombudsman(50,420)
         self.changes = []
         self.changes.append([0,30,0,x-30,y-20,1])

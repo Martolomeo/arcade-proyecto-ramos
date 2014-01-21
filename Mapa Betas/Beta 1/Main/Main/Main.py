@@ -13,19 +13,19 @@ def texto(texto, posx, posy, tamano, color=(255, 255, 255)):
 def main():
     pygame.init()
     #Variables para la panalla y seeo de esa
-    x = 1280
-    y = 720
+    x = 1024
+    y = 768
     size = (x,y)
     black = (135,206,235)
-    screen = pygame.display.set_mode(size, FULLSCREEN)
+    screen = pygame.display.set_mode(size)
     #Imagenes
     menu = pygame.image.load("Imagenes/menu.png")
     fondo = pygame.image.load("Imagenes/fondo.png")
     fondo_pass = pygame.image.load("Imagenes/fondo_pass.png")
     gameover = pygame.image.load("Imagenes/gameover.png")
     #Musica
-    pygame.mixer.music.load("Music/music1.mp3")
-    pygame.mixer.music.play(-1)
+    #pygame.mixer.music.load("Music/music1.mp3")
+    #pygame.mixer.music.play(-1)
     #Clock
     clock = pygame.time.Clock()
     #Variables de Novatin
@@ -35,7 +35,7 @@ def main():
     brazo_d = Clases.Extremidad(0,0,"brazo_d")
     saven = 0
     xi = x/2
-    yi = y-20
+    yi = y/2
     di = 0
     mi = False
     Novatin = Clases.Novatin(xi,yi,di,mi)
@@ -43,11 +43,12 @@ def main():
     main = 1
     seleccion = 0
     #Mapas
-    construir = 0
+    construir = 2
     cambiar = False
     Mapa = []
     Mapa.append(Maps.MapaUnoBeta(x,y))
     Mapa.append(Maps.MapaDosBeta(x,y))
+    Mapa.append(Maps.Mapa(x,y,"Levels/level1.txt"))
 
     while 1:
         if construir == 0 and cambiar == True:
@@ -84,9 +85,9 @@ def main():
                 seleccion = 1
             screen.blit(menu, (0,0))
             if seleccion == 0:
-                screen.blit(cabeza.image, (600,505))
+                screen.blit(cabeza.image, (450,540))
             else:
-                screen.blit(cabeza.image, (600,605))
+                screen.blit(cabeza.image, (450,640))
             pygame.display.flip()
         elif main == 2:
             for event in pygame.event.get():
@@ -181,19 +182,19 @@ def main():
                 Novatin.shoot = False
                 Novatin.disparar(Mapa[construir].plataformas,Mapa[construir].save,Mapa[construir].enemigos,x)
                 if Novatin.play == True:
-                    pygame.mixer.music.load("Music/gameover.mp3")
-                    pygame.mixer.music.play()
+                    #pygame.mixer.music.load("Music/gameover.mp3")
+                    #pygame.mixer.music.play()
                     Novatin.play = False
                 Novatin.revivir += 1
                 if Novatin.revivir == 300 or Novatin.restart == True:
-                    pygame.mixer.music.load("Music/music1.mp3")
-                    pygame.mixer.music.play(-1)
+                    #pygame.mixer.music.load("Music/music1.mp3")
+                    #pygame.mixer.music.play(-1)
                     Novatin.revivir = 0
                     Novatin.alive = True
                     Novatin.play = True
                     Novatin.restart = False
-                    Novatin.rect.centerx = Mapa[construir].save[saven].savex
-                    Novatin.rect.centery = Mapa[construir].save[saven].savey
+                    #Novatin.rect.centerx = Mapa[construir].save[saven].savex
+                    #Novatin.rect.centery = Mapa[construir].save[saven].savey
                     cabeza.alive = False
                     cabeza.roce = random.randint(-15,15)
                     cabeza.jumpspeed = random.randint(10, 25)

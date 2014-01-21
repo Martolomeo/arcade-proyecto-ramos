@@ -22,6 +22,16 @@ class PlataformaAlta(pygame.sprite.Sprite):
         self.width = self.image.get_width()
         self.height = self.image.get_height()
 
+class Plataforma(pygame.sprite.Sprite):
+    def __init__(self,x,y):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load("Imagenes/piso.png")
+        self.rect = self.image.get_rect()
+        self.rect.centerx = x
+        self.rect.centery = y
+        self.width = self.image.get_width()
+        self.height = self.image.get_height()
+
 class Novatin(pygame.sprite.Sprite):
     def __init__(self, x, y, d, m):
         pygame.sprite.Sprite.__init__(self)
@@ -172,7 +182,6 @@ class Novatin(pygame.sprite.Sprite):
         elif self.jump == True:
             a=0
             for i in range(len(plataformas)):
-                
                 if pygame.sprite.collide_rect(self, plataformas[i]) == True and self.rect.bottom >= plataformas[i].rect.top and self.rect.top < plataformas[i].rect.top and self.rect.left<=plataformas[i].rect.right and self.rect.right>=plataformas[i].rect.left:
                     self.rect.centery = plataformas[i].rect.top-(self.height/2)
                     self.jumpspeed = 15
@@ -218,7 +227,7 @@ class Novatin(pygame.sprite.Sprite):
                 self.rect.centery = self.height/2
                 self.jumpspeed = 2
         for plataforma in plataformas:
-            if pygame.sprite.collide_rect(self, plataforma) and self.rect.bottom > plataforma.rect.top:
+            if pygame.sprite.collide_rect(self, plataforma) and self.rect.centery < plataforma.rect.centery:
                 self.rect.centery = plataforma.rect.top-self.height/2+1
 
     def disparar(self,plataformas,save,enemigos,x):        
@@ -498,11 +507,14 @@ class Enemigo(pygame.sprite.Sprite):
         if self.direccionx == 0:
             self.rect.centerx += 2
             self.image = self.derecha
-            for plataforma in plataformas:
-                if (pygame.sprite.collide_rect(self, plataforma) and (self.rect.top <= plataforma.rect.bottom or self.rect.bottom >= plataforma.rect.top) or (self.rect.bottom == plataforma.rect.top and self.rect.right > plataforma.rect.right) or self.rect.right > x):
+            for i in range(len(plataformas)):
+                if pygame.sprite.collide_rect(self, plataformas[i]) and self.rect.bottom == plataformas[i].rect.top and plataformas[i+1].rect.centery != plataformas[i].rect.centery and not pygame.sprite.collide_rect(self, plataformas[i+1]):
+                #if (pygame.sprite.collide_rect(self, plataformas[i]) and (self.rect.top <= plataformas[i].rect.bottom or self.rect.bottom >= plataforma[i].rect.top) or (self.rect.bottom == plataformas[i].rect.top and self.rect.right > plataformas[i].rect.right) or self.rect.right > x) and not pygame.sprite.collide_rect(self, plataformas[i+1]) and plataformas[i].rect.centery == plataformas[i+1].rect.centery:
+                    print("a")
                     self.rect.centerx -= 4
                     self.direccionx = 1
                     self.image = self.izquierda
+                    break
         else:
             self.rect.centerx -= 2
             self.image = self.izquierda

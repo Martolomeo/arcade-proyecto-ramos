@@ -35,7 +35,7 @@ def main():
     brazo_d = Clases.Extremidad(0,0,"brazo_d")
     saven = 0
     xi = x/2
-    yi = y/2
+    yi = y-16
     di = 0
     mi = False
     Novatin = Clases.Novatin(xi,yi,di,mi)

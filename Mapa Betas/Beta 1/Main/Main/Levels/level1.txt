@@ -1,15 +1,15 @@
 mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
+m              c    c           
 m                               
-m                               
-m                               
+m                  s            
 m   mmm                         
 m     m                         
 m     m        mmmmmmmm         
 m     m       mmmmmmmmmm        
 mmm   m    mmmmmmmmmmmmmmmmmmmmm
+m     m          c   c         m
 m     m                        m
-m     m                        m
-m   mmmmm                      m
+m   mmmmm                     sm
 m     m                        m
 m     m   qqqq                 m
 mmmmmmmmmmmmmmmmmmmmmmmmm    mmm
@@ -18,7 +18,7 @@ m                       m      m
 m               k       mmm    m
 m                       m      m
 m      k  k    n        m      m
-m                       m    mmm
+m                    s  m    mmm
 m                       n      m
 mwwwww                         m
 mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm

@@ -193,8 +193,8 @@ def main():
                     Novatin.alive = True
                     Novatin.play = True
                     Novatin.restart = False
-                    #Novatin.rect.centerx = Mapa[construir].save[saven].savex
-                    #Novatin.rect.centery = Mapa[construir].save[saven].savey
+                    Novatin.rect.centerx = Mapa[construir].save[saven].savex
+                    Novatin.rect.centery = Mapa[construir].save[saven].savey
                     cabeza.alive = False
                     cabeza.roce = random.randint(-15,15)
                     cabeza.jumpspeed = random.randint(10, 25)

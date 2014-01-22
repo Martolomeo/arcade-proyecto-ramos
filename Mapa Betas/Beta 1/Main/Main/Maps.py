@@ -68,6 +68,10 @@ class Mapa(pygame.sprite.Sprite):
                 elif aux[i] == "n":
                     self.manzanas.append(Clases.Manzana(i*32+16, j*32+16, False, False))
                     self.manzanasr.append(Clases.Manzana(i*32+16, j*32+16, False, False))
+                elif aux[i] == "c":
+                    self.camaespinas.append(Clases.Camaespina(i*32+48, j*32+16))
+                elif aux[i] == "s":
+                    self.save.append(Clases.Save(i*32+16,j*32+16, i*32+16, j*32+48))
                     
     def Imprimir(self, Novatin, PowerUp):
             for nube in self.nubes:

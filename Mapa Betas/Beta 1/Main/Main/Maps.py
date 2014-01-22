@@ -51,8 +51,23 @@ class Mapa(pygame.sprite.Sprite):
                 if aux[i] == "m":
                     self.plataformas.append(Clases.Plataforma(i*32+16, j*32+16))
                 elif aux[i] == "e":
-                    self.enemigos.append(Clases.Enemigo(i*32+16, j*32+20))
-                    self.enemigosr.append(Clases.Enemigo(i*32+16, j*32+20))
+                    self.enemigos.append(Clases.Enemigo(i*32+16, j*32+16))
+                    self.enemigosr.append(Clases.Enemigo(i*32+16, j*32+16))
+                elif aux[i] == "w":
+                    self.espinas.append(Clases.Espina(i*32+16, j*32+16, True))
+                    self.espinasr.append(Clases.Espina(i*32+16, j*32+16, True))
+                elif aux[i] == "q":
+                    self.espinas.append(Clases.Espina(i*32+16, j*32+16, False))
+                    self.espinasr.append(Clases.Espina(i*32+16, j*32+16, False))
+                elif aux[i] == "l":
+                    self.manzanas.append(Clases.Manzana(i*32+16, j*32+16, False, True))
+                    self.manzanasr.append(Clases.Manzana(i*32+16, j*32+16, False, True))
+                elif aux[i] == "k":
+                    self.manzanas.append(Clases.Manzana(i*32+16, j*32+16, True, False))
+                    self.manzanasr.append(Clases.Manzana(i*32+16, j*32+16, True, False))
+                elif aux[i] == "n":
+                    self.manzanas.append(Clases.Manzana(i*32+16, j*32+16, False, False))
+                    self.manzanasr.append(Clases.Manzana(i*32+16, j*32+16, False, False))
                     
     def Imprimir(self, Novatin, PowerUp):
             for nube in self.nubes:

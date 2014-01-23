@@ -502,31 +502,42 @@ class Enemigo(pygame.sprite.Sprite):
         self.width = self.image.get_width()
         self.direccionx = 0
         self.alive = True
+        self.mover = True
 
     def move(self, plataformas,x):
-        if self.direccionx == 0:
-            self.rect.centerx += 2
-            self.image = self.derecha
-            for i in range(len(plataformas)):
-                if pygame.sprite.collide_rect(self, plataformas[i]) and self.rect.bottom == plataformas[i].rect.top and plataformas[i+1].rect.centery != plataformas[i].rect.centery and not pygame.sprite.collide_rect(self, plataformas[i+1]):
-                #if (pygame.sprite.collide_rect(self, plataformas[i]) and (self.rect.top <= plataformas[i].rect.bottom or self.rect.bottom >= plataforma[i].rect.top) or (self.rect.bottom == plataformas[i].rect.top and self.rect.right > plataformas[i].rect.right) or self.rect.right > x) and not pygame.sprite.collide_rect(self, plataformas[i+1]) and plataformas[i].rect.centery == plataformas[i+1].rect.centery:
-                    print("a")
-                    self.rect.centerx -= 4
-                    self.direccionx = 1
-                    self.image = self.izquierda
-                    break
-        else:
-            self.rect.centerx -= 2
-            self.image = self.izquierda
-            for plataforma in plataformas:
-                if (pygame.sprite.collide_rect(self, plataforma) and (self.rect.top <= plataforma.rect.bottom or self.rect.bottom >= plataforma.rect.top) or (self.rect.bottom == plataforma.rect.top and self.rect.left < plataforma.rect.left) or self.rect.left < 0):
-                    self.rect.centerx += 4
-                    self.direccionx = 0
-                    self.image = self.derecha
+        for i in range(len(plataformas)):
+            if plataformas[i].rect.centery - 32 == self.rect.centery:
+                if self.direccionx == 0:
+                    if plataformas[i].rect.left <= self.rect.left < plataformas[i].rect.right and plataformas[i].rect.centerx + 32 == plataformas[i+1].rect.centerx and plataformas[i+1].rect.centery == plataformas[i].rect.centery:
+                        self.mover = True
+                        break
+                else:
+                    if plataformas[i].rect.left < self.rect.right <= plataformas[i].rect.right and plataformas[i].rect.centerx - 32 == plataformas[i-1].rect.centerx and plataformas[i-1].rect.centery == plataformas[i].rect.centery:
+                        self.mover = True
+                        break
+            if pygame.sprite.collide_rect(self, plataformas[i]):
+                self.mover = False
+                break
+        if i + 1 == len(plataformas):
+            self.mover = False
+        if self.mover == False:
+            self.mover = True
+            if self.direccionx == 0:
+                self.direccionx = 1
+            else:
+                self.direccionx = 0
+        if self.mover == True:
+            if self.direccionx == 0:
+                self.rect.centerx += 2
+                self.image = self.derecha
+            else:
+                self.rect.centerx -= 2
+                self.image = self.izquierda
 
     def matar(self, novatin):
         if pygame.sprite.collide_rect(self, novatin):
             novatin.kill()
+            
     def kill(self):
         self.alive=False
         #del self.image

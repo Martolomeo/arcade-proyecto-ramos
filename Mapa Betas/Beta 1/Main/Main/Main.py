@@ -43,12 +43,13 @@ def main():
     main = 1
     seleccion = 0
     #Mapas
-    construir = 2
+    construir = 0
     cambiar = False
     Mapa = []
-    Mapa.append(Maps.MapaUnoBeta(x,y))
-    Mapa.append(Maps.MapaDosBeta(x,y))
+    #Mapa.append(Maps.MapaUnoBeta(x,y))
+    #Mapa.append(Maps.MapaDosBeta(x,y))
     Mapa.append(Maps.Mapa(x,y,"Levels/level1.txt"))
+    Mapa.append(Maps.Mapa(x,y,"Levels/level2.txt"))
 
     while 1:
         if construir == 0 and cambiar == True:
@@ -63,7 +64,7 @@ def main():
             else:
                 Novatin = Clases.Novatin(xi,yi,di,False)
             cambiar = False
-        clock.tick(30)
+        clock.tick(60)
         if main == 1:
             for event in pygame.event.get():
                 if hasattr(event, 'key')==False:

@@ -22,6 +22,16 @@ class PlataformaAlta(pygame.sprite.Sprite):
         self.width = self.image.get_width()
         self.height = self.image.get_height()
 
+class Plataforma(pygame.sprite.Sprite):
+    def __init__(self,x,y):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load("Imagenes/piso.png")
+        self.rect = self.image.get_rect()
+        self.rect.centerx = x
+        self.rect.centery = y
+        self.width = self.image.get_width()
+        self.height = self.image.get_height()
+
 class Novatin(pygame.sprite.Sprite):
     def __init__(self, x, y, d, m):
         pygame.sprite.Sprite.__init__(self)
@@ -65,7 +75,7 @@ class Novatin(pygame.sprite.Sprite):
         self.jump = False
         self.shoot = False
         self.metralleta = m
-        self.contador_m = 300
+        self.contador_m = 0
     
     def move (self,plataformas,x):
         self.pos_anterior = self.pos_actual
@@ -98,11 +108,14 @@ class Novatin(pygame.sprite.Sprite):
                 self.animar_i = 0
             self.animar_d = 0
         for i in range(len(plataformas)):
-            if pygame.sprite.collide_rect(self,plataformas[i]) == True and self.rect.top>plataformas[i].rect.top:
-                if self.direccionx==0 and self.rect.left<plataformas[i].rect.right and self.rect.top<plataformas[i].rect.bottom and self.rect.bottom<=plataformas[i].rect.bottom:
+            if pygame.sprite.collide_rect(self, plataformas[i]) and ((self.rect.top < plataformas[i].rect.bottom and self.rect.top > plataformas[i].rect.top) or (self.rect.bottom - 5 > plataformas[i].rect.top and self.rect.bottom < plataformas[i].rect.bottom)):
+                if self.rect.right > plataformas[i].rect.left and self.rect.centerx < plataformas[i].rect.centerx:
+                #if pygame.sprite.collide_rect(self,plataformas[i]) and self.rect.top>plataformas[i].rect.top:
+                #if self.rect.right > plataformas[i].rect.left and self.rect.left<plataformas[i].rect.right and self.rect.top<plataformas[i].rect.bottom and self.rect.bottom<=plataformas[i].rect.bottom:
                     self.image = self.quieto_d
                     self.rect.centerx = plataformas[i].rect.left-(self.width/2)
-                elif self.direccionx==1 and self.rect.right>plataformas[i].rect.left and self.rect.top<plataformas[i].rect.bottom and self.rect.bottom<=plataformas[i].rect.bottom:
+                elif self.rect.left < plataformas[i].rect.right and self.rect.centerx > plataformas[i].rect.centerx:
+                #elif self.rect.left < plataformas[i].rect.right and self.rect.right>plataformas[i].rect.left and self.rect.top<plataformas[i].rect.bottom and self.rect.bottom<=plataformas[i].rect.bottom:
                     self.image = self.quieto_i
                     self.rect.centerx = plataformas[i].rect.right+(self.width/2)
         if self.rect.left <= 0:
@@ -126,7 +139,7 @@ class Novatin(pygame.sprite.Sprite):
             self.jumpspeed = -10
         if self.jump == False:
             for i in range(len(plataformas)):
-                if self.rect.bottom >= plataformas[i].rect.top and pygame.sprite.collide_rect(self, plataformas[i]) == True and self.rect.top<plataformas[i].rect.top and self.rect.centerx<=plataformas[i].rect.right and self.rect.centerx>=plataformas[i].rect.left:
+                if self.rect.bottom >= plataformas[i].rect.top and pygame.sprite.collide_rect(self, plataformas[i]) == True and self.rect.top<plataformas[i].rect.top and self.rect.left<=plataformas[i].rect.right and self.rect.right>=plataformas[i].rect.left:
                     self.rect.centery = plataformas[i].rect.top-(self.height/2)+1
                     self.jumpspeed = 15
                     self.speedcero = 0
@@ -169,8 +182,7 @@ class Novatin(pygame.sprite.Sprite):
         elif self.jump == True:
             a=0
             for i in range(len(plataformas)):
-                
-                if pygame.sprite.collide_rect(self, plataformas[i]) == True and self.rect.bottom >= plataformas[i].rect.top and self.rect.top < plataformas[i].rect.top and self.rect.centerx<=plataformas[i].rect.right and self.rect.centerx>=plataformas[i].rect.left:
+                if pygame.sprite.collide_rect(self, plataformas[i]) == True and self.rect.bottom >= plataformas[i].rect.top and self.rect.top < plataformas[i].rect.top and self.rect.left<=plataformas[i].rect.right and self.rect.right>=plataformas[i].rect.left:
                     self.rect.centery = plataformas[i].rect.top-(self.height/2)
                     self.jumpspeed = 15
                     self.speedcero = 0
@@ -214,6 +226,9 @@ class Novatin(pygame.sprite.Sprite):
             if self.rect.top <= 0:
                 self.rect.centery = self.height/2
                 self.jumpspeed = 2
+        for plataforma in plataformas:
+            if pygame.sprite.collide_rect(self, plataforma) and self.rect.centery < plataforma.rect.centery:
+                self.rect.centery = plataforma.rect.top-self.height/2+1
 
     def disparar(self,plataformas,save,enemigos,x):        
         if self.shoot == True:
@@ -487,28 +502,42 @@ class Enemigo(pygame.sprite.Sprite):
         self.width = self.image.get_width()
         self.direccionx = 0
         self.alive = True
+        self.mover = True
 
     def move(self, plataformas,x):
-        if self.direccionx == 0:
-            self.rect.centerx += 2
-            self.image = self.derecha
-            for plataforma in plataformas:
-                if (pygame.sprite.collide_rect(self, plataforma) and (self.rect.top <= plataforma.rect.bottom or self.rect.bottom >= plataforma.rect.top) or (self.rect.bottom == plataforma.rect.top and self.rect.right > plataforma.rect.right) or self.rect.right > x):
-                    self.rect.centerx -= 4
-                    self.direccionx = 1
-                    self.image = self.izquierda
-        else:
-            self.rect.centerx -= 2
-            self.image = self.izquierda
-            for plataforma in plataformas:
-                if (pygame.sprite.collide_rect(self, plataforma) and (self.rect.top <= plataforma.rect.bottom or self.rect.bottom >= plataforma.rect.top) or (self.rect.bottom == plataforma.rect.top and self.rect.left < plataforma.rect.left) or self.rect.left < 0):
-                    self.rect.centerx += 4
-                    self.direccionx = 0
-                    self.image = self.derecha
+        for i in range(len(plataformas)):
+            if plataformas[i].rect.centery - 32 == self.rect.centery:
+                if self.direccionx == 0:
+                    if plataformas[i].rect.left <= self.rect.left < plataformas[i].rect.right and plataformas[i].rect.centerx + 32 == plataformas[i+1].rect.centerx and plataformas[i+1].rect.centery == plataformas[i].rect.centery:
+                        self.mover = True
+                        break
+                else:
+                    if plataformas[i].rect.left < self.rect.right <= plataformas[i].rect.right and plataformas[i].rect.centerx - 32 == plataformas[i-1].rect.centerx and plataformas[i-1].rect.centery == plataformas[i].rect.centery:
+                        self.mover = True
+                        break
+            if pygame.sprite.collide_rect(self, plataformas[i]):
+                self.mover = False
+                break
+        if i + 1 == len(plataformas):
+            self.mover = False
+        if self.mover == False:
+            self.mover = True
+            if self.direccionx == 0:
+                self.direccionx = 1
+            else:
+                self.direccionx = 0
+        if self.mover == True:
+            if self.direccionx == 0:
+                self.rect.centerx += 2
+                self.image = self.derecha
+            else:
+                self.rect.centerx -= 2
+                self.image = self.izquierda
 
     def matar(self, novatin):
         if pygame.sprite.collide_rect(self, novatin):
             novatin.kill()
+            
     def kill(self):
         self.alive=False
         #del self.image
@@ -532,7 +561,7 @@ class Ombudsman(pygame.sprite.Sprite):
         if self.atrapado and pygame.sprite.collide_rect(self, novatin):
             self.atrapado = False
             self.image = self.libre_i
-            mapa.powerups.append(powerup(self.rect.centerx, self.rect.centery - 50))
+            mapa.powerups.append(powerup(self.rect.centerx-5, self.rect.centery - 50))
         if not self.atrapado:
             if self.contador == 0:
                 self.image = self.libre_i_2

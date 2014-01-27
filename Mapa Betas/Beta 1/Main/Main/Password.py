@@ -74,7 +74,7 @@ def posicion_cursor(seleccion):
     if seleccion <= 36:
         x,y = 55+(seleccion-1)%12*80, 185 + (seleccion-1)//12 * 100
     else:
-        x,y = 290+(seleccion-37)*350, 520
+        x,y = 200+(seleccion-37)*300, 565
     return (x,y)
 
 def posicion_teclado(n):

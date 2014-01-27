@@ -561,7 +561,7 @@ class Ombudsman(pygame.sprite.Sprite):
         if self.atrapado and pygame.sprite.collide_rect(self, novatin):
             self.atrapado = False
             self.image = self.libre_i
-            mapa.powerups.append(powerup(self.rect.centerx, self.rect.centery - 50))
+            mapa.powerups.append(powerup(self.rect.centerx-5, self.rect.centery - 50))
         if not self.atrapado:
             if self.contador == 0:
                 self.image = self.libre_i_2

@@ -34,7 +34,7 @@ def main():
     brazo_i = Clases.Extremidad(0,0,"brazo_i")
     brazo_d = Clases.Extremidad(0,0,"brazo_d")
     saven = 0
-    xi = x/2
+    xi = 32
     yi = y-16
     di = 0
     mi = False
@@ -46,25 +46,21 @@ def main():
     construir = 0
     cambiar = False
     Mapa = []
-    #Mapa.append(Maps.MapaUnoBeta(x,y))
-    #Mapa.append(Maps.MapaDosBeta(x,y))
-    Mapa.append(Maps.Mapa(x,y,"Levels/level1.txt"))
-    Mapa.append(Maps.Mapa(x,y,"Levels/level2.txt"))
+    #Inicio etapas
+    Mapa.append(Maps.Mapa(x,y,"Levels/level1.txt",1))
+    Mapa.append(Maps.Mapa(x,y,"Levels/level2.txt",2))
+    Mapa.append(Maps.Mapa(x,y,"Levels/level3.txt",3))
+    Mapa.append(Maps.Mapa(x,y,"Levels/level4.txt",4))
+    #Fin etapas
+    for mapa in Mapa:
+        mapa.cambia(Mapa)
 
     while 1:
-        if construir == 0 and cambiar == True:
-            if Novatin.metralleta == True:
-                Novatin = Clases.Novatin(xi,yi,di,True)
-            else:
-                Novatin = Clases.Novatin(xi,yi,di,False)
+        if construir in range(len(Mapa)) and cambiar == True:
+            Novatin.rect.centerx = xi
+            Novatin.rect.centery = yi
             cambiar = False
-        if construir == 1 and cambiar == True:
-            if Novatin.metralleta == True:
-                Novatin = Clases.Novatin(xi,yi,di,True)
-            else:
-                Novatin = Clases.Novatin(xi,yi,di,False)
-            cambiar = False
-        clock.tick(60)
+        clock.tick(30)
         if main == 1:
             for event in pygame.event.get():
                 if hasattr(event, 'key')==False:
@@ -173,10 +169,9 @@ def main():
                 Novatin.disparar(Mapa[construir].plataformas,Mapa[construir].save,Mapa[construir].enemigos,x)
                 Novatin.ambiente(Mapa[construir].espinas,cabeza,brazo_d,brazo_i, Mapa[construir].manzanas,Mapa[construir].camaespinas,Mapa[construir].enemigos,Mapa[construir].powerups)
                 for change in Mapa[construir].changes:
-                    if ((Novatin.rect.right> change[0] and Novatin.rect.left <= change[0]) or (Novatin.rect.left<change[0] and Novatin.rect.right >= change[0])) and Novatin.rect.centery-10<change[1] and Novatin.rect.centery+10>change[1]:
+                    if ((Novatin.rect.right> change[0] and Novatin.rect.left <= change[0]) or (Novatin.rect.left<change[0] and Novatin.rect.right >= change[0])) and Novatin.rect.centery-16<change[1] and Novatin.rect.centery+16>change[1]:
                         xi = change[3]
                         yi = change[4]
-                        di = change[5]
                         construir = change[2]
                         cambiar = True
             else:

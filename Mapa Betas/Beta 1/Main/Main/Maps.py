@@ -26,7 +26,7 @@ class MapaUnoBeta(pygame.sprite.Sprite):
         self.plataformas = self.plataformasr
 
 class Mapa(pygame.sprite.Sprite):
-    def __init__(self,x,y,level):
+    def __init__(self,x,y,level,n):
         self.x = x
         self.y = y
         self.screen = pygame.display.set_mode((x,y))
@@ -40,38 +40,80 @@ class Mapa(pygame.sprite.Sprite):
         self.manzanasr = []
         self.camaespinas = []
         self.powerups = []
-        self.ombudsman = Clases.Ombudsman(50,420)
         self.changes = []
+        self.lugares = []
         self.nubes = []
         self.arboles = []
+        self.etapa = n
         level = open(level)
-        for j in range(24):
+        for j in range(48):
             aux = level.readline()
             for i in range(32):
                 if aux[i] == "m":
-                    self.plataformas.append(Clases.Plataforma(i*32+16, j*32+16))
+                    self.plataformas.append(Clases.Plataforma(i*32+16, j%24*32+16))
                 elif aux[i] == "e":
-                    self.enemigos.append(Clases.Enemigo(i*32+16, j*32+16))
-                    self.enemigosr.append(Clases.Enemigo(i*32+16, j*32+16))
+                    self.enemigos.append(Clases.Enemigo(i*32+16, j%24*32+16))
+                    self.enemigosr.append(Clases.Enemigo(i*32+16, j%24*32+16))
                 elif aux[i] == "w":
-                    self.espinas.append(Clases.Espina(i*32+16, j*32+16, True))
-                    self.espinasr.append(Clases.Espina(i*32+16, j*32+16, True))
+                    self.espinas.append(Clases.Espina(i*32+16, j%24*32+16, True))
+                    self.espinasr.append(Clases.Espina(i*32+16, j%24*32+16, True))
                 elif aux[i] == "q":
-                    self.espinas.append(Clases.Espina(i*32+16, j*32+16, False))
-                    self.espinasr.append(Clases.Espina(i*32+16, j*32+16, False))
+                    self.espinas.append(Clases.Espina(i*32+16, j%24*32+16, False))
+                    self.espinasr.append(Clases.Espina(i*32+16, j%24*32+16, False))
                 elif aux[i] == "l":
-                    self.manzanas.append(Clases.Manzana(i*32+16, j*32+16, False, True))
-                    self.manzanasr.append(Clases.Manzana(i*32+16, j*32+16, False, True))
+                    self.manzanas.append(Clases.Manzana(i*32+16, j%24*32+16, False, True))
+                    self.manzanasr.append(Clases.Manzana(i*32+16, j%24*32+16, False, True))
                 elif aux[i] == "k":
-                    self.manzanas.append(Clases.Manzana(i*32+16, j*32+16, True, False))
-                    self.manzanasr.append(Clases.Manzana(i*32+16, j*32+16, True, False))
+                    self.manzanas.append(Clases.Manzana(i*32+16, j%24*32+16, True, False))
+                    self.manzanasr.append(Clases.Manzana(i*32+16, j%24*32+16, True, False))
                 elif aux[i] == "n":
-                    self.manzanas.append(Clases.Manzana(i*32+16, j*32+16, False, False))
-                    self.manzanasr.append(Clases.Manzana(i*32+16, j*32+16, False, False))
+                    self.manzanas.append(Clases.Manzana(i*32+16, j%24*32+16, False, False))
+                    self.manzanasr.append(Clases.Manzana(i*32+16, j%24*32+16, False, False))
                 elif aux[i] == "c":
-                    self.camaespinas.append(Clases.Camaespina(i*32+48, j*32+16))
+                    self.camaespinas.append(Clases.Camaespina(i*32+48, j%24*32+16))
                 elif aux[i] == "s":
-                    self.save.append(Clases.Save(i*32+16,j*32+16, i*32+16, j*32+48))
+                    self.save.append(Clases.Save(i*32+16,j%24*32+16, i*32+16, j%24*32+48))
+                elif aux[i] == "f":
+                    self.lugares.append((i*32+16, j%24*32+16))
+                elif aux[i] == "o":
+                    self.ombudsman = Clases.Ombudsman(i*32+16, j%24*32+16)
+                elif aux[i] == "p":
+                    if aux[i+1] == "p" and aux[i-1] == "p":
+                        self.nubes.append(Clases.NubeM(i*32+16, j%24*32+16))
+                    elif aux[i+1] == "p":
+                        self.nubes.append(Clases.NubeL(i*32+16, j%24*32+16))
+                    elif aux[i-1] == "p":
+                        self.nubes.append(Clases.NubeR(i*32+16, j%24*32+16))
+                    else:
+                        self.nubes.append(Clases.Nubechica(i*32+16, j%24*32+16))
+                elif aux[i] == "a":
+                    self.arboles.append(Clases.Arbol(i*32+48, j%24*32+80))
+                    
+
+    def cambia(self, mapas):
+        for i in range(len(mapas)):
+            if self.etapa == mapas[i].etapa:
+                for j in range(len(self.lugares)):
+                    if i == len(mapas)-1:
+                        pass
+                    else:
+                        for k in range(len(mapas[i+1].lugares)):
+                            if self.lugares[j][1] == mapas[i+1].lugares[k][1] and (self.lugares[j][0] == 16 or self.lugares[j][0] == 1008):
+                                aux = [self.lugares[j][0], self.lugares[j][1], self.etapa, mapas[i+1].lugares[k][0]+17, mapas[i+1].lugares[k][1]]
+                                self.changes.append(aux)
+                            elif self.lugares[j][0] == mapas[i+1].lugares[k][0] and (self.lugares[j][1] == 16 or self.lugares[j][1] == 752):
+                                aux = [self.lugares[j][0], self.lugares[j][1], self.etapa, mapas[i+1].lugares[k][0], mapas[i+1].lugares[k][1]+17]
+                                self.changes.append(aux)
+                    if i == 0:
+                        pass
+                    else:
+                        for k in range(len(mapas[i-1].lugares)):
+                            if self.lugares[j][1] == mapas[i-1].lugares[k][1] and (self.lugares[j][0] == 16 or self.lugares[j][0] == 100):
+                                aux = [self.lugares[j][0], self.lugares[j][1], self.etapa-2, mapas[i-1].lugares[k][0]-17, mapas[i-1].lugares[k][1]]
+                                self.changes.append(aux)
+                            elif self.lugares[j][0] == mapas[i-1].lugares[k][0] and (self.lugares[j][1] == 16 or self.lugares[j][1] == 752):
+                                aux = [self.lugares[j][0], self.lugares[j][1], self.etapa-2, mapas[i-1].lugares[k][0], mapas[i-1].lugares[k][1]-17]
+                                self.changes.append(aux)
                     
     def Imprimir(self, Novatin, PowerUp):
             for nube in self.nubes:
@@ -79,8 +121,6 @@ class Mapa(pygame.sprite.Sprite):
             for camaespina in self.camaespinas:
                 camaespina.trampa(Novatin,self.plataformas)
                 self.screen.blit(camaespina.image, camaespina.rect)
-            for plataforma in self.plataformas:
-                self.screen.blit(plataforma.image, plataforma.rect)
             for sav in self.save:
                 self.screen.blit(sav.image, sav.rect)
             for arbol in self.arboles:
@@ -102,6 +142,8 @@ class Mapa(pygame.sprite.Sprite):
             for powerup in self.powerups:
                 if powerup.alive == True:
                     self.screen.blit(powerup.image, powerup.rect)
+            for plataforma in self.plataformas:
+                self.screen.blit(plataforma.image, plataforma.rect)                    
 
     def Restaurar(self):
         self.espinas = []

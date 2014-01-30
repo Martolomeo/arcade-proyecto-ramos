@@ -110,12 +110,9 @@ class Novatin(pygame.sprite.Sprite):
         for i in range(len(plataformas)):
             if pygame.sprite.collide_rect(self, plataformas[i]) and ((self.rect.top < plataformas[i].rect.bottom and self.rect.top > plataformas[i].rect.top) or (self.rect.bottom - 5 > plataformas[i].rect.top and self.rect.bottom < plataformas[i].rect.bottom)):
                 if self.rect.right > plataformas[i].rect.left and self.rect.centerx < plataformas[i].rect.centerx:
-                #if pygame.sprite.collide_rect(self,plataformas[i]) and self.rect.top>plataformas[i].rect.top:
-                #if self.rect.right > plataformas[i].rect.left and self.rect.left<plataformas[i].rect.right and self.rect.top<plataformas[i].rect.bottom and self.rect.bottom<=plataformas[i].rect.bottom:
                     self.image = self.quieto_d
                     self.rect.centerx = plataformas[i].rect.left-(self.width/2)
                 elif self.rect.left < plataformas[i].rect.right and self.rect.centerx > plataformas[i].rect.centerx:
-                #elif self.rect.left < plataformas[i].rect.right and self.rect.right>plataformas[i].rect.left and self.rect.top<plataformas[i].rect.bottom and self.rect.bottom<=plataformas[i].rect.bottom:
                     self.image = self.quieto_i
                     self.rect.centerx = plataformas[i].rect.right+(self.width/2)
         if self.rect.left <= 0:
@@ -232,7 +229,8 @@ class Novatin(pygame.sprite.Sprite):
 
     def disparar(self,plataformas,save,enemigos,x):        
         if self.shoot == True:
-            self.bullets.append(Bullet(self.rect.centerx, self.rect.centery, self.direccionx))
+            if self.contador_m%5 == 0:
+                self.bullets.append(Bullet(self.rect.centerx, self.rect.centery, self.direccionx))
         for bullet in self.bullets:
             bullet.move(plataformas,save,x,enemigos,self)
         if self.metralleta:
@@ -505,6 +503,7 @@ class Enemigo(pygame.sprite.Sprite):
         self.height = self.image.get_height()
         self.width = self.image.get_width()
         self.direccionx = 0
+        self.vida = 5
         self.alive = True
         self.mover = True
 
@@ -543,7 +542,9 @@ class Enemigo(pygame.sprite.Sprite):
             novatin.kill()
             
     def kill(self):
-        self.alive=False
+        self.vida -= 1
+        if self.vida == 0:
+            self.alive=False
         #del self.image
         #pygame.sprite.Sprite.kill(self)
 

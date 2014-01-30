@@ -11,6 +11,12 @@ def texto(texto, posx, posy, tamano, color=(255, 255, 255)):
     return salida, salida_rect
 
 def main():
+    #auxiliares del save
+    auxi=0
+    auxj=0
+    deactivate=False
+    first=False
+    #termino de variables auxiliares del save
     pygame.init()
     #Variables para la panalla y seeo de esa
     x = 1024
@@ -189,8 +195,32 @@ def main():
                     Novatin.alive = True
                     Novatin.play = True
                     Novatin.restart = False
-                    Novatin.rect.centerx = Mapa[construir].save[saven].savex
-                    Novatin.rect.centery = Mapa[construir].save[saven].savey
+                    for i in range(len(Mapa)):
+                        for j in range(len(Mapa[i].save)):
+                            if Mapa[i].save[j].deactivate==True:
+                                auxi=i
+                                auxj=j
+                                deactivate=True
+                    if deactivate==True:
+                        for i in range(len(Mapa)):
+                            for j in range(len(Mapa[i].save)):
+                                if i!=auxi and j!=auxj:
+                                    Mapa[i].save[j].active=False
+                        Mapa[auxi].save[auxj].deactivate=False
+                        deactivate=False
+                        auxi=0
+                        auxj=0
+                    for i in range(len(Mapa)):
+                        for j in range(len(Mapa[i].save)):
+                            if Mapa[i].save[j].active==True:
+                                Novatin.rect.centerx = Mapa[i].save[j].savex
+                                Novatin.rect.centery = Mapa[i].save[j].savey
+                                construir = i
+                                first=True
+                    if first==False:
+                        Novatin.rect.centerx = 48
+                        Novatin.rect.centery = y-48
+                        construir=0
                     cabeza.alive = False
                     cabeza.roce = random.randint(-15,15)
                     cabeza.jumpspeed = random.randint(10, 25)

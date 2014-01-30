@@ -481,11 +481,15 @@ class Save(pygame.sprite.Sprite):
         self.rect.centery = y
         self.savex=sx
         self.savey=sy
+        self.active=False
+        self.deactivate=False
 
     def set_save(self,novatin,bullet):
         if pygame.sprite.collide_rect(self,bullet)==True and bullet.alive==True:
              self.savex=novatin.rect.centerx
              self.savey=novatin.rect.centery
+             self.active=True
+             self.deactivate=True
 
 class Enemigo(pygame.sprite.Sprite):
     def __init__(self, x, y):

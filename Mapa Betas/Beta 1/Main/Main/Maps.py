@@ -158,6 +158,8 @@ class Mapa(pygame.sprite.Sprite):
         if not self.ombudsman.atrapado:
             self.ombudsman.atrapado = True
             self.ombudsman.restaurar()
+        for camaespina in self.camaespinas:
+            camaespina.rect.centery=camaespina.yi
 
 class MapaDosBeta(pygame.sprite.Sprite):
     def __init__(self,x,y):

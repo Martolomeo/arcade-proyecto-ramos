@@ -522,14 +522,15 @@ class Save(pygame.sprite.Sprite):
              self.deactivate=True
 
 class Enemigo(pygame.sprite.Sprite):
-    def __init__(self, x, y):
+    def __init__(self, x, y,d):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load("Imagenes/enemigo.png")
-        self.izquierda = pygame.image.load("Imagenes/enemigo.png")
+        self.image = pygame.image.load("Imagenes/enemigo"+str(d)+".png")
+        self.izquierda = pygame.image.load("Imagenes/enemigo"+str(d)+".png")
         self.derecha = pygame.transform.flip(self.izquierda, True, False)
         self.rect = self.image.get_rect()
         self.rect.centerx = x
         self.rect.centery = y
+        self.d=d
         self.x = x
         self.y = y
         self.height = self.image.get_height()

@@ -53,8 +53,11 @@ class Mapa(pygame.sprite.Sprite):
                 if aux[i] == "m":
                     self.plataformas.append(Clases.Plataforma(i*32+16, j%24*32+16))
                 elif aux[i] == "e":
-                    self.enemigos.append(Clases.Enemigo(i*32+16, j%24*32+16))
-                    self.enemigosr.append(Clases.Enemigo(i*32+16, j%24*32+16))
+                    self.enemigos.append(Clases.Enemigo(i*32+16, j%24*32+16,1))
+                    self.enemigosr.append(Clases.Enemigo(i*32+16, j%24*32+16,1))
+                elif aux[i]== "k":
+                    self.enemigos.append(Clases.Enemigo(i*32+16, j%24*32+16,2))
+                    self.enemigosr.append(Clases.Enemigo(i*32+16, j%24*32+16,2))
                 elif aux[i] == "w":
                     self.espinas.append(Clases.Espina(i*32+16, j%24*32+16, True))
                     self.espinasr.append(Clases.Espina(i*32+16, j%24*32+16, True))
@@ -163,7 +166,7 @@ class Mapa(pygame.sprite.Sprite):
             self.manzanas.append(Clases.Manzana(manzana.rect.centerx, manzana.rect.centery, manzana.moveru, manzana.moverd))
         self.enemigos = []
         for enemigo in self.enemigosr:
-            self.enemigos.append(Clases.Enemigo(enemigo.rect.centerx, enemigo.rect.centery))
+            self.enemigos.append(Clases.Enemigo(enemigo.rect.centerx, enemigo.rect.centery,enemigo.d))
         if not self.ombudsman.atrapado:
             self.ombudsman.atrapado = True
             self.ombudsman.restaurar()

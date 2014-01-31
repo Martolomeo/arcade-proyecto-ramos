@@ -530,7 +530,11 @@ class Enemigo(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.centerx = x
         self.rect.centery = y
-        self.d=d
+        self.d = d
+        if d == 1:
+            self.mod = 16
+        else:
+            self.mod = 0
         self.x = x
         self.y = y
         self.height = self.image.get_height()
@@ -542,7 +546,7 @@ class Enemigo(pygame.sprite.Sprite):
 
     def move(self, plataformas,x):
         for i in range(len(plataformas)):
-            if plataformas[i].rect.centery - 32 == self.rect.centery:
+            if plataformas[i].rect.centery - (32 + self.mod) == self.rect.centery:
                 if self.direccionx == 0:
                     if plataformas[i].rect.left <= self.rect.left < plataformas[i].rect.right and plataformas[i].rect.centerx + 32 == plataformas[i+1].rect.centerx and plataformas[i+1].rect.centery == plataformas[i].rect.centery:
                         self.mover = True

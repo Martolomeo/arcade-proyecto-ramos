@@ -6,11 +6,13 @@ En la pantalla se ve una matriz de 32*24, pero se usan mas para colocar trampas 
 Botones y lo que representan:
 
 m = muro (o plataforma)
-e = enemigo
+e = enemigo1
+k = enemigo 2
+j = jefe
 w = espina que sube
 q = espina quieta
 l = manzana que sube
-k = manzana que baja
+z = manzana que baja
 n = manzana quieta
 c = camaespina
 s = save (1 por etapa)

@@ -260,15 +260,16 @@ class Novatin(pygame.sprite.Sprite):
                     self.contador_m = 300
                     powerup.kill()
             for jefe in jefes:
-                jefe.ia(self)
-                if pygame.sprite.collide_rect(self, jefe) == True and jefe.alive:
-                    self.kill(cabeza, brazo_d, brazo_i)
-                for bullet in jefe.bullets:
-                    if pygame.sprite.collide_rect(self, bullet) == True and bullet.alive:
-                        self.kill(cabeza, brazo_d, brazo_i)
-                        bullet.kill()
-                    elif bullet.rect.centerx < 0 or bullet.rect.centerx > 1024 or bullet.rect.centery < 0 or bullet.rect.centery > 768:
-                        bullet.kill()
+                if jefe.alive==True:
+                    jefe.ia(self)
+                    if pygame.sprite.collide_rect(self, jefe) == True and jefe.alive:
+                       self.kill(cabeza, brazo_d, brazo_i)
+                    for bullet in jefe.bullets:
+                        if pygame.sprite.collide_rect(self, bullet) == True and bullet.alive:
+                            self.kill(cabeza, brazo_d, brazo_i)
+                            bullet.kill()
+                        elif bullet.rect.centerx < 0 or bullet.rect.centerx > 1024 or bullet.rect.centery < 0 or bullet.rect.centery > 768:
+                            bullet.kill()
                 
     def kill(self,cabeza,brazo_d,brazo_i):
         if self.alive==True:
@@ -532,7 +533,7 @@ class Enemigo(pygame.sprite.Sprite):
         self.rect.centery = y
         self.d = d
         if d == 1:
-            self.mod = 16
+            self.mod = 11
         else:
             self.mod = 0
         self.x = x
@@ -667,6 +668,10 @@ class Jefe(pygame.sprite. Sprite):
             self.bullets.append(Enemy_Bullet(self.rect.centerx, self.rect.centery, novatin))
         for i in range(len(self.bullets)):
             self.bullets[i].move()
+
+    def reppos(self):
+        self.rect.centerx=self.x
+        self.rect.centery=self.y
 
     def kill(self):
         self.vida -= 1

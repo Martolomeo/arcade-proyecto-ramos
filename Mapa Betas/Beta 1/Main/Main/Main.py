@@ -57,6 +57,7 @@ def main():
     Mapa.append(Maps.Mapa(x,y,"Levels/level2.txt",2))
     Mapa.append(Maps.Mapa(x,y,"Levels/level3.txt",3))
     Mapa.append(Maps.Mapa(x,y,"Levels/level4.txt",4))
+    Mapa.append(Maps.Mapa(x,y,"Levels/level5.txt",5))
     #Fin etapas
     for mapa in Mapa:
         mapa.cambia(Mapa)
@@ -195,6 +196,9 @@ def main():
                     Novatin.alive = True
                     Novatin.play = True
                     Novatin.restart = False
+                    for i in range(len(Mapa)):
+                        for jefe in Mapa[i].jefes:
+                            jefe.reppos()
                     for i in range(len(Mapa)):
                         for j in range(len(Mapa[i].save)):
                             if Mapa[i].save[j].deactivate==True:

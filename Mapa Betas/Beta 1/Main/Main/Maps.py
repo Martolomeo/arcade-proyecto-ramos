@@ -22,6 +22,7 @@ class Mapa(pygame.sprite.Sprite):
         self.arboles = []
         self.jefes = []
         self.etapa = n
+        self.ombudsmans=[]
         level = open(level)
         for j in range(48):
             aux = level.readline()
@@ -29,8 +30,8 @@ class Mapa(pygame.sprite.Sprite):
                 if aux[i] == "m":
                     self.plataformas.append(Clases.Plataforma(i*32+16, j%24*32+16))
                 elif aux[i] == "e":
-                    self.enemigos.append(Clases.Enemigo(i*32+16, j%24*32,1))
-                    self.enemigosr.append(Clases.Enemigo(i*32+16, j%24*32,1))
+                    self.enemigos.append(Clases.Enemigo(i*32+16, j%24*32+5,1))
+                    self.enemigosr.append(Clases.Enemigo(i*32+16, j%24*32+5,1))
                 elif aux[i]== "k":
                     self.enemigos.append(Clases.Enemigo(i*32+16, j%24*32+16,2))
                     self.enemigosr.append(Clases.Enemigo(i*32+16, j%24*32+16,2))
@@ -56,7 +57,7 @@ class Mapa(pygame.sprite.Sprite):
                 elif aux[i] == "f":
                     self.lugares.append((i*32+16, j%24*32+16))
                 elif aux[i] == "o":
-                    self.ombudsman = Clases.Ombudsman(i*32+16, j%24*32+16)
+                    self.ombudsmans.append(Clases.Ombudsman(i*32+16, j%24*32+16))
                 elif aux[i] == "p":
                     if aux[i+1] == "p" and aux[i-1] == "p":
                         self.nubes.append(Clases.NubeM(i*32+16, j%24*32+16))
@@ -115,8 +116,9 @@ class Mapa(pygame.sprite.Sprite):
                 espina.trampa(Novatin)
                 if espina.alive == True:
                     self.screen.blit(espina.image, espina.rect)
-            self.ombudsman.liberarse(Novatin, self, PowerUp)
-            self.screen.blit(self.ombudsman.image, self.ombudsman.rect)                
+            for ombudsman in self.ombudsmans:
+                ombudsman.liberarse(Novatin, self, PowerUp)
+                self.screen.blit(ombudsman.image, ombudsman.rect)                
             for enemigo in self.enemigos:
                 if enemigo.alive == True:
                     enemigo.move(self.plataformas,self.x)
@@ -143,8 +145,9 @@ class Mapa(pygame.sprite.Sprite):
         self.enemigos = []
         for enemigo in self.enemigosr:
             self.enemigos.append(Clases.Enemigo(enemigo.rect.centerx, enemigo.rect.centery,enemigo.d))
-        if not self.ombudsman.atrapado:
-            self.ombudsman.atrapado = True
-            self.ombudsman.restaurar()
+        for ombudsman in self.ombudsmans:
+            if not ombudsman.atrapado:
+                ombudsman.atrapado = True
+                ombudsman.restaurar()
         for camaespina in self.camaespinas:
             camaespina.rect.centery=camaespina.yi

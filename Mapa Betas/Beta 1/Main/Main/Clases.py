@@ -1,4 +1,4 @@
-import pygame, random
+import pygame, random, math
 from pygame.locals import*
 
 class PlataformaBaja(pygame.sprite.Sprite):
@@ -227,12 +227,12 @@ class Novatin(pygame.sprite.Sprite):
             if pygame.sprite.collide_rect(self, plataforma) and self.rect.centery < plataforma.rect.centery:
                 self.rect.centery = plataforma.rect.top-self.height/2+1
 
-    def disparar(self,plataformas,save,enemigos,x):        
+    def disparar(self,plataformas,save,enemigos,x, jefes):        
         if self.shoot == True:
-            if self.contador_m%5 == 0:
+            if self.contador_m%3 == 0:
                 self.bullets.append(Bullet(self.rect.centerx, self.rect.centery, self.direccionx))
         for bullet in self.bullets:
-            bullet.move(plataformas,save,x,enemigos,self)
+            bullet.move(plataformas,save,x,enemigos,self, jefes)
         if self.metralleta:
             self.contador_m -= 1
             if self.contador_m == 0:
@@ -240,29 +240,35 @@ class Novatin(pygame.sprite.Sprite):
         if not self.metralleta:
             self.contador_m = 300
                 
-    def ambiente(self,espinas,cabeza,brazo_d,brazo_i, manzanas, camaespinas, enemigos, powerups):
+    def ambiente(self,espinas,cabeza,brazo_d,brazo_i, manzanas, camaespinas, enemigos, powerups, jefes):
         if self.alive == True:
             for espina in espinas:
                 if pygame.sprite.collide_rect(self,espina)==True:
                     self.kill(cabeza,brazo_d,brazo_i)
-        if self.alive == True:
             for manzana in manzanas:
                 if pygame.sprite.collide_rect(self,manzana)==True:
                     self.kill(cabeza,brazo_d,brazo_i)
-        if self.alive == True:
             for camaespina in camaespinas:
                 if pygame.sprite.collide_rect(self,camaespina)==True:
                     self.kill(cabeza,brazo_d,brazo_i)
-        if self.alive == True:
             for enemigo in enemigos:
                 if pygame.sprite.collide_rect(self,enemigo)==True and enemigo.alive:
                     self.kill(cabeza,brazo_d,brazo_i)
-        if self.alive == True:
             for powerup in powerups:
                 if pygame.sprite.collide_rect(self,powerup) == True and powerup.alive:
                     self.metralleta = True
-                    self.contador_m = 150
+                    self.contador_m = 300
                     powerup.kill()
+            for jefe in jefes:
+                jefe.ia(self)
+                if pygame.sprite.collide_rect(self, jefe) == True and jefe.alive:
+                    self.kill(cabeza, brazo_d, brazo_i)
+                for bullet in jefe.bullets:
+                    if pygame.sprite.collide_rect(self, bullet) == True and bullet.alive:
+                        self.kill(cabeza, brazo_d, brazo_i)
+                        bullet.kill()
+                    elif bullet.rect.centerx < 0 or bullet.rect.centerx > 1024 or bullet.rect.centery < 0 or bullet.rect.centery > 768:
+                        bullet.kill()
                 
     def kill(self,cabeza,brazo_d,brazo_i):
         if self.alive==True:
@@ -322,7 +328,7 @@ class Bullet(pygame.sprite.Sprite):
         elif n==1:
             self.speed = -20
 
-    def move(self, plataformas,saves,x,enemigos,novatin):
+    def move(self, plataformas,saves,x,enemigos,novatin, jefes):
         if self.alive == True:
             self.rect.centerx += self.speed
             for plataforma in plataformas:
@@ -336,6 +342,11 @@ class Bullet(pygame.sprite.Sprite):
                 if pygame.sprite.collide_rect(self, enemigo)==True and enemigo.alive == True:
                     enemigo.kill()
                     self.kill()
+            for jefe in jefes:
+                if jefe.alive:
+                    if pygame.sprite.collide_rect(self, jefe):
+                        jefe.kill()
+                        self.kill()
             if self.rect.centerx<0 or self.rect.centerx>x:
                 self.kill()
 
@@ -343,7 +354,28 @@ class Bullet(pygame.sprite.Sprite):
         self.alive=False
         #del self.image
         pygame.sprite.Sprite.kill(self)
+        
+class Enemy_Bullet(pygame.sprite.Sprite):
+    def __init__(self,x,y,novatin):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load("Imagenes/e_bullet.png")
+        self.rect = self.image.get_rect()
+        self.rect.centerx = x
+        self.rect.centery = y
+        self.alive = True
+        self.theta = math.atan2((novatin.rect.centery-y),(novatin.rect.centerx-x))
+        self.velx = 20*math.cos(self.theta)
+        self.vely = 20*math.sin(self.theta)
+        
+    def move(self):
+        self.rect.centerx += self.velx
+        self.rect.centery += self.vely
 
+    def kill(self):
+        self.alive=False
+        #del self.image
+        pygame.sprite.Sprite.kill(self)        
+        
 class Espina(pygame.sprite.Sprite):
     def __init__(self,x,y,movil):
         pygame.sprite.Sprite.__init__(self)
@@ -595,3 +627,49 @@ class PowerUp(pygame.sprite.Sprite):
         self.alive = False
         del self.image
         #pygame.sprite.Sprite.kill(self)
+
+class Jefe(pygame.sprite. Sprite):
+    def __init__(self, x, y):
+        pygame.sprite.Sprite.__init__(self)        
+        self.image = pygame.image.load("Imagenes/Jefe.png")
+        self.rect = self.image.get_rect()
+        self.rect.centerx = x
+        self.rect.centery = y
+        self.x = x
+        self.y = y
+        self.alive = True
+        self.vida = 20
+        self.bullets = []
+        self.contador = 20
+        self.accel = [0,0]
+        self.bonus1 = 1
+        self.bonus2 = 1
+
+    def ia(self, novatin):
+        if self.accel[0] > -10 * self.bonus1 and novatin.rect.centery < self.rect.centery:
+            self.accel[0] -= 1
+        elif self.accel[0] < 10 * self.bonus1 and novatin.rect.centery > self.rect.centery:
+            self.accel[0] += 1
+        if self.accel[1] > -10 * self.bonus1 and novatin.rect.centerx < self.rect.centerx:
+            self.accel[1] -= 1
+        elif self.accel[1] < 10 * self.bonus1 and novatin.rect.centerx > self.rect.centerx:
+            self.accel[1] += 1
+        self.rect.centery += self.accel[0] * self.bonus1
+        self.rect.centerx += self.accel[1] * self.bonus2
+        self.contador -= 1
+        if self.contador == 0:
+            self.contador = 20
+            self.bullets.append(Enemy_Bullet(self.rect.centerx, self.rect.centery, novatin))
+        for i in range(len(self.bullets)):
+            self.bullets[i].move()
+
+    def kill(self):
+        self.vida -= 1
+        if self.vida == 5:
+            self.image = pygame.image.load("Imagenes/Jefe_2.png")
+            self.bonus1 = 1.5
+            self.bonus2 = 0.75
+        if self.vida == 0:
+            self.alive = False
+            del self.image
+            pygame.sprite.Sprite.kill(self)

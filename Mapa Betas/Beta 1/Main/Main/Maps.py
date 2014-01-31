@@ -44,6 +44,7 @@ class Mapa(pygame.sprite.Sprite):
         self.lugares = []
         self.nubes = []
         self.arboles = []
+        self.jefes = []
         self.etapa = n
         level = open(level)
         for j in range(48):
@@ -88,6 +89,8 @@ class Mapa(pygame.sprite.Sprite):
                         self.nubes.append(Clases.Nubechica(i*32+16, j%24*32+16))
                 elif aux[i] == "a":
                     self.arboles.append(Clases.Arbol(i*32+48, j%24*32+80))
+                elif aux[i] == "j":
+                    self.jefes.append(Clases.Jefe(i*32+16, j*32+16))
                     
 
     def cambia(self, mapas):
@@ -143,7 +146,13 @@ class Mapa(pygame.sprite.Sprite):
                 if powerup.alive == True:
                     self.screen.blit(powerup.image, powerup.rect)
             for plataforma in self.plataformas:
-                self.screen.blit(plataforma.image, plataforma.rect)                    
+                self.screen.blit(plataforma.image, plataforma.rect)
+            for jefe in self.jefes:
+                if jefe.alive:
+                    self.screen.blit(jefe.image, jefe.rect)
+                    for bullet in jefe.bullets:
+                        if bullet.alive:
+                            self.screen.blit(bullet.image, bullet.rect)
 
     def Restaurar(self):
         self.espinas = []

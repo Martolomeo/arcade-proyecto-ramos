@@ -166,14 +166,14 @@ def main():
                 Novatin.shoot = True
             elif key[K_SPACE] == False and Novatin.metralleta == True:
                 Novatin.shoot = False
-            #########################################################################
+            #############################################################################
             screen.fill(black) #si se pone dentro del if entonces se vuelve negra una vez
-            #########################################################################
+            #############################################################################
             if Novatin.alive==True:
                 Novatin.move(Mapa[construir].plataformas,x)
                 Novatin.saltar(y,Mapa[construir].plataformas)
-                Novatin.disparar(Mapa[construir].plataformas,Mapa[construir].save,Mapa[construir].enemigos,x)
-                Novatin.ambiente(Mapa[construir].espinas,cabeza,brazo_d,brazo_i, Mapa[construir].manzanas,Mapa[construir].camaespinas,Mapa[construir].enemigos,Mapa[construir].powerups)
+                Novatin.disparar(Mapa[construir].plataformas,Mapa[construir].save,Mapa[construir].enemigos,x, Mapa[construir].jefes)
+                Novatin.ambiente(Mapa[construir].espinas,cabeza,brazo_d,brazo_i, Mapa[construir].manzanas,Mapa[construir].camaespinas,Mapa[construir].enemigos,Mapa[construir].powerups, Mapa[construir].jefes)
                 for change in Mapa[construir].changes:
                     if ((Novatin.rect.right> change[0] and Novatin.rect.left <= change[0]) or (Novatin.rect.left<change[0] and Novatin.rect.right >= change[0])) and Novatin.rect.centery-16<change[1] and Novatin.rect.centery+16>change[1]:
                         xi = change[3]
@@ -182,7 +182,7 @@ def main():
                         cambiar = True
             else:
                 Novatin.shoot = False
-                Novatin.disparar(Mapa[construir].plataformas,Mapa[construir].save,Mapa[construir].enemigos,x)
+                Novatin.disparar(Mapa[construir].plataformas,Mapa[construir].save,Mapa[construir].enemigos,x, Mapa[construir].jefes)
                 if Novatin.play == True:
                     #pygame.mixer.music.load("Music/gameover.mp3")
                     #pygame.mixer.music.play()
@@ -243,7 +243,6 @@ def main():
                 brazo_d.mover(y)
                 brazo_d.jump(y)
             screen.blit(fondo, (0,0))
-            #primero el if para que novatin se mueva por enfrente de las plataformas
             Mapa[construir].Imprimir(Novatin, Clases.PowerUp)
             if Novatin.alive==True:
                 screen.blit(Novatin.image, Novatin.rect)

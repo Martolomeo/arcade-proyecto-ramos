@@ -60,6 +60,7 @@ def main():
     Mapa.append(Maps.Mapa(x,y,"Levels/level3.txt",3))
     Mapa.append(Maps.Mapa(x,y,"Levels/level4.txt",4))
     Mapa.append(Maps.Mapa(x,y,"Levels/level5.txt",5))
+    Mapa.append(Maps.Mapa(x,y,"Levels/level6.txt",6))
     #Fin etapas
     for mapa in Mapa:
         mapa.cambia(Mapa)

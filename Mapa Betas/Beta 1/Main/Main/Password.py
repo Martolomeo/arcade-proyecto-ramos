@@ -2,7 +2,7 @@ caracteres = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q
 seleccion = 1
 movil = True
 clave = ""
-no_repetir = False
+no_repetir = [False,False]
 
 def borra_espacio(clave):
     aux = ""

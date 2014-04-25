@@ -51,7 +51,7 @@ def main():
     main = 1
     seleccion = 0
     #Mapas
-    construir = 4
+    construir = 5
     cambiar = False
     Mapa = []
     #Inicio etapas
@@ -200,14 +200,12 @@ def main():
                     Novatin.play = False
                 Novatin.revivir += 1
                 if Novatin.revivir == 300 or Novatin.restart == True:
-                    if construir !=4:
+                    #if construir !=4:
                         #pygame.mixer.music.load("Music/music1.mp3")
                         #pygame.mixer.music.play(-1)
-                        continue
-                    elif construir == 4:
+                    #elif construir == 4:
                         #pygame.mixer.music.load("Music/music2.mp3")
                         #pygame.mixer.music.play()
-                        continue
                     Novatin.revivir = 0
                     Novatin.alive = True
                     Novatin.play = True

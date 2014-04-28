@@ -7,18 +7,18 @@
                                 
        mmmmmmm                  
       mm     mmmmmmmmmmmmmmmmmmm
-      mq                  q     
-      mq   mmmmmm            s f
-      mq  qm    m              f
-      mq  qm    mq        qmmmmm
-      mq  qm    mmwwwwwmmmmm    
-      mq  qm                    
-      mq                        
-      mq     k k e e            
-      mmmwmmmmmmmmmmmmcmmm  q   
-                          mmq   
+      m8                  5     
+      m8   mmmmmm            s f
+      m8  7m    m              f
+      m8  7m    m5        5mmmmm
+      m8  7m    mm11111mmmmm    
+      m8  7m                    
+      m8                        
+      m8     k k e e            
+      mmmwmmmmmmmmmmmmcmmm  5   
+                          mm6   
                                 
-                   mmmmmmm     q
+                   mmmmmmm     5
                    mmmmmmmmmmmmm
                    mmmmmmmmmmmmm
 fffffffffffffffffffmmmmmmmmmmmmm
@@ -35,7 +35,7 @@ fffffffffffffffffffmmmmmmmmmmmmm
                                 
                                 
                                 
-                  mmmmmm        
+                  mmmmm        
                                 
                                 
                                 

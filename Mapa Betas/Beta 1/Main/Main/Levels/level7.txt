@@ -1,27 +1,27 @@
-               mq               
-               mq               
-               mq               
-               mq      s       f
-               mq              f
-               mq  qmmmmmmmmmmmm
-               mq  qmmmmmmmmmmmm
-               mq  qmmmmmmmmmmmm
-               mq  qmwwwwwwwmmmm
-               mq  qmmmmmmmmmmmm
-f              mq  qmmmmmmmmmmmm
-f              mq  qmmmmmmmmmmmm
-mq             mq               
-mmw   m        mq               
-m     m        mqww      e      
-m    qm        mmmmmmmmmmm      
-m   wmm                          
+               m8                
+               m8               
+               m8               
+               m8      s       f
+               m8              f
+               m8  7mmmmmmmmmmmm
+               m8  7mmmmmmmmmmmm
+               m8  7mmmmmmmmmmmm
+               m8  7m1111111mmmm
+               m8  7mmmmmmmmmmmm
+f              m8  7mmmmmmmmmmmm
+f              m8  7mmmmmmmmmmmm
+m5             m8               
+mm1   m        m8               
+m     m        m811      e      
+m    5m        mmmmmmmmmmm      
+m   1mm                          
 m                               
-mq                  q q q q q   
-mmw   w   w   w    mmmmmmmmmmmmm
+m5                  5 5 5 5 5   
+mm1   1   1   1    mmmmmmmmmmmmm
                    mmmmmmmmmmmmm
                    mmmmmmmmmmmmm
                    mmmmmmmmmmmmm
-qqqqqqqqqqqqqqqqqqqmmmmmmmmmmmmm
+5555555555555555555mmmmmmmmmmmmm
                                 
                                 
                                 
@@ -36,7 +36,7 @@ qqqqqqqqqqqqqqqqqqqmmmmmmmmmmmmm
                                 
                                 
   m                             
-                 qq             
+                 55             
                                 
     m                           
                                 

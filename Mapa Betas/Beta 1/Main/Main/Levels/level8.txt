@@ -8,17 +8,17 @@
        mmmmmmm                  
       mm     mmmmmmmmmmmmmmmmmmm
       m8                  5     
-      m8   mmmmmm            s f
+      m8   mmmmmm           s  f
       m8  7m    m              f
       m8  7m    m5        5mmmmm
       m8  7m    mm11111mmmmm    
-      m8  7m                    
+      m8   m                    
       m8                        
-      m8     k k e e            
-      mmmwmmmmmmmmmmmmcmmm  5   
+      m85    k k e e            
+      mmm1mmmmmmmmmmmmcmmm  5   
                           mm6   
                                 
-                   mmmmmmm     5
+                               5
                    mmmmmmmmmmmmm
                    mmmmmmmmmmmmm
 fffffffffffffffffffmmmmmmmmmmmmm

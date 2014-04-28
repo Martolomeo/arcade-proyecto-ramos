@@ -40,8 +40,8 @@ def main():
     brazo_i = Clases.Extremidad(0,0,"brazo_i")
     brazo_d = Clases.Extremidad(0,0,"brazo_d")
     saven = 0
-    xi = 32
-    yi = y-16
+    xi = 352
+    yi = y-240
     di = 0
     mi = False
     jefe = False
@@ -51,7 +51,7 @@ def main():
     main = 1
     seleccion = 0
     #Mapas
-    construir = 4
+    construir = 7
     cambiar = False
     Mapa = []
     #Inicio etapas

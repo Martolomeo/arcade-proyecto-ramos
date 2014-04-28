@@ -35,21 +35,45 @@ class Mapa(pygame.sprite.Sprite):
                 elif aux[i]== "k":
                     self.enemigos.append(Clases.Enemigo(i*32+16, j%24*32+16,2))
                     self.enemigosr.append(Clases.Enemigo(i*32+16, j%24*32+16,2))
-                elif aux[i] == "w":
-                    self.espinas.append(Clases.Espina(i*32+16, j%24*32+16, True))
-                    self.espinasr.append(Clases.Espina(i*32+16, j%24*32+16, True))
-                elif aux[i] == "q":
-                    self.espinas.append(Clases.Espina(i*32+16, j%24*32+16, False))
-                    self.espinasr.append(Clases.Espina(i*32+16, j%24*32+16, False))
-                elif aux[i] == "l":
-                    self.manzanas.append(Clases.Manzana(i*32+16, j%24*32+16, False, True))
-                    self.manzanasr.append(Clases.Manzana(i*32+16, j%24*32+16, False, True))
-                elif aux[i] == "z":
-                    self.manzanas.append(Clases.Manzana(i*32+16, j%24*32+16, True, False))
-                    self.manzanasr.append(Clases.Manzana(i*32+16, j%24*32+16, True, False))
+                elif aux[i] == "1":
+                    self.espinas.append(Clases.Espina(i*32+16, j%24*32+16, 1,'u'))
+                    self.espinasr.append(Clases.Espina(i*32+16, j%24*32+16, 1,'u'))
+                elif aux[i] == "2":
+                    self.espinas.append(Clases.Espina(i*32+16, j%24*32+16, 2,'d'))
+                    self.espinasr.append(Clases.Espina(i*32+16, j%24*32+16, 2,'d'))
+                elif aux[i] == "3":
+                    self.espinas.append(Clases.Espina(i*32+16, j%24*32+16, 3,'l'))
+                    self.espinasr.append(Clases.Espina(i*32+16, j%24*32+16, 3,'l'))
+                elif aux[i] == "4":
+                    self.espinas.append(Clases.Espina(i*32+16, j%24*32+16, 4,'r'))
+                    self.espinasr.append(Clases.Espina(i*32+16, j%24*32+16, 4,'r'))                    
+                elif aux[i] == "5":
+                    self.espinas.append(Clases.Espina(i*32+16, j%24*32+16, 5,'u'))
+                    self.espinasr.append(Clases.Espina(i*32+16, j%24*32+16, 5,'u'))
+                elif aux[i] == "6":
+                    self.espinas.append(Clases.Espina(i*32+16, j%24*32+16, 5,'d'))
+                    self.espinasr.append(Clases.Espina(i*32+16, j%24*32+16, 5,'d'))
+                elif aux[i] == "7":
+                    self.espinas.append(Clases.Espina(i*32+16, j%24*32+16, 5,'l'))
+                    self.espinasr.append(Clases.Espina(i*32+16, j%24*32+16, 5,'l'))
+                elif aux[i] == "8":
+                    self.espinas.append(Clases.Espina(i*32+16, j%24*32+16, 5,'r'))
+                    self.espinasr.append(Clases.Espina(i*32+16, j%24*32+16, 5,'r'))                    
+                elif aux[i] == "A":
+                    self.manzanas.append(Clases.Manzana(i*32+16, j%24*32+16, 0))
+                    self.manzanasr.append(Clases.Manzana(i*32+16, j%24*32+16, 0))
+                elif aux[i] == "S":
+                    self.manzanas.append(Clases.Manzana(i*32+16, j%24*32+16, 1))
+                    self.manzanasr.append(Clases.Manzana(i*32+16, j%24*32+16, 1))
+                elif aux[i] == "D":
+                    self.manzanas.append(Clases.Manzana(i*32+16, j%24*32+16, 2))
+                    self.manzanasr.append(Clases.Manzana(i*32+16, j%24*32+16, 2))
+                elif aux[i] == "F":
+                    self.manzanas.append(Clases.Manzana(i*32+16, j%24*32+16, 3))
+                    self.manzanasr.append(Clases.Manzana(i*32+16, j%24*32+16, 3))                    
                 elif aux[i] == "n":
-                    self.manzanas.append(Clases.Manzana(i*32+16, j%24*32+16, False, False))
-                    self.manzanasr.append(Clases.Manzana(i*32+16, j%24*32+16, False, False))
+                    self.manzanas.append(Clases.Manzana(i*32+16, j%24*32+16, 4))
+                    self.manzanasr.append(Clases.Manzana(i*32+16, j%24*32+16, 4))
                 elif aux[i] == "c":
                     self.camaespinas.append(Clases.Camaespina(i*32+48, j%24*32+16))
                 elif aux[i] == "s":
@@ -138,10 +162,10 @@ class Mapa(pygame.sprite.Sprite):
     def Restaurar(self):
         self.espinas = []
         for espina in self.espinasr:
-            self.espinas.append(Clases.Espina(espina.rect.centerx, espina.rect.centery, espina.movil))
+            self.espinas.append(Clases.Espina(espina.rect.centerx, espina.rect.centery, espina.movil, espina.direccion))
         self.manzanas = []
         for manzana in self.manzanasr:
-            self.manzanas.append(Clases.Manzana(manzana.rect.centerx, manzana.rect.centery, manzana.moveru, manzana.moverd))
+            self.manzanas.append(Clases.Manzana(manzana.rect.centerx, manzana.rect.centery, manzana.mover))
         self.enemigos = []
         for enemigo in self.enemigosr:
             self.enemigos.append(Clases.Enemigo(enemigo.rect.centerx, enemigo.rect.centery,enemigo.d))

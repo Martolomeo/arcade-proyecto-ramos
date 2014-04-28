@@ -378,9 +378,18 @@ class Enemy_Bullet(pygame.sprite.Sprite):
         pygame.sprite.Sprite.kill(self)        
         
 class Espina(pygame.sprite.Sprite):
-    def __init__(self,x,y,movil):
+    def __init__(self,x,y,movil,direccion):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load("Imagenes/espina.png")
+        imagen = pygame.image.load("Imagenes/espina.png")
+        if direccion == "u":
+            self.image = imagen
+        elif direccion == "d":
+            self.image = pygame.transform.flip(imagen,False,True)
+        elif direccion == "l":
+            self.image = pygame.transform.rotate(imagen,90)
+        else:
+            imagen1 = pygame.transform.rotate(imagen,90)
+            self.image = pygame.transform.flip(imagen1,True,False)
         self.rect = self.image.get_rect()
         self.rect.centerx = x
         self.rect.centery = y
@@ -388,15 +397,38 @@ class Espina(pygame.sprite.Sprite):
         self.move = False
         self.speed = 30
         self.alive = True
+        self.direccion = direccion
 
     def trampa(self,novatin):
         if self.alive == True:
-            if self.movil ==True and novatin.rect.top<self.rect.top and novatin.rect.bottom<self.rect.top and (novatin.rect.centerx>self.rect.centerx-10 and novatin.rect.centerx<self.rect.centerx+10):
-                self.move = True
-            if self.movil == True and self.move == True and self.alive == True:
-                self.rect.centery -= self.speed
-            if self.rect.centery < 0:
-                self.kill()
+            if self.movil == 1:
+                if novatin.rect.top<self.rect.top and novatin.rect.bottom<self.rect.top and (novatin.rect.centerx>self.rect.centerx-10 and novatin.rect.centerx<self.rect.centerx+10):
+                    self.move = True
+                if self.move == True and self.alive == True:
+                    self.rect.centery -= self.speed
+                if self.rect.centery < 0:
+                    self.kill()
+            if self.movil == 2:
+                if novatin.rect.top>self.rect.bottom and (novatin.rect.centerx>self.rect.centerx-10 and novatin.rect.centerx<self.rect.centerx+10):
+                    self.move = True
+                if self.move == True and self.alive == True:
+                    self.rect.centery += self.speed
+                if self.rect.centery > 768:
+                    self.kill()
+            if self.movil == 3:
+                if novatin.rect.right<self.rect.left and (novatin.rect.centery>self.rect.centery-10 and novatin.rect.centery<self.rect.centery+10):
+                    self.move = True
+                if self.move == True and self.alive == True:
+                    self.rect.centerx -= self.speed
+                if self.rect.centerx < 0:
+                    self.kill()
+            if self.movil == 4:
+                if novatin.rect.left>self.rect.right and (novatin.rect.centery>self.rect.centery-10 and novatin.rect.centery<self.rect.centery+10):
+                    self.move = True
+                if self.move == True and self.alive == True:
+                    self.rect.centerx += self.speed
+                if self.rect.centerx > 1024:
+                    self.kill()                    
 
     def kill(self):
         self.alive = False
@@ -412,29 +444,38 @@ class Arbol(pygame.sprite.Sprite):
         self.rect.centery = y
         
 class Manzana(pygame.sprite.Sprite):
-    def __init__(self,x,y,moveru,moverd):
+    def __init__(self,x,y,mover):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.image.load("Imagenes/manzana.png")
         self.rect = self.image.get_rect()
         self.rect.centerx = x
         self.rect.centery = y
-        self.moveru = moveru
-        self.moverd = moverd
-        self.move = False
+        self.mover = mover
+        self.move = [False,False,False,False]
         self.speed = 20
         self.alive = True
 
     def trampa(self,novatin,y):
         if self.alive == True:
-            if self.moveru == True and (novatin.rect.centerx>self.rect.centerx-10 and novatin.rect.centerx<self.rect.centerx+10) and self.rect.top>novatin.rect.bottom:
-                self.move = True
-            elif self.moverd == True and (novatin.rect.centerx>self.rect.centerx-10 and novatin.rect.centerx<self.rect.centerx+10) and self.rect.bottom<novatin.rect.top:
-                self.move = True
-            if self.move == True and self.moveru == True:
-                self.rect.centery -= self.speed
-            elif self.move == True and self.moverd == True:
-                self.rect.centery += self.speed
-            if self.rect.centery < 0 or self.rect.centery > y:
+            if self.mover == 0 and (novatin.rect.centerx>self.rect.centerx-10 and novatin.rect.centerx<self.rect.centerx+10) and self.rect.top>novatin.rect.bottom:
+                self.move[0] = True
+            elif self.mover == 1 and (novatin.rect.centerx>self.rect.centerx-10 and novatin.rect.centerx<self.rect.centerx+10) and self.rect.bottom<novatin.rect.top:
+                self.move[1] = True
+            elif self.mover == 2 and (novatin.rect.centery>self.rect.centery-10 and novatin.rect.centery<self.rect.centery+10) and self.rect.left>novatin.rect.right:
+                self.move[2] = True
+            elif self.mover == 3 and (novatin.rect.centery>self.rect.centery-10 and novatin.rect.centery<self.rect.centery+10) and self.rect.right<novatin.rect.left:
+                self.move[3] = True
+            for i in range(4):
+                if self.move[i]:
+                    if i == 0:
+                        self.rect.centery -= self.speed
+                    elif i == 1:
+                        self.rect.centery += self.speed
+                    elif i == 2:
+                        self.rect.centerx -= self.speed
+                    else:
+                        self.rect.centerx += self.speed
+            if self.rect.centery < 0 or self.rect.centery > 768 or self.rect.centerx < 0 or self.rect.centerx > 1024:
                 self.kill()
 
     def kill(self):

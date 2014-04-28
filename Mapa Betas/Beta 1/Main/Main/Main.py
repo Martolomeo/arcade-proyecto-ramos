@@ -51,7 +51,7 @@ def main():
     main = 1
     seleccion = 0
     #Mapas
-    construir = 5
+    construir = 0
     cambiar = False
     Mapa = []
     #Inicio etapas

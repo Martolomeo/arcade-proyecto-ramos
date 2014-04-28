@@ -7,8 +7,8 @@ m                      p       m
 m               m              m
 m                    m         m
 m                              m
-m      wwwww                   m
-mwwww              m           m
+m      11111                   m
+m1111              m           m
 m                              f
 m                        kk    f
 m               mmmmmmmmmmmmmmmm
@@ -18,9 +18,9 @@ m            e                 m
 m          mmmm                m
 m         m      a             m
 m       mmm                    m
-m     m              wwwww     m
+m     m              11111     m
 m   m                          m
-f       wwwwwww                m
+f       1111111                m
 mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
                                 
                                 

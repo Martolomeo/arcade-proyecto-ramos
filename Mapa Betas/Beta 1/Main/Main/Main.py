@@ -51,16 +51,12 @@ def main():
     main = 1
     seleccion = 0
     #Mapas
-    construir = 0
+    construir = 4
     cambiar = False
     Mapa = []
     #Inicio etapas
-    Mapa.append(Maps.Mapa(x,y,"Levels/level1.txt",1))
-    Mapa.append(Maps.Mapa(x,y,"Levels/level2.txt",2))
-    Mapa.append(Maps.Mapa(x,y,"Levels/level3.txt",3))
-    Mapa.append(Maps.Mapa(x,y,"Levels/level4.txt",4))
-    Mapa.append(Maps.Mapa(x,y,"Levels/level5.txt",5))
-    Mapa.append(Maps.Mapa(x,y,"Levels/level6.txt",6))
+    for i in(range(10)):
+        Mapa.append(Maps.Mapa(x,y,"Levels/level"+str(i+1)+".txt",i+1))
     #Fin etapas
     for mapa in Mapa:
         mapa.cambia(Mapa)

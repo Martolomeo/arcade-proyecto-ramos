@@ -676,9 +676,13 @@ class PowerUp(pygame.sprite.Sprite):
         #pygame.sprite.Sprite.kill(self)
 
 class Jefe(pygame.sprite. Sprite):
-    def __init__(self, x, y, n=1):
-        pygame.sprite.Sprite.__init__(self)        
-        self.image = pygame.image.load("Imagenes/Jefe.png")
+    def __init__(self, x, y, n):
+        pygame.sprite.Sprite.__init__(self)
+        if n == 1:
+            self.imagenes = [pygame.image.load("Imagenes/Jefe.png"),pygame.image.load("Imagenes/Jefe2.png")]
+        elif n == 2:
+            self.imagenes = [pygame.image.load("Imagenes/Euler.jpg"),pygame.image.load("Imagenes/Euler2.jpg")]
+        self.image = self.imagenes[0]
         self.height = self.image.get_height()
         self.width = self.image.get_width()
         self.rect = self.image.get_rect()
@@ -688,16 +692,18 @@ class Jefe(pygame.sprite. Sprite):
         self.y = y
         self.n = n
         self.alive = True
-        self.vida = 20
         self.bullets = []
         self.accel = [0,0]
         if self.n == 1:
             self.bonus1 = 1
             self.contador = 20
+            self.vida = 20
         else:
             self.bonus1 = 2
             self.contador = 50
+            self.vida = 50
         self.stun = False
+        self.vidaf = self.vida/4
 
     def ia(self, novatin):
         if not self.stun:
@@ -739,6 +745,8 @@ class Jefe(pygame.sprite. Sprite):
                     self.bonus1 = 2
                     self.stun = False
                     self.warp()
+                    for i in range(2):
+                        self.accel[i] = 0
 
     def reppos(self):
         self.rect.centerx=self.x
@@ -750,8 +758,8 @@ class Jefe(pygame.sprite. Sprite):
 
     def kill(self):
         self.vida -= 1
-        if self.vida == 5:
-            self.image = pygame.image.load("Imagenes/Jefe_2.png")
+        if self.vida < self.vidaf:
+            self.image = self.imagenes[1]
             self.bonus1 = 1.5
             self.bonus2 = 0.75
         if self.vida == 0:

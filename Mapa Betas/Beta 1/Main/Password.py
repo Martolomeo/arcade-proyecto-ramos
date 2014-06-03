@@ -3,6 +3,17 @@ seleccion = 1
 movil = True
 clave = ""
 no_repetir = False
+#claves = [Clave(3, 0, 300, 300, True, 999999, '123456')]
+
+class Clave:
+    def __init__(self,main, construir, posx, posy, bonus_m, bonus_m2, password):
+        self.clave = password
+        self.main = main
+        self.construir = construir
+        self.posx = posx
+        self.posy = posy
+        self.bonus_m = bonus_m
+        self.bonus_m2 = bonus_m2
 
 def borra_espacio(clave):
     aux = ""
@@ -84,3 +95,12 @@ def posicion_teclado(n):
 def posicion_clave(n):
     x,y = 400+40*n,100
     return x,y
+
+def clavea():
+    #for password in claves:
+        #if clave == password.clave:
+            #return password.main, password.construir, password.posx, password.posy, password.bonus_m, password.bonus_m2
+    if clave == '123456':
+        return 3, 0, 300, 300, True, 999999
+    else:
+        return 3, 0, 32, 734, False, 0

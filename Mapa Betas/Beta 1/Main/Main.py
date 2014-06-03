@@ -113,8 +113,8 @@ def main():
                         if Password.seleccion == 37:
                             Password.clave = Password.borra_espacio(Password.clave)
                         elif Password.seleccion == 38:
-                            main = 3
-    #En esta parte va a ir la parte del save, una vez que hayan mas cosas que guardar                        
+                            main, construir, Novatin.rect.centerx, Novatin.rect.centery, Novatin.metralleta, Novatin.contador_m = Password.clavea()
+                        #################SAVE/CHEATS################### 
                         else:
                             Password.clave += Password.caracteres[(Password.seleccion-1)]
                     else:
@@ -258,6 +258,9 @@ def main():
                 brazo_d.jump(y)
             screen.blit(fondo, (0,0))
             Mapa[construir].Imprimir(Novatin, Clases.PowerUp)
+            for clave in Mapa[construir].claves:
+                password, password_rect = texto(clave.password, clave.posx, clave.posy, 40)
+                screen.blit(password, password_rect)
             if Novatin.alive==True:
                 screen.blit(Novatin.image, Novatin.rect)
             if cabeza.alive:

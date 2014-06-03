@@ -21,6 +21,7 @@ class Mapa(pygame.sprite.Sprite):
         self.nubes = []
         self.arboles = []
         self.jefes = []
+        self.claves = []
         self.etapa = n
         self.ombudsmans=[]
         level = open(level)
@@ -99,6 +100,8 @@ class Mapa(pygame.sprite.Sprite):
                     self.jefes.append(Clases.Jefe(i*32+32, j*32+32, 2))
                 elif aux[i] == "M":
                     self.jefes.append(Clases.Jefe(i*32+32, j*32+32, 3))
+                elif aux[i] == "P":
+                    self.claves.append(Clases.Password(i*32+32, j*32+32, aux[32:]))                    
                     
 
     def cambia(self, mapas):

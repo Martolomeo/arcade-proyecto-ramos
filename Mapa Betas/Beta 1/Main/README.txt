@@ -19,6 +19,10 @@ f = coneccion con siguiente o anterior etapa
 o = ombudsman (1 por etapa)
 p = nube (maneja las imagenes correspondientes automaticamente)
 a = arbol
+P = texto flotante
+
+El texto flotante que aparece en la posicion P, debe estar escrito al final de la fila correspondiente
+(ver level 1)
 
 NOTA:
 

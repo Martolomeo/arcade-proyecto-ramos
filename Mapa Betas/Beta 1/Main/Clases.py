@@ -1,26 +1,13 @@
 import pygame, random, math
 from pygame.locals import*
 
-class PlataformaBaja(pygame.sprite.Sprite):
-    def __init__(self,x,y):
-        pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load("Imagenes/Pbajo.png")
-        self.rect = self.image.get_rect()
-        self.rect.centerx = x
-        self.rect.centery = y
-        self.width = self.image.get_width()
-        self.height = self.image.get_height()
-
-
-class PlataformaAlta(pygame.sprite.Sprite):
-    def __init__(self,x,y):
-        pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load("Imagenes/Palto.png")
-        self.rect = self.image.get_rect()
-        self.rect.centerx = x
-        self.rect.centery = y
-        self.width = self.image.get_width()
-        self.height = self.image.get_height()
+def texto(texto, posx, posy, tamano, color=(255, 255, 255)):
+    fuente = pygame.font.Font("SF Pixelate.ttf", tamano)
+    salida = pygame.font.Font.render(fuente, texto, 1, color)
+    salida_rect = salida.get_rect()
+    salida_rect.centerx = posx
+    salida_rect.centery = posy
+    return salida, salida_rect
 
 class Plataforma(pygame.sprite.Sprite):
     def __init__(self,x,y):
@@ -791,3 +778,9 @@ class Jefe(pygame.sprite. Sprite):
             self.alive = False
             del self.image
             pygame.sprite.Sprite.kill(self)
+
+class Password:
+    def __init__(self, posx, posy, clave):
+        self.posx = posx
+        self.posy = posy
+        self.password = clave

@@ -93,9 +93,9 @@ def main():
                     main = 0
                 else:
                     main = 2
-            if control.get_axis(1) < -0.5:
+            if control.get_axis(1) < -0.5 or control.get_hat(0)[1] == 1:
                 seleccion = 0
-            if control.get_axis(1) > 0.5:
+            if control.get_axis(1) > 0.5 or control.get_hat(0)[1] == -1:
                 seleccion = 1
             screen.blit(menu, (0,0))
             if seleccion == 0:
@@ -121,16 +121,16 @@ def main():
                     Password.clave = Password.borra_espacio(Password.clave)
             else:
                 Password.no_repetir[0] = True
-            if control.get_axis(1) < -0.5 and Password.no_repetir[1]:
+            if (control.get_axis(1) < -0.5 or control.get_hat(0)[1] == 1) and Password.no_repetir[1]:
                 Password.seleccion, Password.movil = Password.mover_arriba(Password.seleccion, Password.movil)
                 Password.no_repetir[1] = False
-            elif control.get_axis(1) > 0.5 and Password.no_repetir[1]:
+            elif (control.get_axis(1) > 0.5 or control.get_hat(0)[1] == -1) and Password.no_repetir[1]:
                 Password.seleccion, Password.movil = Password.mover_abajo(Password.seleccion, Password.movil)
                 Password.no_repetir[1] = False
-            elif control.get_axis(0) > 0.5 and Password.no_repetir[1]:
+            elif (control.get_axis(0) > 0.5 or control.get_hat(0)[0] == 1) and Password.no_repetir[1]:
                 Password.seleccion, Password.movil = Password.mover_derecha(Password.seleccion, Password.movil)
                 Password.no_repetir[1] = False
-            elif control.get_axis(0) < -0.5 and Password.no_repetir[1]:
+            elif (control.get_axis(0) < -0.5 or control.get_hat(0)[0] == -1) and Password.no_repetir[1]:
                 Password.seleccion, Password.movil = Password.mover_izquierda(Password.seleccion, Password.movil)
                 Password.no_repetir[1] = False
             else:
@@ -156,13 +156,13 @@ def main():
                 if event.key==K_ESCAPE:
                     pygame.quit()
                     sys.exit(0)
-            if control.get_axis(0) > 0.5:
+            if control.get_axis(0) > 0.5 or control.get_hat(0)[0] == 1:
                 Novatin.direccionx = 0
                 Novatin.speed = 15
             elif control.get_button(2):
                 if Novatin.alive == False:
                     Novatin.restart = True
-            elif control.get_axis(0) < -0.5:
+            elif control.get_axis(0) < -0.5 or control.get_hat(0)[0] == -1:
                 Novatin.direccionx = 1
                 Novatin.speed = 15
             if control.get_button(1):

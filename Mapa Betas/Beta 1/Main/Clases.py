@@ -682,6 +682,8 @@ class Jefe(pygame.sprite. Sprite):
             self.imagenes = [pygame.image.load("Imagenes/Jefe.png"),pygame.image.load("Imagenes/Jefe2.png")]
         elif n == 2:
             self.imagenes = [pygame.image.load("Imagenes/Euler.jpg"),pygame.image.load("Imagenes/Euler2.jpg")]
+        elif n == 3:
+            self.imagenes = [pygame.image.load("Imagenes/ConfUC.png"),pygame.image.load("Imagenes/ConfUC2.png")]
         self.image = self.imagenes[0]
         self.height = self.image.get_height()
         self.width = self.image.get_width()
@@ -698,10 +700,14 @@ class Jefe(pygame.sprite. Sprite):
             self.bonus1 = 1
             self.contador = 20
             self.vida = 20
-        else:
+        elif self.n == 2:
             self.bonus1 = 2
             self.contador = 50
             self.vida = 50
+        elif self.n == 3:
+            self.bonus1 = 1
+            self.contador = [90,10,3]
+            self.vida = 20
         self.stun = False
         self.vidaf = self.vida/4
 
@@ -747,6 +753,23 @@ class Jefe(pygame.sprite. Sprite):
                     self.warp()
                     for i in range(2):
                         self.accel[i] = 0
+        elif self.n == 3:
+            if self.contador[0] > 0:
+                self.contador[0] -= 1
+            else:
+                self.contador[0] = 90
+                self.warp()
+            self.contador[1] -= 1
+            if self.contador[1] == 0:
+                self.contador[2] -= 1
+                if self.contador[2] == 0:
+                    self.contador[2] = 3
+                    self.contador[1] = 60
+                else:
+                    self.contador[1] = 10
+                self.bullets.append(Enemy_Bullet(self.rect.centerx, self.rect.centery, novatin))
+            for bullet in self.bullets:
+                bullet.move()
 
     def reppos(self):
         self.rect.centerx=self.x
@@ -760,8 +783,10 @@ class Jefe(pygame.sprite. Sprite):
         self.vida -= 1
         if self.vida < self.vidaf:
             self.image = self.imagenes[1]
-            self.bonus1 = 1.5
-            self.bonus2 = 0.75
+            if self.n == 2:
+                self.bonus1 = 2.5
+            else:
+                self.bonus1 = 1.2
         if self.vida == 0:
             self.alive = False
             del self.image

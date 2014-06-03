@@ -97,6 +97,8 @@ class Mapa(pygame.sprite.Sprite):
                     self.jefes.append(Clases.Jefe(i*32+32, j*32+32, 1))
                 elif aux[i] == "b":
                     self.jefes.append(Clases.Jefe(i*32+32, j*32+32, 2))
+                elif aux[i] == "M":
+                    self.jefes.append(Clases.Jefe(i*32+32, j*32+32, 3))
                     
 
     def cambia(self, mapas):

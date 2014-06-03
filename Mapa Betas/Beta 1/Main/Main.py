@@ -30,8 +30,8 @@ def main():
     fondo_pass = pygame.image.load("Imagenes/fondo_pass.png")
     gameover = pygame.image.load("Imagenes/gameover.png")
     #Musica
-    #pygame.mixer.music.load("Music/music1.mp3")
-    #pygame.mixer.music.play(-1)
+    pygame.mixer.music.load("Music/music1.mp3")
+    pygame.mixer.music.play(-1)
     #Clock
     clock = pygame.time.Clock()
     #Variables de Novatin
@@ -191,17 +191,17 @@ def main():
                 Novatin.shoot = False
                 Novatin.disparar(Mapa[construir].plataformas,Mapa[construir].save,Mapa[construir].enemigos,x, Mapa[construir].jefes)
                 if Novatin.play == True:
-                    #pygame.mixer.music.load("Music/gameover.mp3")
-                    #pygame.mixer.music.play()
+                    pygame.mixer.music.load("Music/gameover.mp3")
+                    pygame.mixer.music.play()
                     Novatin.play = False
                 Novatin.revivir += 1
                 if Novatin.revivir == 300 or Novatin.restart == True:
-                    #if construir !=4:
-                        #pygame.mixer.music.load("Music/music1.mp3")
-                        #pygame.mixer.music.play(-1)
-                    #elif construir == 4:
-                        #pygame.mixer.music.load("Music/music2.mp3")
-                        #pygame.mixer.music.play()
+                    if construir !=4:
+                        pygame.mixer.music.load("Music/music1.mp3")
+                        pygame.mixer.music.play(-1)
+                    elif construir == 4:
+                        pygame.mixer.music.load("Music/music2.mp3")
+                        pygame.mixer.music.play()
                     Novatin.revivir = 0
                     Novatin.alive = True
                     Novatin.play = True

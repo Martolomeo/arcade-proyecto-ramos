@@ -39,3 +39,12 @@ m
 nm
 
 Donde n es Novatin y m son plataformas, saltando y moviendose a la derecha puede atravesarlos (bug no importante)
+
+SOBRE EL SISTEMA DE SAVE
+
+El archivo Password.py posee una clase que no está siendo utilizada y que solo guarda valores. La gracia de esa clase
+era simplificar el codigo, cosa que no pude hacer, te lo encargo Eduardo. Si no se hace, da lo mismo xd
+Pero la gracia de haberlo echo es que podríamos tirarle una variable 'visible' que sea un boolean que pase
+a True al cumplir cierta condición del mapa (x ejemplo, que ya no queden enemigos). Eso :P
+
+NOTA: Mainjoy.py es para jugar con joystick, Main común y corriente, es el de siempre.

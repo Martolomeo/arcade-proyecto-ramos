@@ -2,7 +2,7 @@ caracteres = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q
 seleccion = 1
 movil = True
 clave = ""
-no_repetir = False
+no_repetir = [False,False]
 #claves = [Clave(3, 0, 300, 300, True, 999999, '123456')]
 
 class Clave:
@@ -101,6 +101,6 @@ def clavea():
         #if clave == password.clave:
             #return password.main, password.construir, password.posx, password.posy, password.bonus_m, password.bonus_m2
     if clave == '123456':
-        return 3, 0, 300, 300, True, 999999
+        return 4, 0, 300, 300, True, 999999
     else:
-        return 3, 0, 32, 734, False, 0
+        return 4, 0, 32, 734, False, 0

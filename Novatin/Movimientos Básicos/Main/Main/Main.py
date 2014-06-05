@@ -14,6 +14,8 @@ jump = False
 speed = 0
 jspeed=0
 t = 0
+shoot = False
+s = 0
 
 #Pantalla
 screen=pygame.display.set_mode(size, FULLSCREEN)
@@ -22,6 +24,7 @@ screen=pygame.display.set_mode(size, FULLSCREEN)
 while 1:
     clock.tick(30)
     t += 1
+    shoot = False
     for event in pygame.event.get():
         if hasattr (event, 'key')==False:
             continue
@@ -35,6 +38,13 @@ while 1:
         elif event.key == K_ESCAPE:
             pygame.quit()
             sys.exit(0)
+        if event.key == K_SPACE:
+            if s==0:
+                shoot=True
+                s=1
+            elif s==1:
+                shoot=False
+                s=0
     key = pygame.key.get_pressed()
     if key[K_UP] == True:
         jump = True
@@ -45,5 +55,8 @@ while 1:
     #Iniciamos la simulación
     Novatin.move(directionx,speed)
     Novatin.jump(y,jump)
+    Novatin.shoot(shoot, directionx)
     screen.blit(Novatin.image, Novatin.rect)
+    for bullet in Novatin.bullets:
+            screen.blit(bullet.image, bullet.rect)
     pygame.display.flip()

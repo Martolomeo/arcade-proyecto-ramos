@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<Game>
+	<Title>Legend of Novatin</Title>
+	<Code>LON</Code>
+	<Version>100</Version>
+	<Date>6-1-2014</Date>
+	<Description>Ayuda a Novatin a salvar San Joaquin</Description>
+	<MainClass name="Go()" file="C:\Users\Eduardo M\Documents\GitHub\arcade-proyecto-ramos\Mapa Betas\Beta 1\Main\Main.py"/>
+	<Authors>
+		<Author name="Eduardo Molina"/>
+		<Author name="Camilo Berrios"/>
+		<Author name="Martin Calvo"/>
+	</Authors>
+	<Screenshots>
+	</Screenshots>
+	<Services>
+	</Services>
+	<AdditionalData>
+	</AdditionalData>
+</Game>

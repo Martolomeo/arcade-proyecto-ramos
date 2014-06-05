@@ -42,8 +42,8 @@ def main():
     cabeza = Clases.Extremidad(0,0,"cabeza")
     brazo_i = Clases.Extremidad(0,0,"brazo_i")
     brazo_d = Clases.Extremidad(0,0,"brazo_d")
-    xi = 700
-    yi = 0
+    xi = 40
+    yi = y-40
     di = 0
     mi = False
     jefe = False
@@ -56,7 +56,7 @@ def main():
     main = 1
     seleccion = 0
     #Mapas
-    construir = 14
+    construir = 0
     cambiar = False
     Mapa = []
     #Inicio etapas
@@ -97,8 +97,8 @@ def main():
                     if seleccion == 0:
                         del Novatin
                         main = 0
-                        xi = 100
-                        yi = 200
+                        xi = 40
+                        yi = y-40
                         Novatin = Clases.Novatin(xi,yi,di,mi)
                         cabeza.alive = False
                         brazo_d.alive = False
@@ -436,7 +436,7 @@ def main():
                 screen.blit(brazo_i.image, brazo_i.rect)
             screen.blit(muertes, muertes_rect)
             screen.blit(creditos, creditos_rect)
-            score, score_rect = texto(str(Novatin.score),500,300,40,(255,0,0))
+            score, score_rect = texto(str(Novatin.score),x-250,60,40,(255,0,0))
             screen.blit(score, score_rect)
             if Novatin.contador_m < 300:
                 screen.blit(bonus, bonus_rect)

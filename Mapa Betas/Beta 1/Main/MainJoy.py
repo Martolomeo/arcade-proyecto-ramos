@@ -10,7 +10,7 @@ def texto(texto, posx, posy, tamano, color=(255, 255, 255)):
     salida_rect.centery = posy
     return salida, salida_rect
 
-def main():
+def Go():
     #auxiliares del save
     auxi=0
     auxj=0
@@ -33,8 +33,8 @@ def main():
     fondo_pass = pygame.image.load("Imagenes/fondo_pass.png")
     gameover = pygame.image.load("Imagenes/gameover.png")
     #Musica
-    #pygame.mixer.music.load("Music/music1.mp3")
-    #pygame.mixer.music.play(-1)
+    pygame.mixer.music.load("Music/music1.mp3")
+    pygame.mixer.music.play(-1)
     #Clock
     clock = pygame.time.Clock()
     #Variables de Novatin
@@ -52,6 +52,10 @@ def main():
     Vidas = 10
     Creditos = 1
     cb = True
+    firstchange = True
+    secondchange = True
+    thirdchange = True
+    fourthchange = True
     #Portada
     main = 1
     seleccion = 0
@@ -79,9 +83,25 @@ def main():
             jefe = True
             jefe2 = True
         if jefe == True:
-            #pygame.mixer.music.load("Music/music2.mp3")
-            #pygame.mixer.music.play()
+            pygame.mixer.music.load("Music/music2.mp3")
+            pygame.mixer.music.play()
             jefe = False
+        if construir < 9 and construir >4 and firstchange == True:
+            pygame.mixer.music.load("Music/music3.mp3")
+            pygame.mixer.music.play(-1)
+            firstchange = False
+        if construir == 9 and secondchange == True:
+            pygame.mixer.music.load("Music/music4.mp3")
+            pygame.mixer.music.play(-1)
+            secondchange = False
+        if construir < 13 and construir >9 and thirdchange == True:
+            pygame.mixer.music.load("Music/music5.mp3")
+            pygame.mixer.music.play(-1)
+            thirdchange = False
+        if construir == 14 and fourthchange == True:
+            pygame.mixer.music.load("Music/music6.mp3")
+            pygame.mixer.music.play(-1)
+            fourthchange = False
         if construir in range(len(Mapa)) and cambiar == True:
             Novatin.rect.centerx = xi
             Novatin.rect.centery = yi
@@ -351,8 +371,8 @@ def main():
                 Novatin.shoot = False
                 Novatin.disparar(Mapa[construir].plataformas,Mapa[construir].save,Mapa[construir].enemigos,x, Mapa[construir].jefes)
                 if Novatin.play == True:
-                    #pygame.mixer.music.load("Music/gameover.mp3")
-                    #pygame.mixer.music.play()
+                    pygame.mixer.music.load("Music/gameover.mp3")
+                    pygame.mixer.music.play(-1)
                     Novatin.play = False
                     Vidas -=1
                     aux = 0
@@ -360,12 +380,24 @@ def main():
                         main = 3
                 Novatin.revivir += 1
                 if Novatin.revivir == 300 or Novatin.restart == True:
-                    #if construir !=4:
-                        #pygame.mixer.music.load("Music/music1.mp3")
-                        #pygame.mixer.music.play(-1)
-                    #elif construir == 4:
-                        #pygame.mixer.music.load("Music/music2.mp3")
-                        #pygame.mixer.music.play()
+                    if construir <4:
+                        pygame.mixer.music.load("Music/music1.mp3")
+                        pygame.mixer.music.play(-1)
+                    elif construir == 4:
+                        pygame.mixer.music.load("Music/music2.mp3")
+                        pygame.mixer.music.play(-1)
+                    elif construir>4 and construir<9:
+                        pygame.mixer.music.load("Music/music3.mp3")
+                        pygame.mixer.music.play(-1)
+                    elif construir == 9:
+                        pygame.mixer.music.load("Music/music4.mp3")
+                        pygame.mixer.music.play(-1)
+                    elif construir>9 and construir<13:
+                        pygame.mixer.music.load("Music/music5.mp3")
+                        pygame.mixer.music.play(-1)
+                    elif construir == 14:
+                        pygame.mixer.music.load("Music/music6.mp3")
+                        pygame.mixer.music.play(-1)
                     Novatin.revivir = 0
                     Novatin.alive = True
                     Novatin.play = True
@@ -448,4 +480,4 @@ def main():
             pygame.display.flip()
     
 if __name__=="__main__":
-    main()
+    Go()

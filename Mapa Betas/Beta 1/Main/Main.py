@@ -10,7 +10,7 @@ def texto(texto, posx, posy, tamano, color=(255, 255, 255)):
     salida_rect.centery = posy
     return salida, salida_rect
 
-def main():
+def Go():
     #auxiliares del save
     auxi=0
     auxj=0
@@ -41,7 +41,7 @@ def main():
     brazo_d = Clases.Extremidad(0,0,"brazo_d")
     saven = 0
     xi = 40
-    yi = y-2405
+    yi = y-40
     di = 0
     mi = False
     jefe = False
@@ -335,4 +335,4 @@ def main():
             pygame.display.flip()
     
 if __name__=="__main__":
-    main()
+    Go()

@@ -618,9 +618,9 @@ class Ombudsman(pygame.sprite.Sprite):
     def __init__(self, x,y):
         pygame.sprite.Sprite.__init__(self)
         self.atrapado = True
-        self.atrapado_i = pygame.image.load("Imagenes/ombudsman_atrapado_1.png")
+        self.atrapado_i = pygame.image.load("Imagenes/046.png")
         self.image = self.atrapado_i
-        self.libre_i = pygame.image.load("Imagenes/ombudsman_libre.png")
+        self.libre_i = pygame.image.load("Imagenes/031.png")
         self.libre_i_2 = pygame.image.load("Imagenes/ombudsman_libre_2.png")
         self.contador = 200
         self.bonus = random.randint(1,3)
@@ -651,7 +651,7 @@ class Ombudsman(pygame.sprite.Sprite):
             
 class PowerUp(pygame.sprite.Sprite):
     def __init__(self,x,y):
-        self.image = pygame.image.load("Imagenes/PowerUp.png")
+        self.image = pygame.image.load("Imagenes/Heavy.png")
         self.rect = self.image.get_rect()
         self.rect.centerx = x
         self.rect.centery = y

@@ -2,10 +2,10 @@
 <Game>
 	<Title>Legend of Novatin</Title>
 	<Code>LON</Code>
-	<Version>2</Version>
+	<Version>100</Version>
 	<Date>6-1-2014</Date>
 	<Description>Ayuda a Novatin a salvar San Joaquin</Description>
-	<MainClass name="MiJuego" file="./games/LoN/MainTest.py/">
+	<MainClass name="Go()" file="C:\Users\Eduardo M\Documents\GitHub\arcade-proyecto-ramos\Mapa Betas\Beta 1\Main\Main.py"/>
 	<Authors>
 		<Author name="Eduardo Molina"/>
 		<Author name="Camilo Berrios"/>

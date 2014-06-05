@@ -50,6 +50,9 @@ def main():
     jefe = False
     jefe2 = False
     Novatin = Clases.Novatin(xi,yi,di,mi)
+    Vidas = 10
+    Creditos = 1
+    cb = True
     #Portada
     main = 1
     seleccion = 0
@@ -58,7 +61,7 @@ def main():
     cambiar = False
     Mapa = []
     #Inicio etapas
-    for i in(range(10)):
+    for i in(range(15)):
         Mapa.append(Maps.Mapa(x,y,"Levels/level"+str(i+1)+".txt",i+1))
     #Fin etapas
     for mapa in Mapa:
@@ -134,6 +137,35 @@ def main():
                 password, password_rect = texto(Password.clave[i], pos[0], pos[1], 40)
                 screen.blit(password, password_rect)
             pygame.display.flip()
+        elif main == 3:
+            for event in pygame.event.get():
+                if hasattr(event, 'key')==False:
+                    continue
+                down = event.type == KEYDOWN
+                if event.key == K_ESCAPE:
+                    pygame.quit()
+                    sys.exit(0)
+                if event.key == K_SPACE:
+                    if Password.no_repetir:
+                        Password.no_repetir = False
+                        if Password.seleccion == 37:
+                            Password.clave = Password.borra_espacio(Password.clave)
+                        elif Password.seleccion == 38:
+                            main, construir, Novatin.rect.centerx, Novatin.rect.centery, Novatin.metralleta, Novatin.contador_m = Password.clavea()
+                        #################SAVE/CHEATS################### 
+                        else:
+                            Password.clave += Password.caracteres[(Password.seleccion-1)]
+                    else:
+                        Password.no_repetir = True
+                if event.key == K_UP:
+                    Password.seleccion, Password.movil = Password.mover_arriba(Password.seleccion, Password.movil)
+                if event.key == K_DOWN:
+                    Password.seleccion, Password.movil = Password.mover_abajo(Password.seleccion, Password.movil)
+                if event.key == K_RIGHT:
+                    Password.seleccion, Password.movil = Password.mover_derecha(Password.seleccion, Password.movil)
+                if event.key == K_LEFT:
+                    Password.seleccion, Password.movil = Password.mover_izquierda(Password.seleccion, Password.movil)
+            screen.blit(fondo_pass, (0,0))
         else:
             Novatin.shoot = False
             for event in pygame.event.get():
@@ -142,7 +174,14 @@ def main():
                 down = event.type == KEYDOWN
                 if event.key==K_ESCAPE:
                     pygame.quit()
-                    sys.exit(0)                
+                    sys.exit(0)
+                    if event.key == K_s:
+                    if cb == True:
+                        Vidas += 10
+                        Creditos += 1
+                        cb = False
+                    elif cb == False:
+                        cb == True
                 elif event.key == K_r:
                     if Novatin.alive == False:
                         Novatin.restart = True
@@ -194,6 +233,9 @@ def main():
                     #pygame.mixer.music.load("Music/gameover.mp3")
                     #pygame.mixer.music.play()
                     Novatin.play = False
+                    Vidas -=1
+                    if (Vidas==0):
+                        main = 3
                 Novatin.revivir += 1
                 if Novatin.revivir == 300 or Novatin.restart == True:
                     #if construir !=4:
@@ -246,6 +288,7 @@ def main():
                     brazo_i.jumpspeed = random.randint(10,25)
                     Mapa[construir].Restaurar()
             muertes, muertes_rect = texto(str(Novatin.muertes), x-100, 20, 20)
+            creditos, creditos_rect = texto(str(Creditos), x-150, 20, 20)
             if Novatin.contador_m < 300:
                 bonus, bonus_rect = texto(str(Novatin.contador_m//30+1), x-100, 40, 20)
             if cabeza.alive:
@@ -270,6 +313,7 @@ def main():
             if brazo_i.alive:
                 screen.blit(brazo_i.image, brazo_i.rect)
             screen.blit(muertes, muertes_rect)
+            screen.blit(creditos, creditos_rect)
             if Novatin.contador_m < 300:
                 screen.blit(bonus, bonus_rect)
             for bullet in Novatin.bullets:

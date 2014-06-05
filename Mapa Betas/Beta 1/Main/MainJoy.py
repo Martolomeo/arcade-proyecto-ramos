@@ -176,12 +176,12 @@ def main():
                     pygame.quit()
                     sys.exit(0)
                     if event.key == K_s:
-                    if cb == True:
-                        Vidas += 10
-                        Creditos += 1
-                        cb = False
-                    elif cb == False:
-                        cb == True
+                        if cb == True:
+                            Vidas += 10
+                            Creditos += 1
+                            cb = False
+                        elif cb == False:
+                            cb == True
                 elif event.key == K_r:
                     if Novatin.alive == False:
                         Novatin.restart = True

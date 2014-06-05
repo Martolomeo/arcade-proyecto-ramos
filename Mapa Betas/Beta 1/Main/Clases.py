@@ -62,7 +62,8 @@ class Novatin(pygame.sprite.Sprite):
         self.jump = False
         self.shoot = False
         self.metralleta = m
-        self.contador_m = 0
+        self.contador_m = d
+        self.score = 0
     
     def move (self,plataformas,x):
         self.pos_anterior = self.pos_actual
@@ -328,12 +329,12 @@ class Bullet(pygame.sprite.Sprite):
                     self.kill()
             for enemigo in enemigos:
                 if pygame.sprite.collide_rect(self, enemigo)==True and enemigo.alive == True:
-                    enemigo.kill()
+                    enemigo.kill(novatin)
                     self.kill()
             for jefe in jefes:
                 if jefe.alive:
                     if pygame.sprite.collide_rect(self, jefe):
-                        jefe.kill()
+                        jefe.kill(novatin)
                         self.kill()
             if self.rect.centerx<0 or self.rect.centerx>x:
                 self.kill()
@@ -607,9 +608,10 @@ class Enemigo(pygame.sprite.Sprite):
         if pygame.sprite.collide_rect(self, novatin):
             novatin.kill()
             
-    def kill(self):
+    def kill(self,novatin):
         self.vida -= 1
         if self.vida == 0:
+            novatin.score += 5
             self.alive=False
         #del self.image
         #pygame.sprite.Sprite.kill(self)
@@ -630,6 +632,7 @@ class Ombudsman(pygame.sprite.Sprite):
 
     def liberarse(self, novatin, mapa, powerup):
         if self.atrapado and pygame.sprite.collide_rect(self, novatin):
+            novatin.score += 20
             self.atrapado = False
             self.image = self.libre_i
             mapa.powerups.append(powerup(self.rect.centerx-5, self.rect.centery - 50))
@@ -766,7 +769,7 @@ class Jefe(pygame.sprite. Sprite):
         self.rect.centerx = random.randint(100,900)
         self.rect.centery = random.randint(100,600)
 
-    def kill(self):
+    def kill(self,novatin):
         self.vida -= 1
         if self.vida < self.vidaf:
             self.image = self.imagenes[1]
@@ -775,6 +778,7 @@ class Jefe(pygame.sprite. Sprite):
             else:
                 self.bonus1 = 1.2
         if self.vida == 0:
+            novatin.score += self.n*100
             self.alive = False
             del self.image
             pygame.sprite.Sprite.kill(self)

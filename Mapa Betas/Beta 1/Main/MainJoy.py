@@ -26,7 +26,7 @@ def main():
     y = 768
     size = (x,y)
     black = (135,206,235)
-    screen = pygame.display.set_mode(size)
+    screen = pygame.display.set_mode(size,FULLSCREEN)
     #Imagenes
     menu = pygame.image.load("Imagenes/menu.png")
     fondo = pygame.image.load("Imagenes/fondo.png")
@@ -42,7 +42,6 @@ def main():
     cabeza = Clases.Extremidad(0,0,"cabeza")
     brazo_i = Clases.Extremidad(0,0,"brazo_i")
     brazo_d = Clases.Extremidad(0,0,"brazo_d")
-    saven = 0
     xi = 700
     yi = 0
     di = 0
@@ -57,7 +56,7 @@ def main():
     main = 1
     seleccion = 0
     #Mapas
-    construir = 6
+    construir = 14
     cambiar = False
     Mapa = []
     #Inicio etapas
@@ -90,11 +89,25 @@ def main():
         clock.tick(30)
         #############MENU###########
         if main == 1:
+            Vidas = 10
+            Creditos = 1
             if control.get_button(0):
                 if not repetir:
                     repetir = True
                     if seleccion == 0:
+                        del Novatin
                         main = 0
+                        xi = 100
+                        yi = 200
+                        Novatin = Clases.Novatin(xi,yi,di,mi)
+                        cabeza.alive = False
+                        brazo_d.alive = False
+                        brazo_i.alive = False
+                        Mapa = []
+                        for i in(range(15)):
+                            Mapa.append(Maps.Mapa(x,y,"Levels/level"+str(i+1)+".txt",i+1))
+                        for mapa in Mapa:
+                            mapa.cambia(Mapa)
                     elif seleccion == 1:
                         main = 2
                     else:
@@ -130,11 +143,18 @@ def main():
                     if Password.seleccion == 37:
                         Password.clave = Password.borra_espacio(Password.clave)
                     elif Password.seleccion == 38:
-                        main, construir, Novatin.rect.centerx, Novatin.rect.centery, Novatin.metralleta, Novatin.contador_m = Password.clavea()
+                        construir, xi, yi, mi, di = Password.clavea(Password.clave)
+                        main = 4
+                        del Novatin
+                        Novatin = Clases.Novatin(xi,yi,di,mi)
+                        Vidas = 10
+                        Creditos = 1
                         Password.clave = ''
                         #################SAVE/CHEATS################### 
-                    elif len(Password.clave)<=3:
+                    elif len(Password.clave) < 9:
                         Password.clave += Password.caracteres[(Password.seleccion-1)]
+            else:
+                Password.no_repetir[0] = True
             if (control.get_axis(1) < -0.5 or control.get_hat(0)[1] == 1) and Password.no_repetir[1]:
                 Password.seleccion, Password.movil = Password.mover_arriba(Password.seleccion, Password.movil)
                 Password.no_repetir[1] = False                     
@@ -163,20 +183,25 @@ def main():
             pygame.display.flip()
         #############INPUT HIGHSCORE###########
         elif main == 3:
-            score = construir*100-Novatin.muertes
+            if repetir:
+                repetir = False
+                Novatin.score += construir*100-Novatin.muertes
             if control.get_button(0):
                 if Password.no_repetir[0]:
                     Password.no_repetir[0] = False
                     if Password.seleccion == 37:
                         Password.clave = Password.borra_espacio(Password.clave)
                     elif Password.seleccion == 38:
+                        for i in range(3):
+                            if len(Password.clave) < 3:
+                                Password.clave += ' '
                         high = open('Highscores.txt','r')
                         aux2 = []
                         aux3 = 100
                         for i in range(10):
                             aux = high.readline()
                             aux2.append(aux)
-                            if score >= int(aux[4:]) and aux3 == 100:
+                            if Novatin.score >= int(aux[4:]) and aux3 == 100:
                                 aux3 = i
                         high.close()
                         high = open('Highscores.txt','w')
@@ -184,13 +209,14 @@ def main():
                             if j < aux3:
                                 high.write(aux2[j])
                             if j == aux3:
-                                high.write(Password.clave+' '+str(score)+'\n')
+                                high.write(Password.clave+' '+str(Novatin.score)+'\n')
                             if j > aux3:
                                 high.write(aux2[j-1])
                         high.close()
+                        Password.clave = ''
                         main = 1
                         #################GUARDA HIGHSCORES################### 
-                    elif len(Password.clave)<=3:
+                    elif len(Password.clave) < 3:
                         Password.clave += Password.caracteres[(Password.seleccion-1)]
             else:
                 Password.no_repetir[0] = True           
@@ -215,6 +241,10 @@ def main():
                 screen.blit(text, text_rect)
             pos = Password.posicion_cursor(Password.seleccion)
             screen.blit(cabeza.image, pos)
+            end, end_rect = texto('FIN', 100, 20, 30)
+            screen.blit(end, end_rect)
+            score, score_rect = texto('Tu puntaje: '+str(Novatin.score), 300, 650, 30)
+            screen.blit(score, score_rect)
             for i in range(len(Password.clave)):
                 pos = (Password.posicion_clave(i))
                 password, password_rect = texto(Password.clave[i], pos[0], pos[1], 40)
@@ -244,6 +274,13 @@ def main():
             screen.blit(cabeza.image, (420, 640))
             pygame.display.flip()
         else:
+            ##############END GAME##########
+            if Mapa[14].jefes[0].alive == False:
+                main = 5
+                Novatin.score += 200
+                for i in range(2):
+                    Password.no_repetir[i] = False
+            ###############################
             Novatin.shoot = False
             for event in pygame.event.get():
                 if hasattr(event, 'key')==False:
@@ -399,6 +436,8 @@ def main():
                 screen.blit(brazo_i.image, brazo_i.rect)
             screen.blit(muertes, muertes_rect)
             screen.blit(creditos, creditos_rect)
+            score, score_rect = texto(str(Novatin.score),500,300,40,(255,0,0))
+            screen.blit(score, score_rect)
             if Novatin.contador_m < 300:
                 screen.blit(bonus, bonus_rect)
             for bullet in Novatin.bullets:

@@ -2,7 +2,8 @@ caracteres = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q
 seleccion = 1
 movil = True
 clave = ""
-no_repetir = [False,False]
+no_repetir = [True,False]
+pos_validas = [(1,64,640),(2,32,700),(3,64,416),(4,448,32),(5,416,732),(6,960,128),(7,960,320),(8,128,96),(9,832,128),(10,960,576),(11,96,96),(12,96,224),(13,480,480),(14,960,512)]    
 #claves = [Clave(3, 0, 300, 300, True, 999999, '123456')]
 
 class Clave:
@@ -96,11 +97,30 @@ def posicion_clave(n):
     x,y = 400+40*n,100
     return x,y
 
-def clavea():
+def clavea(string):
     #for password in claves:
         #if clave == password.clave:
             #return password.main, password.construir, password.posx, password.posy, password.bonus_m, password.bonus_m2
-    if clave == '123456':
-        return 4, 0, 300, 300, True, 999999
+    #if clave == '123456':
+        #return 0, 300, 300, True, 999999
+    #else:
+        #return 0, 32, 734, False, 0
+    construir = ord(string[0]) - 65
+    posx = int(string[1:4])
+    posy = (ord(string[4]) - 65)*100 + (ord(string[5])-65)*10 +ord(string[6])-65
+    if string[7] == 'T':
+        metralleta = True
+    elif string[7] == 'F':
+        metralleta = False
     else:
-        return 4, 0, 32, 734, False, 0
+        return 0, 0, 700, False, 0
+    if string[8] == 'C':
+        contador = 99999
+    elif string[8] == 'Z':
+        contador = 0
+    else:
+        return 0, 0, 700, False, 0
+    if (construir, posx, posy) in pos_validas:
+        return construir, posx, posy, metralleta, contador
+    else:
+        return 0, 0, 700, False, 0
